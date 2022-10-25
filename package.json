@@ -2,11 +2,11 @@
   "name": "cop4331-large-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "/backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "server": "nodemon index.js",
+    "server": "nodemon /backend/server.js",
     "client": "cd client && npm start"
   },
   "repository": {

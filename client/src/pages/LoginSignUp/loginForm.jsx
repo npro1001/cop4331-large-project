@@ -3,9 +3,53 @@ import { useContext } from "react";
 import { AccountContext } from "./accountContext";
 import { BoldLink, BoxContainer, FormContainer, Input, MutedLink, SubmitButton } from './common';
 import { Marginer} from '../../components/marginer/index.jsx';
+//! Added by nick
+import {login, reset} from '../features/auth/authSlice'
+import  {toast} from 'react-toastify'
+
 
 //login form
-export function LoginForm(props){
+export function LoginForm(props) {
+    
+    //! Added by nick
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const {user, isError, isSuccess, message} = useSelector((state) => state.auth)
+    
+    // Runs initially when function is called
+    useEffect(() => {
+        // Check for error
+        if(isError) {
+            toast.error(message)
+        }
+
+        // If registered or logged in
+        if(isSuccess || user) {
+            navigate('/testpage', {replace: true})
+            dispatch(reset())
+        }
+    }, [user, isError, isSuccess, message, navigate, dispatch])
+
+
+    // const onChange = (e) => {
+    //     setFormData((prevState) => ({
+    //         ...prevState, // "Spead across previous state"
+    //         [e.target.name]: e.target.value
+    //     }))
+    // }
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+
+        const userData = {
+            username,
+            password
+        }
+
+        dispatch(login(userData))
+    }
+
+    //! --
 
 //when user clicks "Signup here", the form will switch
 const {switchToSignup } = useContext(AccountContext);

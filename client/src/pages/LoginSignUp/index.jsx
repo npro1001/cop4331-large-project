@@ -11,6 +11,7 @@ import { AccountContext } from "./accountContext";
 //this index.jsx holds the bulk of the code for the webpage
 //first portion of this code is css and the latter half is html
 
+
 //this portion will hold the logo, webname, motto, and form
 const Auth = styled.div`
     display:flex;

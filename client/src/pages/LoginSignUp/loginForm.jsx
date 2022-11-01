@@ -39,6 +39,7 @@ export function LoginForm(props) {
     // }
 
     const onSubmit = (e) => {
+        console.log("TESTING BITCH")
         e.preventDefault()
 
         const userData = {
@@ -55,7 +56,7 @@ export function LoginForm(props) {
 const {switchToSignup } = useContext(AccountContext);
 
     return<BoxContainer>
-        <FormContainer>
+        <FormContainer onSubmit={onSubmit}>
             <Marginer direction="vertical" margin={75}/>
             <Input type="text" id='username' value={username} placeholder="Username"/>
             <Marginer direction="vertical" margin={25}/>
@@ -63,7 +64,7 @@ const {switchToSignup } = useContext(AccountContext);
             <Marginer direction="vertical" margin={10}/>
             <MutedLink href="#">Forgot your password?</MutedLink>
             <Marginer direction="vertical" margin={25}/>
-            <SubmitButton type="submit" onClick={onSubmit({username, password})}> Login</SubmitButton>
+            <SubmitButton type="submit"> Login</SubmitButton>
             <Marginer direction="vertical" margin={25}/>
             <MutedLink>New to the club? <BoldLink href="#"  onClick={switchToSignup}>Sign up here.</BoldLink>
             

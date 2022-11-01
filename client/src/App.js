@@ -1,10 +1,9 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 import './App.css';
-import { LoginSignUp } from './pages/LoginSignUp/index';
-import { Testpage } from './pages/Dashboard/Testpage';
+import { LoginSignUp } from './pages/LoginSignUp/index.jsx';
+import { Testpage } from './pages/Dashboard/Testpage.jsx';
 import {AppContainer} from './components/styles/AppContainer.style';
-
 
 
 function App() {

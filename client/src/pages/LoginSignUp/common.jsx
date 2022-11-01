@@ -82,7 +82,7 @@ export const SubmitButton = styled.button`
     align-self: center;
     &:hover{
     filter: brightness(1.2);
-}
+    }
 
    
 

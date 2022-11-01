@@ -4,6 +4,7 @@ import React from "react";
 // import {useSelector, useDispatch} from 'react-redux'
 // import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom';
+import { BoxContainer } from "../LoginSignUp/common";
 
 export function Testpage() {
 
@@ -15,11 +16,8 @@ export function Testpage() {
         navigate('/spotifylogin')
     }
 
-    return (
-        <>
-            <section className="heading">
+    return (<BoxContainer>
+                <h1> Logged in </h1>
                 <button onClick={onClick} className='btn btn-block'>Connect to spotify</button>
-            </section>
-        </>
-    )
+    </BoxContainer>)
 } 

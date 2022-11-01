@@ -2,7 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { AccountContext } from "./accountContext";
 import { BoldLink, BoxContainer, FormContainer, Input, MutedLink, SubmitButton } from './common';
-import { Marginer}  from './marginer';
+import { Marginer} from '../../components/marginer/index.jsx';
 
 //login form
 export function LoginForm(props){

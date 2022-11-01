@@ -3,7 +3,7 @@ import React from "react";
 // import { Marginer} from '../../components/marginer/index.jsx';
 // import {useSelector, useDispatch} from 'react-redux'
 // import {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
 
 export function Testpage() {
 

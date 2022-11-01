@@ -57,9 +57,9 @@ const {switchToSignup } = useContext(AccountContext);
     return<BoxContainer>
         <FormContainer>
             <Marginer direction="vertical" margin={75}/>
-            <Input type="text" placeholder="Username"/>
+            <Input type="text" id='username' value={username} placeholder="Username"/>
             <Marginer direction="vertical" margin={25}/>
-            <Input type="password" placeholder="Password"/>
+            <Input type="password" id='password' value={password} placeholder="Password"/>
             <Marginer direction="vertical" margin={10}/>
             <MutedLink href="#">Forgot your password?</MutedLink>
             <Marginer direction="vertical" margin={25}/>

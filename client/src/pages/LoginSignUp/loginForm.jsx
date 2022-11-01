@@ -63,7 +63,7 @@ const {switchToSignup } = useContext(AccountContext);
             <Marginer direction="vertical" margin={10}/>
             <MutedLink href="#">Forgot your password?</MutedLink>
             <Marginer direction="vertical" margin={25}/>
-            <SubmitButton type="submit" onClick={onSubmit}> Login</SubmitButton>
+            <SubmitButton type="submit" onClick={onSubmit({username, password})}> Login</SubmitButton>
             <Marginer direction="vertical" margin={25}/>
             <MutedLink>New to the club? <BoldLink href="#"  onClick={switchToSignup}>Sign up here.</BoldLink>
             

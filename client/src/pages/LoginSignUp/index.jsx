@@ -1,15 +1,21 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 import { LoginForm } from "./loginForm";
 import { SignupForm } from "./signupForm";
 import Logo from '../../img/logo.png';
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { AccountContext } from "./accountContext";
+// import {reset} from '../../auth/authSlice'
+// import {useSelector, useDispatch} from 'react-redux'
+import {React, useState, useEffect} from 'react'
+// import {useNavigate} from 'react-router-dom'
+// import  {toast} from 'react-toastify'
+
 //used styled components for the login/signup
 //also used framer-motion to animate the tear drop
 //this index.jsx holds the bulk of the code for the webpage
 //first portion of this code is css and the latter half is html
+
 
 
 //this portion will hold the logo, webname, motto, and form
@@ -172,6 +178,24 @@ const expandingTransition = {
 
 
 export function LoginSignUp(props) {
+
+    // //! Added by nick
+    // const {user, isError, isSuccess, message} = useSelector((state) => state.auth)
+    // const navigate = useNavigate()
+    // const dispatch = useDispatch()
+    // // Runs initially when LoginForm function is called
+    // useEffect(() => {
+    // // Check for error
+    // if(isError) {
+    //     toast.error(message)
+    // }
+
+    // // If registered or logged in
+    // if(isSuccess || user) {
+    //     navigate('/testpage', {replace: true})
+    //     dispatch(reset())
+    // }
+    // }, [user, isError, isSuccess, message, navigate, dispatch])
 
     //the tear drop will start out as collpased, so isExpanded is set to false
     const [isExpanded, setExpanded] = useState(false);

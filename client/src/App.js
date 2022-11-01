@@ -7,7 +7,7 @@ import {AppContainer} from './components/styles/AppContainer.style';
 
 
 function App() {
- return(
+ return( <>
     <AppContainer>
       <Router>
         <div className = 'container'>
@@ -23,9 +23,9 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <ToastContainer/>
+    <ToastContainer/>
     </AppContainer>
-
+  </>
  );
   
 }

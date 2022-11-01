@@ -63,7 +63,7 @@ export function LoginForm(props) {
     //when user clicks "Signup here", the form will switch
     const {switchToSignup } = useContext(AccountContext);
 
-    return<BoxContainer>
+    return ( <BoxContainer>
         <FormContainer onSubmit={onSubmit}>
             <Marginer direction="vertical" margin={75}/>
             <Input type="text" id='username' value={username} onChange={onChange} placeholder="Username"/>
@@ -79,5 +79,5 @@ export function LoginForm(props) {
             </MutedLink>
 
         </FormContainer>
-    </BoxContainer>
+    </BoxContainer>)
 } 

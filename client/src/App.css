@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  border:none;
+  border-radius: 0.5rem;
+  background: var(--buttonBg);
+  transition:all 100ms ease-out;
+  font-family: 'Ubuntu', sans-serif;
+}

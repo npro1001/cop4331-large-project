@@ -89,8 +89,42 @@ const generateToken = (id) => {
   })
 }
 
+
+//@desc send a mail with the link to verify mail
+// @route POST /api/users/confirm
+// @access PUBLIC
+const mailForEmailVerification = asyncHandler(async (req, res) => {
+	try {
+		const { email } = req.body;
+
+		const user = await User.findOne({ email });
+		// console.log(user);
+		if (user) {
+			// send a verification email, if this user is not a confirmed email
+			if (!user.isConfirmed) {
+				// send the mail
+				await sendMail(user._id, email, 'email verification');
+				res.status(201).json({
+					id: user._id,
+          name: user.name,
+					email: user.email,
+					isConfirmed: user.isConfirmed,
+				});
+			} else {
+				res.status(400);
+				throw new Error('User already confirmed');
+			}
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(401);
+		throw new Error('Could not send the mail. Please retry.');
+	}
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  mailForEmailVerification
 }

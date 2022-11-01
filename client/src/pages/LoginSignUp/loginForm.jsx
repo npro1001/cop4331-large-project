@@ -4,17 +4,25 @@ import { AccountContext } from "./accountContext";
 import { BoldLink, BoxContainer, FormContainer, Input, MutedLink, SubmitButton } from './common';
 import { Marginer} from '../../components/marginer/index.jsx';
 //! Added by nick
-import {login, reset} from '../features/auth/authSlice'
+import {login, reset} from '../../auth/authSlice'
 import  {toast} from 'react-toastify'
+import {useSelector, useDispatch} from 'react-redux'
+import {useState, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 
 //login form
 export function LoginForm(props) {
     
     //! Added by nick
+    const [formData, setFormData] = useState({
+        username: '',
+        password: '',
+    })
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const {user, isError, isSuccess, message} = useSelector((state) => state.auth)
+    const {username, password} = formData
     
     // Runs initially when function is called
     useEffect(() => {
@@ -31,12 +39,12 @@ export function LoginForm(props) {
     }, [user, isError, isSuccess, message, navigate, dispatch])
 
 
-    // const onChange = (e) => {
-    //     setFormData((prevState) => ({
-    //         ...prevState, // "Spead across previous state"
-    //         [e.target.name]: e.target.value
-    //     }))
-    // }
+    const onChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState, // "Spead across previous state"
+            [e.target.name]: e.target.value
+        }))
+    }
 
     const onSubmit = (e) => {
         console.log("TESTING BITCH")
@@ -52,15 +60,15 @@ export function LoginForm(props) {
 
     //! --
 
-//when user clicks "Signup here", the form will switch
-const {switchToSignup } = useContext(AccountContext);
+    //when user clicks "Signup here", the form will switch
+    const {switchToSignup } = useContext(AccountContext);
 
     return<BoxContainer>
         <FormContainer onSubmit={onSubmit}>
             <Marginer direction="vertical" margin={75}/>
-            <Input type="text" id='username' value={username} placeholder="Username"/>
+            <Input type="text" id='username' value={username} onChange={onChange} placeholder="Username"/>
             <Marginer direction="vertical" margin={25}/>
-            <Input type="password" id='password' value={password} placeholder="Password"/>
+            <Input type="password" id='password' value={password} onChange={onChange} placeholder="Password"/>
             <Marginer direction="vertical" margin={10}/>
             <MutedLink href="#">Forgot your password?</MutedLink>
             <Marginer direction="vertical" margin={25}/>

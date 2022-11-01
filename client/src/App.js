@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 import './App.css';
 import { LoginSignUp } from './pages/LoginSignUp';
-import { Testpage } from './pages/Dashboard';
+import { Testpage } from './pages/Dashboard/Testpage';
 import {AppContainer} from './components/styles/AppContainer.style';
 
 
@@ -12,7 +12,6 @@ function App() {
     <AppContainer>
       <Router>
         <div className = 'container'>
-          <Header/>
           <Routes>
             <Route path='/' element={<LoginSignUp/>} />
             <Route path='/testpage' element={<Testpage/>} />

@@ -32,6 +32,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.7",
     "querystring": "^0.2.1",
+    "react-router-dom": "^6.4.3",
     "styled-components": "^5.3.6",
     "urlsearchparams": "^0.1.1"
   },

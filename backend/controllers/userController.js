@@ -90,7 +90,7 @@ const generateToken = (id) => {
 }
 
 
-//@desc send a mail with the link to verify mail
+// @desc send a mail with the link to verify mail
 // @route POST /api/users/confirm
 // @access PUBLIC
 const mailForEmailVerification = asyncHandler(async (req, res) => {

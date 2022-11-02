@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 // generate a JWT token for the various applications represented by the 'option' argument
-const generateToken = (id, option) => {
+const generateMailToken = (id, option) => {
 	if (option === 'access') {
 		return jwt.sign({ id }, process.env.JWT_ACCESS_TOKEN_SECRET, {
 			expiresIn: 60 * 60, // 1 hour
@@ -21,4 +21,4 @@ const generateToken = (id, option) => {
 	}
 };
 
-module.exports = generateToken;
+module.exports = generateMailToken;

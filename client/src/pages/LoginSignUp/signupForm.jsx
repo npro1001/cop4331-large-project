@@ -46,7 +46,7 @@ export function SignupForm(props) {
 
         // If registered or logged in
         if (isSuccess || user) {
-            navigate(switchToLogin.click(), { replace: true })
+            // navigate(switchToLogin.click(), { replace: true })
             dispatch(reset())
         }
     }, [user, isError, isSuccess, message, navigate, dispatch])

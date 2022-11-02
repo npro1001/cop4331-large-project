@@ -72,6 +72,7 @@ export function SignupForm(props) {
         }
 
         dispatch(register(userData))
+        switchToLogin();
     }
 
    
@@ -91,7 +92,7 @@ export function SignupForm(props) {
     //box container is the entire form
     //marginer creates margins between elements
     return <BoxContainer>
-        <FormContainer onSubmit={function(event){handleSubmit(); switchToLogin()}}>
+        <FormContainer onSubmit={handleSubmit}>
 
             <Marginer direction="vertical" margin={75} />
             <SidebSide>

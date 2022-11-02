@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 
 //signup form
 export function SignupForm(props) {
+    //when user clicks "login here", form will swtich
+    const { switchToLogin } = useContext(AccountContext);
 
     //! Added by nick
     const [formData, setFormData] = useState({
@@ -46,6 +48,7 @@ export function SignupForm(props) {
 
         // If registered or logged in
         if (isSuccess || user) {
+            // switchToLogin.click()
             // navigate(switchToLogin.click(), { replace: true })
             dispatch(reset())
         }
@@ -71,8 +74,7 @@ export function SignupForm(props) {
         dispatch(register(userData))
     }
 
-    //when user clicks "login here", form will swtich
-    const { switchToLogin } = useContext(AccountContext);
+   
 
 
     // const criteria = styled.div`
@@ -109,7 +111,7 @@ export function SignupForm(props) {
                     required />
             </SidebSide>
             <Marginer direction="vertical" margin={25} />
-            <SubmitButton type="submit"> Register</SubmitButton>
+            <SubmitButton type="submit" onClick={switchToLogin}> Register</SubmitButton>
             <Marginer direction="vertical" margin={25} />
             <MutedLink>Not your first rodeo?
                 <BoldLink href="#" onClick={switchToLogin}> Login here.</BoldLink>

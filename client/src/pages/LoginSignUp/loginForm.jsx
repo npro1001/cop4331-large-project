@@ -1,13 +1,14 @@
 import React from "react";
 import { useContext } from "react";
 import { AccountContext } from "./accountContext";
-import { BoldLink, BoxContainer, FormContainer, Input, MutedLink, SubmitButton } from './common';
+import { BoldLink, BoxContainer, FormContainer, Input, MutedLink, SubmitButton, SidebSide} from './common';
 import { Marginer} from '../../components/marginer/index.jsx';
-import {login, reset} from '../../auth/authSlice'
-import  {toast} from 'react-toastify'
-import {useSelector, useDispatch} from 'react-redux'
-import {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {login, reset} from '../../auth/authSlice';
+import  {toast} from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import {useSelector, useDispatch} from 'react-redux';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 
 //login form
@@ -64,18 +65,16 @@ export function LoginForm(props) {
     return ( <BoxContainer>
         <FormContainer onSubmit={onSubmit}>
             <Marginer direction="vertical" margin={75}/>
-            <Input type="text" id='username' name='username'value={username} placeholder="Username" onChange={onChange}/>
+            <Input type="text" id='username' name='username'value={username} placeholder="Username" onChange={onChange} required/>
             <Marginer direction="vertical" margin={25}/>
-            <Input type="password" id='password' name='password' value={password} placeholder="Password" onChange={onChange}/>
+            <Input type="password" id='password' name='password' value={password} placeholder="Password" onChange={onChange} required/>
             <Marginer direction="vertical" margin={10}/>
             <MutedLink href="#">Forgot your password?</MutedLink>
             <Marginer direction="vertical" margin={25}/>
             <SubmitButton type="submit"> Login</SubmitButton>
             <Marginer direction="vertical" margin={25}/>
             <MutedLink>New to the club? <BoldLink href="#"  onClick={switchToSignup}>Sign up here.</BoldLink>
-            
             </MutedLink>
-
         </FormContainer>
     </BoxContainer>)
 } 

@@ -86,8 +86,9 @@ export const SubmitButton = styled.button`
     transition: all, 240ms ease-in-out;
     background: rgb(205,190,224);
     align-self: center;
-    &:hover{
-    filter: brightness(1.2);
+    &:not(:focus):hover {
+        filter: brightness(1.2); 
+    text-shadow: 0 0 2px #999;
     }
 
    

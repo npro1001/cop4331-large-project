@@ -111,7 +111,7 @@ export function SignupForm(props) {
                     required />
             </SidebSide>
             <Marginer direction="vertical" margin={25} />
-            <SubmitButton type="submit" onClick={switchToLogin}> Register</SubmitButton>
+            <SubmitButton type="submit" onSubmit={switchToLogin}> Register</SubmitButton>
             <Marginer direction="vertical" margin={25} />
             <MutedLink>Not your first rodeo?
                 <BoldLink href="#" onClick={switchToLogin}> Login here.</BoldLink>

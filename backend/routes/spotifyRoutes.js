@@ -7,7 +7,7 @@ const {
 } = require('../controllers/spotifyController')
 const { protect } = require('../middleware/authMiddleware')
 
-router.get('/login', connectToSpotify)
+router.get('/connect', connectToSpotify)
 router.get('/callback', spotifyAuthCallback)
 router.get('/refresh_token', getRefreshToken) // protect makes it crash
 

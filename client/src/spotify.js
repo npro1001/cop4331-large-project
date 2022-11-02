@@ -2,7 +2,7 @@
 // import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 // // API URL
-// const API_URL = '/api/spotify'
+// const API_URL = 'api/spotify'
 
 // // Map for localStorage keys
 // const LOCALSTORAGE_KEYS = {

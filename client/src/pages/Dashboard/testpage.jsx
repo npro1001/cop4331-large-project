@@ -2,42 +2,52 @@ import React from "react";
 // import { useContext } from "react";
 // import { Marginer} from '../../components/marginer/index.jsx';
 import {useSelector, useDispatch} from 'react-redux'
-import {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom';
+import { useEffect} from 'react' //useState?
+import {redirect, useNavigate} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
-import { accessToken } from '../../spotify'
+import { connect, resetS } from '../../auth/spotifyAuthSlice'
 import { logout, reset } from '../../auth/authSlice'
+import  {toast} from 'react-toastify'
 
 
 export function Testpage() {
 
-    const [token, setToken] = useState(null)
-    const { user } = useSelector((state) => state.auth)
+    // const [token, setToken] = useState(null)
+    const { user } = useSelector((userState) => userState.auth)
+    const {accessToken, isError, isSuccess, message} = useSelector((spotifyState) => spotifyState.spotifyAuth)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     if (!user) {
-    //         navigate('/')
-    //     }
+    useEffect(() => {
 
-    //     setToken(accessToken)
+        // Check for error
+        if(isError) {
+            toast.error(message)
+        }
 
-    //     // return () => {
-    //     //     dispatch(reset())
-    //     // }
-    // }, [user, navigate, accessToken])
+        if (!user) {
+            navigate('/')
+        }
+
+        if (isSuccess || accessToken ) {
+            console.log("OKAY")
+            dispatch(resetS())
+        }
+        // setToken(connect)
+
+    }, [message, navigate, dispatch, accessToken, isError, isSuccess, user])
 
 
     const onClick = (e) => {
         e.preventDefault()
-        navigate('/api/spotify/login')
+        redirect('/api/spotify/connect')
+        dispatch(connect())        
     }
 
     const onLogout = () => {
+        navigate('/')
         dispatch(logout())
         dispatch(reset())
-        navigate('/')
     }
 
 
@@ -45,13 +55,13 @@ export function Testpage() {
         {/* {!token ? (<> */}
             <h1>Welcome {user && user.name}</h1>
             <h1> Logged in to Anthem </h1>
-            <button onClick={onClick} className='btn btn-block'>Connect to spotify</button>
+            <button href="http://localhost:5555/api/spotify/connect" onClick={onClick} className='btn btn-block'>Connect to spotify</button>
             <button onClick={logout} className='btn btn-block'>Logout</button>
-        {/* </> */}
-        {/* ) : ( <> */}
+        {/* </>
+         ) : ( <> */}
             <h1> Logged in to Anthem and spotify !!!</h1>
             <button onClick={onLogout} className='btn btn-block'>Logout</button>
             {/* <p> Token: {token}</p> */}
-        {/* </>)}   */}
+         {/* </>)}    */}
     </BoxContainer>)
 } 

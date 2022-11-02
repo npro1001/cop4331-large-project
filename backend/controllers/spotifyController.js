@@ -8,14 +8,13 @@ const querystring  = require('querystring');
 const axios = require('axios')
 const { STATUS_CODES } = require('http');
 const { query } = require('express');
-
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 const REDIRECT_URI = process.env.REDIRECT_URI
 const SPOTIFY_URL = 'https://accounts.spotify.com/authorize'
 
 // Generate random string
-const genRandomString = length => {
+const getRandomString = length => {
     let text = ''
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     for(let i = 0; i < length; i++) {
@@ -27,7 +26,7 @@ const genRandomString = length => {
 const stateKey = 'spotify_auth_state'
 
 // @desc    Connect to spotify
-// @route   GET /api/spotify/login
+// @route   GET /api/spotify/connect
 // @access  Private
 const connectToSpotify = asyncHandler(async (req, res) => {
     const state = getRandomString(16)

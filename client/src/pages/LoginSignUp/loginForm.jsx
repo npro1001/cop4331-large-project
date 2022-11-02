@@ -46,8 +46,6 @@ export function LoginForm(props) {
     }
 
     const onSubmit = (e) => {
-        console.log(username)
-        console.log(password)
         e.preventDefault()
 
         const userData = {

@@ -14,12 +14,6 @@ function App() {
           <Routes>
             <Route path='/' element={<LoginSignUp/>} />
             <Route path='/testpage' element={<Testpage/>} />
-            {/* <Route path='/spotifylogin'>
-              <redirect to={{
-                pathname: `https://accounts.spotify.com/authorize?client_id=${process.env.CLIENT_ID}&response_type=code&redirect_uri=${process.env.REDIRECT_URI}`,
-                // state: { referrer: currentLocation }
-              }}/>
-            </Route> */}
           </Routes>
         </div>
       </Router>

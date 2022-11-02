@@ -29,13 +29,12 @@ const LOCALSTORAGE_VALUES = {
 const connect = async () => { //! ERROR LOCATION NO QUERYSTRING
     console.log("ASDASDAS")
 
-
-    // const response = await axios.get(`http://localhost:5555/${API_URL}`)
-    const response = await fetch(API_URL)
+    const response = await axios.get(`http://localhost:5555${API_URL}`)
+    // const response = await axios.get(API_URL)
+    console.log(response) //!
      
     // const queryString = window.location.search
     const queryString = response.queryParams
-    console.log(queryString) //!
     
     const urlParams = new URLSearchParams(queryString)
     console.log(urlParams) //!

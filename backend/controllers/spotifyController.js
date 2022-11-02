@@ -29,6 +29,7 @@ const stateKey = 'spotify_auth_state'
 // @route   GET /api/spotify/connect
 // @access  Private
 const connectToSpotify = asyncHandler(async (req, res) => {
+
     const state = getRandomString(16)
     res.cookie(stateKey, state)
 

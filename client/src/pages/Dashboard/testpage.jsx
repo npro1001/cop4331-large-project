@@ -40,8 +40,12 @@ export function Testpage() {
 
     const onClick = (e) => {
         e.preventDefault()
-        redirect('/api/spotify/connect')
-        dispatch(connect())        
+        // redirect('/api/spotify/connect')
+        // fetch('http://localhost:5555/api/spotify/connect')
+        // .then(res => res.json())
+        // .then(dispatch(connect()))  
+        dispatch(connect())
+        // setState(accessToken)      
     }
 
     const onLogout = () => {

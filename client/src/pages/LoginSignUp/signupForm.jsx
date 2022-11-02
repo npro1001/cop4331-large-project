@@ -26,7 +26,6 @@ export function SignupForm(props) {
         username: '',
         password: '',
     })
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const { user, isError, isSuccess, message } = useSelector((state) => state.auth)
@@ -52,7 +51,7 @@ export function SignupForm(props) {
             // navigate(switchToLogin.click(), { replace: true })
             dispatch(reset())
         }
-    }, [user, isError, isSuccess, message, navigate, dispatch])
+    }, [user, isError, isSuccess, message, dispatch])
 
 
     const onChange = (e) => {

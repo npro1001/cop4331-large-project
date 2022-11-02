@@ -9,7 +9,11 @@ export const BoxContainer = styled.div`
     margin-top: 10px;
 `;
 
-
+export const SidebSide = styled.div`
+    display:flex;
+    flex-direction: row;
+    gap: .5em;
+`;
 export const FormContainer = styled.form`
     width:100%;
     display: flex;
@@ -43,7 +47,7 @@ export const Input = styled.input`
     outline: none;
     width: 75%;
     height: 42px;
-    border: none;
+    border:none;
     border-radius: 15px;
     padding: 0px 10px;
     border-bottom: 1px solid transparent;
@@ -54,16 +58,18 @@ export const Input = styled.input`
     //field will be underlined pink (color can be changed, i just chose pink at random) when selected
     &:focus{
         outline:none;
-        border-bottom: 5px solid pink;
     }
 
     &::placeholder{
-        color: black;
+        color: #000000;
     }
 
-    &::last-of-type
-    {
-        border-bottom: 1.5px solid #fffb0766;
+    &:invalid{
+        border: 2px solid red;
+    }
+
+    &:valid{
+        border: 2px solid green;
     }
 `;
 

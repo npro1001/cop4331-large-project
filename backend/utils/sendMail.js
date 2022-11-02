@@ -1,8 +1,6 @@
-import dotenv from 'dotenv';
-import transporter from '../utils/transporter.js';
-import generateToken from '../utils/generateToken.js';
-
-dotenv.config();
+const dotenv = require('dotenv').config();
+const transporter = require('../utils/transporter');
+const generateToken = require('../utils/generateToken');
 
 const sendMail = async (id, email, option) => {
 	const frontendURL = process.env.FRONTEND_BASE_URL;
@@ -79,4 +77,4 @@ const sendMail = async (id, email, option) => {
 	}
 };
 
-export default sendMail;
+module.exports = sendMail;

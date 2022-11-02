@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
+const sendMail = require('../utils/sendMail')
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -61,6 +62,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // Check for username
   const user = await User.findOne({ username })
 
+  // TO DO: Add && user.isConfirmed
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
       _id: user.id,
@@ -98,7 +100,7 @@ const mailForEmailVerification = asyncHandler(async (req, res) => {
 		const { email } = req.body;
 
 		const user = await User.findOne({ email });
-		// console.log(user);
+		console.log(user);
 		if (user) {
 			// send a verification email, if this user is not a confirmed email
 			if (!user.isConfirmed) {

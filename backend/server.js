@@ -6,7 +6,6 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 const connectDB = require('./config/db');
 const port = process.env.PORT || 5555;
 const cors = require('cors');
-const { createProxyMiddleware } = require('http-proxy-middleware')
 
 // var allowedOrigins = ['http://localhost:3000',
 //                       'https://anthem-cop4331.herokuapp.com'];

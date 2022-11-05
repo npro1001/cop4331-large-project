@@ -5,7 +5,7 @@ import { LoginSignUp } from './pages/LoginSignUp/index.jsx';
 import { Testpage } from './pages/Dashboard/testpage.jsx';
 import {AppContainer} from './components/styles/AppContainer.style';
 import { Home } from './pages/home/Home'
-import { Profile } from './pages/home/profile/Profile'
+import { Profile } from './pages/profile/Profile'
 
 
 function App() {

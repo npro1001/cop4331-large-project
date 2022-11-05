@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../auth/authSlice';
-import spotifyAuthReducer from '../auth/spotifyAuthSlice';
+import authReducer from '../features/auth/authSlice';
+import spotifyReducer from '../features/spotify/spotifySlice';
 
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    spotifyAuth: spotifyAuthReducer
+    spotify: spotifyReducer
   }
 });

@@ -2,19 +2,20 @@ import React from "react";
 // import { useContext } from "react";
 // import { Marginer} from '../../components/marginer/index.jsx';
 import {useSelector, useDispatch} from 'react-redux'
-import { useEffect, useState } from 'react' //useState?
-import {redirect, useNavigate} from 'react-router-dom';
+import { useEffect } from 'react' //useState?
+import { useNavigate} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
-import { connect, resetS } from '../../auth/spotifyAuthSlice'
-import { logout, reset } from '../../auth/authSlice'
+import { connect } from '../../features/spotify/spotifySlice'
+import { logout, reset } from '../../features/auth/authSlice'
 import  {toast} from 'react-toastify'
-import axios from "axios";
+// import axios from "axios";
+import styled from "styled-components/macro";
 
 
 export function Testpage() {
 
-    const [token, setToken] = useState(null)
-    const [spotifyAuthPage, setSpotifyAuthPage] = useState(null)
+    // const [token, setToken] = useState(null)
+    // const [spotifyAuthPage, setSpotifyAuthPage] = useState(null)
     const { user } = useSelector((userState) => userState.auth)
     const {accessToken, isError, isSuccess, message} = useSelector((spotifyState) => spotifyState.spotifyAuth)
     const navigate = useNavigate()
@@ -56,6 +57,10 @@ export function Testpage() {
         // })
   
         // window.location = res.url
+
+        //!
+        // Can either dispatch the thunkAPI or talk to backend directly
+        // Both cause CORS errors
         dispatch(connect())
     }
 
@@ -65,13 +70,14 @@ export function Testpage() {
         dispatch(reset())
     }
 
+   
 
     return (<BoxContainer>
         {/* {!token ? (<> */}
             <h1>Welcome {user && user.name}</h1>
             <h1> Logged in to Anthem </h1>
             <button onClick={onClick} className='btn btn-block'>Connect to spotify</button>
-            {/* <a href="/api/spotify/connect" target="_self">connect to spotify</a> */}
+            {/* <a href="http://localhost:5555/api/spotify/connect" target="_self">connect to spotify</a> */}
             <button onClick={logout} className='btn btn-block'>Logout</button>
         {/* </>
          ) : ( <> */}

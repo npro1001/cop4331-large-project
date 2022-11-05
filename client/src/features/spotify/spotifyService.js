@@ -26,28 +26,29 @@ const LOCALSTORAGE_VALUES = {
  * or URL query params
  * @returns {string} A spotify access token
  */
-const connect = async () => { //! ERROR LOCATION NO QUERYSTRING
+const connect = async () => { 
 
     const queryString = null;
 
     // // const response = await axios.get(`http://localhost:3000${API_URL}`)
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     const response = await axios.get(API_URL + 'connect')
     if(response.data) {
         console.log(response.data)
         queryString = response.queryParams
     }
-        // .then(function(response) {
-        //     console.log(response.data.url)
-        //     queryString = response.queryParams
-        // }).catch(err => {
-        //     console.log(err)
-        // })
+    // .then(function(response) {
+    //     console.log(response.data.url)
+    //     queryString = response.queryParams
+    // }).catch(err => {
+    //     console.log(err)
+    // })
     // // const response = await fetch(API_URL)
     // // const response = await fetch(`http://localhost:5555${API_URL}`, {
     // //     method: "GET"
     // // })
     // console.log(API_URL)
-    // console.log(response) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // console.log(response) 
      
     // const queryString = window.location.search
     // const queryString = response.queryParams
@@ -168,10 +169,10 @@ export const accessToken = connect()
 //  axios.defaults.headers['Content-Type'] = 'application/json';
 // axios.defaults.headers['Allow-Access-Control-Origin'] = '*';
 
-const spotifyAuthService = {
+const spotifyService = {
     refreshToken,
     connect,
     hasTokenExpired,
 } 
 
-export default spotifyAuthService
+export default spotifyService

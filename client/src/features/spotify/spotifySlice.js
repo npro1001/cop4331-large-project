@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 // https://redux-toolkit.js.org/api/createSlice
-import spotifyAuthService from './spotifyAuthService'
+import spotifyService from './spotifyService'
 import axios from 'axios'
 
 const accessToken = JSON.parse(localStorage.getItem('accessToken'))
@@ -17,7 +17,7 @@ const initialState = {
 // Connect user to spotify
 export const connect = createAsyncThunk('spotifyAuth/connect', async(thunkAPI) => {
     try {
-        return await spotifyAuthService.connect()
+        return await spotifyService.connect()
     } catch (error) {
         console.log("spotify auth slice error on .connect()")
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
@@ -28,7 +28,7 @@ export const connect = createAsyncThunk('spotifyAuth/connect', async(thunkAPI) =
 // Connect user to spotify
 export const refreshToken = createAsyncThunk('spotifyAuth/refresh_token', async(thunkAPI) => {
     try {
-        return await spotifyAuthService.refreshToken()
+        return await spotifyService.refreshToken()
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -38,8 +38,8 @@ export const refreshToken = createAsyncThunk('spotifyAuth/refresh_token', async(
 
 
 
-export const spotifyAuthSlice = createSlice({
-    name: 'spotifyAuth',
+export const spotifySlice = createSlice({
+    name: 'spotify',
     initialState,
     reducers: {
         // Dispatch this function after we connect to spotify
@@ -64,5 +64,5 @@ export const spotifyAuthSlice = createSlice({
 })
 
 
-export const {resetS} = spotifyAuthSlice.actions
-export default spotifyAuthSlice.reducer
+export const {resetS} = spotifySlice.actions
+export default spotifySlice.reducer

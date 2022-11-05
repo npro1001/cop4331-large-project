@@ -31,14 +31,13 @@ const app = express();
 //   origin: 'http://localhost:3000',
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
+app.use(cors())
 
-// app.use(cors())
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*"); //! 5555?
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); //! 5555?
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

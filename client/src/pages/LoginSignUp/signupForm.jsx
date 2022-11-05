@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { BoldLink, BoxContainer, FormContainer, Input, MutedLink, SidebSide, SubmitButton} from './common';
 import { Marginer } from '../../components/marginer/index.jsx';
 import { AccountContext } from "./accountContext";
-import { register, reset } from '../../auth/authSlice';
+import { register, reset } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from 'react-redux';

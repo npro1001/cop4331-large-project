@@ -50,6 +50,8 @@ const connectToSpotify = asyncHandler(async (req, res) => {
         state: state,
         scope: scope
     })
+
+    //! REDIRECT TRIGGERS CORS
     res.redirect(302, `https://accounts.spotify.com/authorize?${params}`)
 })
 

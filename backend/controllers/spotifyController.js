@@ -30,6 +30,10 @@ const stateKey = 'spotify_auth_state'
 // @access  Private
 const connectToSpotify = asyncHandler(async (req, res) => {
 
+    // res.header("Access-Control-Allow-Origin", "*");
+    // next();
+
+    console.log("spotify controller")
     const state = getRandomString(16)
     res.cookie(stateKey, state)
 
@@ -46,7 +50,7 @@ const connectToSpotify = asyncHandler(async (req, res) => {
         state: state,
         scope: scope
     })
-    res.redirect(`https://accounts.spotify.com/authorize?${params}`)
+    res.redirect(302, `https://accounts.spotify.com/authorize?${params}`)
 })
 
 // @desc    Callback for spotify auth
@@ -54,7 +58,7 @@ const connectToSpotify = asyncHandler(async (req, res) => {
 // @access  Private
 const spotifyAuthCallback = asyncHandler(async (req, res) => {
     const code = req.query.code || null
-
+    console.log("In the callback function")
     axios({
         method: 'post',
         url: 'https://accounts.spotify.com/api/token',

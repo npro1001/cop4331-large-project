@@ -19,7 +19,7 @@ export const connect = createAsyncThunk('spotifyAuth/connect', async(thunkAPI) =
     try {
         return await spotifyAuthService.connect()
     } catch (error) {
-        console.log("IM error")
+        console.log("spotify auth slice error on .connect()")
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
     }

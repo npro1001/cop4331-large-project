@@ -2,17 +2,19 @@ import React from "react";
 // import { useContext } from "react";
 // import { Marginer} from '../../components/marginer/index.jsx';
 import {useSelector, useDispatch} from 'react-redux'
-import { useEffect} from 'react' //useState?
+import { useEffect, useState } from 'react' //useState?
 import {redirect, useNavigate} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
 import { connect, resetS } from '../../auth/spotifyAuthSlice'
 import { logout, reset } from '../../auth/authSlice'
 import  {toast} from 'react-toastify'
+import axios from "axios";
 
 
 export function Testpage() {
 
-    // const [token, setToken] = useState(null)
+    const [token, setToken] = useState(null)
+    const [spotifyAuthPage, setSpotifyAuthPage] = useState(null)
     const { user } = useSelector((userState) => userState.auth)
     const {accessToken, isError, isSuccess, message} = useSelector((spotifyState) => spotifyState.spotifyAuth)
     const navigate = useNavigate()
@@ -29,23 +31,32 @@ export function Testpage() {
             navigate('/')
         }
 
-        if (isSuccess || accessToken ) {
-            console.log("OKAY")
-            dispatch(resetS())
-        }
+        // if (isSuccess || accessToken ) {
+        //     console.log("OKAY")
+        //     dispatch(resetS())
+        // }
         // setToken(connect)
 
     }, [message, navigate, dispatch, accessToken, isError, isSuccess, user])
 
 
+    // TODO :
+    // deal with CORs, figure out response from request, parse accordingly
+    // Get page data for "redirect" and get "token information needed for localsotrage"
+    // Where does /api/spotify/callback come into play here?
     const onClick = (e) => {
         e.preventDefault()
-        // redirect('/api/spotify/connect')
-        // fetch('http://localhost:5555/api/spotify/connect')
-        // .then(res => res.json())
-        // .then(dispatch(connect()))  
+
+        // axios.get('/api/spotify/connect') // , {headers: {'Access-Control-Allow-Origin':'*'},})
+        // .then(function(response) {
+        //     console.log(response)
+        //     setSpotifyAuthPage(response.data)
+        // }).catch(err => {
+        //     console.log(err)
+        // })
+  
+        // window.location = res.url
         dispatch(connect())
-        // setState(accessToken)      
     }
 
     const onLogout = () => {
@@ -59,7 +70,8 @@ export function Testpage() {
         {/* {!token ? (<> */}
             <h1>Welcome {user && user.name}</h1>
             <h1> Logged in to Anthem </h1>
-            <button href="http://localhost:5555/api/spotify/connect" onClick={onClick} className='btn btn-block'>Connect to spotify</button>
+            <button onClick={onClick} className='btn btn-block'>Connect to spotify</button>
+            {/* <a href="/api/spotify/connect" target="_self">connect to spotify</a> */}
             <button onClick={logout} className='btn btn-block'>Logout</button>
         {/* </>
          ) : ( <> */}

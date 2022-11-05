@@ -4,6 +4,8 @@ import './App.css';
 import { LoginSignUp } from './pages/LoginSignUp/index.jsx';
 import { Testpage } from './pages/Dashboard/testpage.jsx';
 import {AppContainer} from './components/styles/AppContainer.style';
+import { Home } from './pages/home/Home'
+import { Profile } from './pages/home/profile/Profile'
 
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
           <Routes>
             <Route path='/' element={<LoginSignUp/>} />
             <Route path='/testpage' element={<Testpage/>} />
+            <Route path='/' element={<Home/>} />
+            <Route path='/' element={<Profile/>} />
           </Routes>
         </div>
       </Router>

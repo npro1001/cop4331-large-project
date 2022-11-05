@@ -1,0 +1,51 @@
+.SongRecsCard{
+    width: 100%;
+    border-radius: 1.5rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    background-color: white;
+}
+
+.SongRecsCard>h3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--purple);
+}
+
+.songrec{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+}
+
+.songrec>div{
+    display: flex;
+    gap: 10px;
+}
+
+.songrecImg{
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+}
+
+.songname{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.songname>span:nth-of-type(1){
+    font-weight: bold;
+}
+
+.sr-button{
+    height: 2rem;
+
+}

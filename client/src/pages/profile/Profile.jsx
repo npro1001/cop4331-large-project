@@ -1,8 +1,8 @@
 import React from "react";
-import ProfileLeft from "../../../components/profileLeft/ProfileLeft.jsx";
-import ProfileCard from '../../../components/profileCard/ProfileCard.jsx';
-import PostSide from '../../../components/postSide/PostSide.jsx';
-import RightSide from '../../../components/rightSide/RightSide.jsx';
+import ProfileLeft from '../../components/profileLeft/ProfileLeft';
+import ProfileCard from '../../components/profileCard/ProfileCard';
+import PostSide from '../../components/postSide/PostSide';
+import RightSide from '../../components/rightSide/RightSide';
 import './Profile.css'
 
 const Profile = () => {

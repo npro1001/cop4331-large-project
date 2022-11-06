@@ -5,7 +5,8 @@ import { SignupForm } from "./signupForm";
 import Logo from '../../img/logo.png';
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
-import {React, useState} from 'react'
+import {React, useState} from 'react';
+
 
 //used styled components for the login/signup
 //also used framer-motion to animate the tear drop
@@ -21,8 +22,7 @@ const Auth = styled.div`
     justify-content: center;
     height: 100vh;
     gap: 4rem;
-    position: relative;
-    
+    position: relative;    
 `;
 
 //Aleft will hold the logo, webname, and motto
@@ -62,6 +62,7 @@ const Motto = styled.h4`
     font-size: .85rem;
     position: relative;
     text-align: center;
+    color: black;
 `;
 
 //container for the form

@@ -1,45 +1,42 @@
-.PostShare{
+.PostShare {
     display: flex;
     gap: 1rem;
     background-color: white;
     padding: 1rem;
     border-radius: 1rem;
+    width: 78rem;
     position: relative;
-    display:inline-flex;
 }
 
-.PostShare>img{
+.PostShare>img {
     border-radius: 50%;
     width: 3rem;
     height: 3rem;
     object-fit: cover;
 }
 
-.PostShare>div{
+.PostShare>div {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
     gap: 1rem;
 }
 
-.PostShare>div>input{
+.PostShare>div>input {
     background-color: var(--inputColor);
-    position: relative;
-    display:inline-flex;
     border-radius: 10px;
     padding: 10px;
     font-size: 17px;
     border: none;
     outline: none;
-    width:90%;
 }
 
-.postOptions{
+.postOptions {
     display: flex;
     justify-content: space-around;
 }
 
-.option{
+.option {
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
@@ -49,33 +46,48 @@
     justify-content: center;
 }
 
-.option:hover{
+.option:hover {
     cursor: pointer;
 }
 
+.ps-button {
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 13px;
+}
 
-.previewImage{
+.previewImage {
     position: relative;
 }
 
-.previewImage>svg{
+.previewImage>svg {
     position: absolute;
     right: 1rem;
     top: 0.5rem;
     cursor: pointer;
 }
 
-.previewImage>img{
+.previewImage>img {
     width: 100%;
     max-height: 20rem;
     object-fit: cover;
     border-radius: 0.5rem;
 }
 
-button[name="submit"]
-{
+.status>input {
+    background-color: var(--inputColor);
+    border-radius: 10px;
     padding: 10px;
-    font-size: 100%;
+    font-size: 17px;
+    border: none;
+    outline: none;
+    width: 80%;
+}
+
+.status-button {
+    padding: 11px;
+    font-size: 15px;
     font-weight: 500;
     border: none;
     color: white;
@@ -83,12 +95,17 @@ button[name="submit"]
     border-radius: 10px;
     cursor: pointer;
     transition: all, 240ms ease-in-out;
-    background: rgba(93,48,149,1);
+    background: var(--purple);
     align-self: center;
     text-shadow: 0 0 2px #999;
-    position: absolute;
-    top:17px;
-    right: 25px;
-    width:11%;
-    gap:1rem;
+    font-family: 'Ubuntu', sans-serif;
+    width: 13rem;
+    display: inline-block;
+    position: relative;
+    margin-left: 1em;
+
+}
+
+.status-button:hover {
+    background: rgba(93, 48, 149, 1);
 }

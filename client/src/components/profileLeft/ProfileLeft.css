@@ -1,8 +1,8 @@
-.ProfileLeft{
+.ProfileLeft {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     align-items: center;
-    overflow: auto;
     font-family: 'Ubuntu', sans-serif;
+    overflow-x: hidden;
 }

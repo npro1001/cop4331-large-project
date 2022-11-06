@@ -1,5 +1,6 @@
 import React, {useState, useRef} from "react";
-import PFP from '../../img/pfp.jpg'
+import { useSelector } from 'react-redux'
+import defaultPFP from '../../img/default-profile.png'
 import './PostShare.css'
 import { UilScenery } from "@iconscout/react-unicons"
 import { UilMusic } from '@iconscout/react-unicons'
@@ -9,6 +10,7 @@ import { UilTimes } from '@iconscout/react-unicons'
 const PostShare = () => {
     const[image, setImage] = useState(null)
     const imageRef = useRef();
+    const {user} = useSelector((state) => state.auth);
 
     const onImageChange =(event)=> {
         if(event.target.files && event.target.files[0]) {
@@ -21,7 +23,9 @@ const PostShare = () => {
 
     return (
         <div className="PostShare">
-            <img src={PFP} alt="" />
+            <img src={user.PFP
+              ? user.PFP
+              : defaultPFP} alt="Profile picture" />
             <div>
             <input type="text" placeholder="What's happening?"/>
                 <div className="postOptions">
@@ -44,7 +48,7 @@ const PostShare = () => {
                         <UilListUl/>
                         Playlist
                     </div>
-                    <button className="button ps-button">
+                    <button name="submit">
                         Share
                     </button>
                     <div style={{display: "none"}}>

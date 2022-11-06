@@ -1,4 +1,4 @@
-.InfoCard{
+.InfoCard {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -8,18 +8,18 @@
     width: 90%;
 }
 
-.InfoHead{
+.InfoHead {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
-.InfoHead>div:hover{
+.InfoHead>div:hover {
     cursor: pointer;
 }
 
-.logout-button{
+.logout-button {
     width: 75%;
     padding: 11px;
     font-size: 15px;
@@ -30,11 +30,12 @@
     border-radius: 15px;
     cursor: pointer;
     transition: all, 240ms ease-in-out;
-    background: rgba(93,48,149,1);
+    background: var(--purple);
     align-self: center;
-    text-shadow: 0 0 2px #999;    
+    text-shadow: 0 0 2px #999;
 }
 
-.logout-button:hover{
-    filter: brightness(1.4); 
+.logout-button:hover {
+    background: rgba(93, 48, 149, 1);
+    filter: brightness(1.2);
 }

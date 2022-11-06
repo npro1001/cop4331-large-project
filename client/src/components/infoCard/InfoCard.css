@@ -20,8 +20,21 @@
 }
 
 .logout-button{
-    width: 7rem;
-    height: 2rem;
-    margin-top: 4rem;
-    align-self: flex-end;
+    width: 75%;
+    padding: 11px;
+    font-size: 15px;
+    color: white;
+    font-weight: 500;
+    border: none;
+    background: #CDBEE0;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all, 240ms ease-in-out;
+    background: rgba(93,48,149,1);
+    align-self: center;
+    text-shadow: 0 0 2px #999;    
+}
+
+.logout-button:hover{
+    filter: brightness(1.4); 
 }

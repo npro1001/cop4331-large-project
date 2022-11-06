@@ -27,6 +27,7 @@ export function SignupForm(props) {
         password: '',
     })
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const { user, isError, isSuccess, message } = useSelector((state) => state.auth)
     const { fname,
@@ -42,14 +43,12 @@ export function SignupForm(props) {
     useEffect(() => {
         // Check for error
         if (isError) {
-            toast.error(message)
+            toast.error(message);
         }
 
         // If registered or logged in
         if (isSuccess || user) {
-            // switchToLogin.click()
-            // navigate(switchToLogin.click(), { replace: true })
-            dispatch(reset())
+            dispatch(reset());
         }
     }, [user, isError, isSuccess, message, dispatch])
 
@@ -58,8 +57,8 @@ export function SignupForm(props) {
         setFormData((prevState) => ({
             ...prevState, // "Spead across previous state"
             [e.target.name]: e.target.value
-        }))
-    }
+        }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -68,26 +67,13 @@ export function SignupForm(props) {
             email,
             username,
             password
-        }
+        };
 
-        dispatch(register(userData))
-        switchToLogin();
-    }
-
-   
-
-
-    // const criteria = styled.div`
-    //     display:none;
-    //     background: #f1f1f1;
-    //     color: #000;
-    //     position: relative;
-    //     padding: 20px;
-    //     margin-top: 10px;
-
-
-    // `
-
+        dispatch(register(userData));
+        //reload page to have user sign in
+        window.location.reload(false);
+    };
+    
     //box container is the entire form
     //marginer creates margins between elements
     return <BoxContainer>

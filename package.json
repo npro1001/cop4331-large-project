@@ -23,8 +23,8 @@
   "homepage": "https://github.com/npro1001/cop4331-large-project#readme",
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",
-    "@mantine/core": "^5.7.0",
-    "@mantine/hooks": "^5.7.0",
+    "@mantine/core": "^5.7.1",
+    "@mantine/hooks": "^5.7.1",
     "@sendgrid/mail": "^7.7.0",
     "axios": "^1.1.3",
     "bcryptjs": "^2.4.3",
@@ -49,4 +49,5 @@
     "http-proxy-middleware": "^2.0.6",
     "nodemon": "^2.0.20"
   }
+
 }

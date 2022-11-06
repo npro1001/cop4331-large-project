@@ -4,6 +4,8 @@
     background-color: white;
     padding: 1rem;
     border-radius: 1rem;
+    position: relative;
+    display:inline-flex;
 }
 
 .PostShare>img{
@@ -22,11 +24,14 @@
 
 .PostShare>div>input{
     background-color: var(--inputColor);
+    position: relative;
+    display:inline-flex;
     border-radius: 10px;
     padding: 10px;
     font-size: 17px;
     border: none;
     outline: none;
+    width:90%;
 }
 
 .postOptions{
@@ -48,12 +53,6 @@
     cursor: pointer;
 }
 
-.ps-button{
-    padding: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 13px;
-}
 
 .previewImage{
     position: relative;
@@ -71,4 +70,25 @@
     max-height: 20rem;
     object-fit: cover;
     border-radius: 0.5rem;
+}
+
+button[name="submit"]
+{
+    padding: 10px;
+    font-size: 100%;
+    font-weight: 500;
+    border: none;
+    color: white;
+    background: #CDBEE0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all, 240ms ease-in-out;
+    background: rgba(93,48,149,1);
+    align-self: center;
+    text-shadow: 0 0 2px #999;
+    position: absolute;
+    top:17px;
+    right: 25px;
+    width:11%;
+    gap:1rem;
 }

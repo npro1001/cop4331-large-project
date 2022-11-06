@@ -90,9 +90,4 @@ export const SubmitButton = styled.button`
         filter: brightness(1.2); 
     text-shadow: 0 0 2px #999;
     }
-
-   
-
-
 `;
-

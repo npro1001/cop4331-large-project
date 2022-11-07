@@ -1,44 +1,46 @@
 import React from "react";
 // import { useContext } from "react";
 // import { Marginer} from '../../components/marginer/index.jsx';
-import {useSelector, useDispatch} from 'react-redux'
-import { useEffect } from 'react' //useState?
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react' 
 import { useNavigate} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
-import { connect } from '../../features/spotify/spotifySlice'
+import { accessToken, spotifyLogout } from '../../features/spotify/spotifySlice'
 import { logout, reset } from '../../features/auth/authSlice'
 import  {toast} from 'react-toastify'
 // import axios from "axios";
 import styled from "styled-components/macro";
+import { createNextState } from "@reduxjs/toolkit";
 
 
 export function Testpage() {
 
-    // const [token, setToken] = useState(null)
-    // const [spotifyAuthPage, setSpotifyAuthPage] = useState(null)
+    const [token, setToken] = useState(null)
     const { user } = useSelector((userState) => userState.auth)
-    const {accessToken, isError, isSuccess, message} = useSelector((spotifyState) => spotifyState.spotifyAuth)
+    const { isSuccess } = useSelector((spotifyState) => spotifyState.spotify)
+    // const {isError, isSuccess, message} = useSelector((spotifyState) => spotifyState.spotifyAuth) 
+    //! auto loads this?
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
     useEffect(() => {
 
         // Check for error
-        if(isError) {
-            toast.error(message)
-        }
-
-        if (!user) {
-            navigate('/')
-        }
-
-        // if (isSuccess || accessToken ) {
-        //     console.log("OKAY")
-        //     dispatch(resetS())
+        // if(isError) {
+        //     toast.error(message)
         // }
-        // setToken(connect)
 
-    }, [message, navigate, dispatch, accessToken, isError, isSuccess, user])
+        // if (!user) {
+        //     navigate('/')
+        // }
+
+        // if (isSuccess || token ) {
+        //     setToken(true)
+        // }
+
+        setToken(accessToken)
+
+    }, [])
 
 
     // TODO :
@@ -48,42 +50,45 @@ export function Testpage() {
     const onClick = (e) => {
         e.preventDefault()
 
-        // axios.get('/api/spotify/connect') // , {headers: {'Access-Control-Allow-Origin':'*'},})
-        // .then(function(response) {
-        //     console.log(response)
-        //     setSpotifyAuthPage(response.data)
-        // }).catch(err => {
-        //     console.log(err)
-        // })
-  
-        // window.location = res.url
-
         //!
         // Can either dispatch the thunkAPI or talk to backend directly
         // Both cause CORS errors
-        dispatch(connect())
+        // dispatch(accessToken)
+        // setToken(localStorage.getItem('spotify_access_token'))
     }
 
     const onLogout = () => {
-        navigate('/')
         dispatch(logout())
-        dispatch(reset())
+        .then(() => {
+            navigate("/", { replace: true })
+          })
+        .then(() => {
+            dispatch(reset())
+        })
+    }
+
+    const onSpotifyLogout = () => {
+        dispatch(spotifyLogout())
+        .then(() => {
+            window.location.reload()
+            //!!!!! Need to handle state change
+        })
     }
 
    
 
     return (<BoxContainer>
-        {/* {!token ? (<> */}
+        {!token ? (<>
             <h1>Welcome {user && user.name}</h1>
             <h1> Logged in to Anthem </h1>
-            <button onClick={onClick} className='btn btn-block'>Connect to spotify</button>
-            {/* <a href="http://localhost:5555/api/spotify/connect" target="_self">connect to spotify</a> */}
-            <button onClick={logout} className='btn btn-block'>Logout</button>
-        {/* </>
-         ) : ( <> */}
+            {/* <button onClick={onClick} className='btn btn-block'>Connect to spotify</button> */}
+            <a href="http://localhost:5555/api/spotify/connect" target="_self">Connect to spotify</a>
+            <button onClick={onLogout} className='btn btn-block'>Logout of Anthem</button>
+        </>) : (<>
             <h1> Logged in to Anthem and spotify !!!</h1>
-            <button onClick={onLogout} className='btn btn-block'>Logout</button>
-            {/* <p> Token: {token}</p> */}
-         {/* </>)}    */}
+            <button onClick={onSpotifyLogout} className='btn btn-block'>Disconnect Spotify</button>
+            <button onClick={onLogout} className='btn btn-block'>Logout of Anthem</button>
+            <p> Token: {JSON.stringify(token)}</p>
+         </>)}   
     </BoxContainer>)
 } 

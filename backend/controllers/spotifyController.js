@@ -30,9 +30,6 @@ const stateKey = 'spotify_auth_state'
 // @access  Private
 const connectToSpotify = asyncHandler(async (req, res) => {
 
-    // res.header("Access-Control-Allow-Origin", "*");
-    // next();
-
     console.log("spotify controller")
     const state = getRandomString(16)
     res.cookie(stateKey, state)

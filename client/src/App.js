@@ -25,7 +25,7 @@ const {user} = useSelector((state) => state.auth);
       </Router>
     <ToastContainer/>
     </AppContainer>
-  </>
+    </>
  );
   
 }

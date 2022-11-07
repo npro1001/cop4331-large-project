@@ -28,29 +28,11 @@ const LOCALSTORAGE_VALUES = {
  */
 const connect = async () => { 
 
-    const queryString = null;
-
     // // const response = await axios.get(`http://localhost:3000${API_URL}`)
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    const response = await axios.get(API_URL + 'connect')
-    if(response.data) {
-        console.log(response.data)
-        queryString = response.queryParams
-    }
-    // .then(function(response) {
-    //     console.log(response.data.url)
-    //     queryString = response.queryParams
-    // }).catch(err => {
-    //     console.log(err)
-    // })
-    // // const response = await fetch(API_URL)
-    // // const response = await fetch(`http://localhost:5555${API_URL}`, {
-    // //     method: "GET"
-    // // })
-    // console.log(API_URL)
-    // console.log(response) 
-     
-    // const queryString = window.location.search
+ 
+    // window.location = `http://localhost:5555/api/spotify/connect`
+    const queryString = window.location.search
     // const queryString = response.queryParams
     
     // const response = await axios.get(API_URL + "connect")
@@ -67,9 +49,8 @@ const connect = async () => {
         [LOCALSTORAGE_KEYS.refreshToken]: urlParams.get('refresh_token'),
         [LOCALSTORAGE_KEYS.expireTime]: urlParams.get('expires_in'),
     }
-    console.log("error incoming")
+
     const hasError = urlParams.get('error')
-    console.log(urlParams.get('error'))
     
     // If theres an error OR the token has expired => refresh token
     if(hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
@@ -84,6 +65,8 @@ const connect = async () => {
     // If there is a token in the URL query params, user is logging in for the first time
     if(queryParams[LOCALSTORAGE_KEYS.accessToken]) {
 
+
+        console.log("THIS FUNCTion")
         // Store the query params in localStorage
         for (const property in queryParams) {
             window.localStorage.setItem(property, queryParams[property])
@@ -96,7 +79,7 @@ const connect = async () => {
     }
     console.log("will return false")
 
-    return false
+    return null
 }
 
 
@@ -107,6 +90,7 @@ const connect = async () => {
  */
  const hasTokenExpired = () => {
     const { accessToken, timestamp, expireTime } = LOCALSTORAGE_VALUES
+
     if (!accessToken || !timestamp) {
       return false
     }
@@ -144,7 +128,7 @@ const connect = async () => {
       // Reload the page for localStorage updates to be reflected
       window.location.reload()
 
-      return data; //!
+    //   return data; //!
   
     } catch (e) {
       console.error(e)
@@ -152,27 +136,27 @@ const connect = async () => {
 }
 
 export const logout = () => {
-    // Clear all localStorage items
-    for(const property in LOCALSTORAGE_KEYS) {
-        window.localStorage.removeItem(LOCALSTORAGE_KEYS[property])
-    }
-    // Navigate to homepage
-    window.location = window.location.origin
+    localStorage.removeItem('spotify_access_token')
+    localStorage.removeItem('spotify_refresh_token')
+    localStorage.removeItem('spotify_token_expire_time')
+    localStorage.removeItem('spotify_token_timestamp')
 }
 
 export const accessToken = connect()
+
 // /**
 //  * Axios global request headers
 //  */
-//  axios.defaults.baseURL = 'https://api.spotify.com/v1';
-//  axios.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
-//  axios.defaults.headers['Content-Type'] = 'application/json';
+ axios.defaults.baseURL = 'https://api.spotify.com/v1';
+ axios.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
+ axios.defaults.headers['Content-Type'] = 'application/json';
 // axios.defaults.headers['Allow-Access-Control-Origin'] = '*';
 
 const spotifyService = {
     refreshToken,
     connect,
     hasTokenExpired,
+    logout,
 } 
 
 export default spotifyService

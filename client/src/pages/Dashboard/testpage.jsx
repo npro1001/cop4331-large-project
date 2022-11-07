@@ -17,7 +17,7 @@ export function Testpage() {
 
     const [token, setToken] = useState(null)
     const { user } = useSelector((userState) => userState.auth)
-    const { isSuccess } = useSelector((spotifyState) => spotifyState.spotify)
+    // const { isSuccess } = useSelector((spotifyState) => spotifyState.spotify)
     // const {isError, isSuccess, message} = useSelector((spotifyState) => spotifyState.spotifyAuth) 
     //! auto loads this?
     const navigate = useNavigate()

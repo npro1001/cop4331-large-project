@@ -112,6 +112,7 @@ const mailForEmailVerification = asyncHandler(async (req, res) => {
 					email: user.email,
 					isConfirmed: user.isConfirmed,
 				});
+        //TODO: when the user clicks the email link, isConfirmed needs to be changed to true
 			} else {
 				res.status(400);
 				throw new Error('User already confirmed');

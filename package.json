@@ -7,7 +7,7 @@
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"react-scripts build && cp -r build/* ./cordova/www",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
@@ -20,7 +20,8 @@
   "bugs": {
     "url": "https://github.com/npro1001/cop4331-large-project/issues"
   },
-  "homepage": "https://github.com/npro1001/cop4331-large-project#readme",
+  "private":"false",
+  "homepage": "./",
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",
     "@mantine/core": "^5.7.1",

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react' 
 import { useNavigate} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
-import { disconnect, spotifyLogout } from '../../features/spotify/spotifySlice'
+import { disconnect, spotifyLogout, connect } from '../../features/spotify/spotifySlice'
 import { logout, reset } from '../../features/auth/authSlice'
 import  {toast} from 'react-toastify'
 // import axios from "axios";
@@ -15,9 +15,9 @@ import { createNextState } from "@reduxjs/toolkit";
 
 export function Testpage() {
 
-    const [token, setToken] = useState(null)
+    // const [token, setToken] = useState(null)
     const { user } = useSelector((store) => store.auth)
-    const { isConnected, isLoading } = useSelector((store) => store.spotify)
+    const { isConnected, isLoading, token} = useSelector((store) => store.spotify)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -56,6 +56,7 @@ export function Testpage() {
         // Both cause CORS errors
         // dispatch(accessToken)
         // setToken(localStorage.getItem('spotify_access_token'))
+        dispatch(connect())
     }
 
     const onLogout = () => {
@@ -88,7 +89,7 @@ export function Testpage() {
             <h1>Welcome {user && user.name}</h1>
             <h1> Logged in to Anthem </h1>
             {/* <button onClick={onClick} className='btn btn-block'>Connect to spotify</button> */}
-            <a href="http://localhost:5555/api/spotify/connect" target="_self">Connect to spotify</a>
+            <a href="http://localhost:5555/api/spotify/connect" onClick={onClick} target="_self">Connect to spotify</a>
             <button onClick={onLogout} className='btn btn-block'>Logout of Anthem</button>
         </>) : (<>
             <h1> Logged in to Anthem and spotify !!!</h1>

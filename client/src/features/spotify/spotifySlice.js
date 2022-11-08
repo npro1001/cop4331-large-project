@@ -16,9 +16,11 @@ const initialState = {
 
 
 // Connect user to spotify
-const connect = createAsyncThunk('spotify/connect', async(thunkAPI) => {
+export const connect = createAsyncThunk('spotify/connect', async(thunkAPI) => {
+    console.log("ASD")
     try {
         const response = await spotifyService.connect()
+        console.log(JSON.stringify(response))
         return response // note how this response is structured
     } catch (error) {
         console.log("spotify auth slice error on .connect()")
@@ -149,7 +151,7 @@ export const spotifySlice = createSlice({
     }
 })
 
+// export const accessToken = connect()
 
 export const { disconnect } = spotifySlice.actions
-export const accessToken = connect()
 export default spotifySlice.reducer

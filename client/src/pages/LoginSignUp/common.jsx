@@ -10,7 +10,7 @@ export const BoxContainer = styled.div`
 `;
 
 export const SidebSide = styled.div`
-    display:flex;
+    display:inline-flex;
     flex-direction: row;
     gap: .5em;
 `;
@@ -46,10 +46,10 @@ export const BoldLink = styled.a`
 export const Input = styled.input`
     outline: none;
     width: 75%;
-    height: 42px;
+    height: 40px;
     border:none;
-    border-radius: 15px;
-    padding: 0px 10px;
+    border-radius: 10px;
+    padding: 0px 2px;
     border-bottom: 1px solid transparent;
     align-self: center;
     transition: all 100ms ease-in-out;
@@ -66,10 +66,6 @@ export const Input = styled.input`
 
     &:invalid{
         border: 2px solid red;
-    }
-
-    &:valid{
-        border: 2px solid green;
     }
 `;
 

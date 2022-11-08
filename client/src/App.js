@@ -18,8 +18,8 @@ const {user} = useSelector((state) => state.auth);
           <Routes>
             <Route path='/' element={<LoginSignUp/>} />
             <Route path='/testpage' element={<Testpage/>} />
-            <Route path='/Home' element={<Home/>} />
-            <Route path='/Profile/:id' element={user ? <Profile/> : <Navigate to="/welcome"/>} />
+            <Route path='/home' element={<Home/>} />
+            <Route path='/profile/:id' element={user ? <Profile/> : <Navigate to="/welcome"/>} />
           </Routes>
         </div>
       </Router>

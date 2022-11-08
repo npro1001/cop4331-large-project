@@ -25,8 +25,10 @@ const userSchema = mongoose.Schema(
 			required: true,
 			default: false,
 		},
-    profilePicture: String,
-    about: String, 
+    about:{
+      type: String,
+      required: false,
+    }, 
     followers: [], 
     following: []
   },

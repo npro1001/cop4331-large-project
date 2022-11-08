@@ -33,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     username,
-    password: hashedPassword,
+    password: hashedPassword
   })
 
   if (user) {
@@ -41,7 +41,11 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       username: user.username,
-      token: generateToken(user._id),
+      isConfirmed: user.isConfirmed,
+      about: user.about,
+      followers: user.followers, 
+      following: user.following,
+      token: generateToken(user._id)
     })
   } else {
     res.status(400)
@@ -70,6 +74,10 @@ const loginUser = asyncHandler(async (req, res) => {
       email: user.email,
       username: user.username,
       token: generateToken(user._id),
+      isConfirmed: user.isConfirmed,
+      about: user.about, 
+      followers: user.followers, 
+      following: user.following
     })
   } else {
     res.status(400)
@@ -81,12 +89,16 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/me
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
-  const {_id, name, email, username, profilePicture, about} = await User.findById(req.user.id)
+  const {_id, name, email, username, isConfirmed, about, followers, following} = await User.findById(req.user.id)
   res.status(200).json({
     id: _id, 
     name,
     email,
     username,
+    isConfirmed, 
+    about, 
+    followers, 
+    following
   })
 })
 

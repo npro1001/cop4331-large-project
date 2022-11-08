@@ -7,4 +7,3 @@ export const AppContainer = styled.div`
     padding: 1rem 1rem;
     overflow: hidden;
     `
-

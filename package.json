@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/npro1001/cop4331-large-project/issues"
   },
-  "private":"false",
+  "private": "false",
   "homepage": "./",
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",
@@ -40,6 +40,7 @@
     "mongoose": "^6.6.7",
     "nodemailer": "^6.8.0",
     "querystring": "^0.2.1",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^6.4.3",
     "react-toastify": "^9.1.0",
     "styled-components": "^5.3.6",

@@ -1,12 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-// https://redux-toolkit.js.org/api/createSlice
 import spotifyService from './spotifyService'
 import axios from 'axios'
-
-// const accessToken = JSON.parse(localStorage.getItem('accessToken'))
-// const refreshToken = JSON.parse(localStorage.getItem('refreshToken'))
-// const expireTime = JSON.parse(localStorage.getItem('expireTime'))
-// const timestamp = JSON.parse(localStorage.getItem('timestamp'))
 
 
 const initialState = {
@@ -14,20 +8,18 @@ const initialState = {
     // refreshToken: refreshToken ? refreshToken : null,
     // expireTime: expireTime ? expireTime : null,
     // timestamp: timestamp ? timestamp : null,
-    isSuccess: false,
+    token: "",
     isConnected: false,
-    message: ''
+    message: '',
+    isLoading: false,
 }
 
 
 // Connect user to spotify
-const connect = createAsyncThunk('spotifyAuth/connect', async(thunkAPI) => {
+const connect = createAsyncThunk('spotify/connect', async(thunkAPI) => {
     try {
-        // const response = await axios.get("/api/spotify/connect")
-        // console.log(response.config.responseUrl)
-        // console.log(window.location)
-        // window.location = response.config.url
-        return await spotifyService.connect()
+        const response = await spotifyService.connect()
+        return response // note how this response is structured
     } catch (error) {
         console.log("spotify auth slice error on .connect()")
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
@@ -35,8 +27,8 @@ const connect = createAsyncThunk('spotifyAuth/connect', async(thunkAPI) => {
     }
 })
 
-// Connect user to spotify
-export const refreshSpotifyToken = createAsyncThunk('spotifyAuth/refresh_token', async(thunkAPI) => {
+// Get spotify refresh token
+export const refreshSpotifyToken = createAsyncThunk('spotify/refresh_token', async(thunkAPI) => {
     try {
         return await spotifyService.refreshToken()
     } catch (error) {
@@ -57,44 +49,107 @@ export const spotifySlice = createSlice({
     name: 'spotify',
     initialState,
     reducers: {
-        // Dispatch this function after we connect to spotify
-        resetS: (state) => {
-            // state.isLoading = false
-            // state.accessToken = accessToken,
-            // state.refreshToken = refreshToken,
-            // state.expireTime = expireTime,
-            // state.timestamp = timestamp,
-            state.isSuccess = false
+        disconnect: (state) => {
+            state.token = ""
+            state.isLoading = false
+            state.isConnected = false
             state.isError = false
             state.message = ''
         }
-        // connection: (state) => {
-        //     // state.accessToken = accessToken,
-        //     // state.refreshToken = refreshToken,
-        //     // state.expireTime = expireTime,
-        //     // state.timestamp = timestamp,
-        //     state.isSuccess = true
-        //     state.isError = false
-        //     state.message = ''
-        // }
     },
     extraReducers: (builder) => {
         builder
+        // Connect
+        .addCase(connect.pending, (state) => {
+            state.isLoading = true
+        })
         .addCase(connect.fulfilled, (state, action) => {
-            state.isSuccess = true
-            state.accessToken = action.payload.accessToken
-            state.refreshToken = action.payload.refreshToken
-            state.expireTime = action.payload.expireTime
-            state.timestamp = action.payload.timestamp
+            console.log(action.payload) //!
+            state.isLoading = false;
+            state.isConnected = true;
+            state.token = action.payload;
         })
         .addCase(connect.rejected, (state, action) => {
-            state.isError = true
-            state.message = action.payload
+            state.isLoading = false;
+            state.isError = true; //?
+            state.message = action.payload;
         })
+        // Refresh
+        .addCase(refreshSpotifyToken.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(refreshSpotifyToken.fulfilled, (state, action) => {
+            console.log(action.payload) //!
+            state.isLoading = false;
+            state.isConnected = true;
+            // state.token = action.payload;
+        })
+        .addCase(refreshSpotifyToken.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true; //?
+            state.message = action.payload;
+        })
+        // Logout
+        .addCase(spotifyLogout.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(spotifyLogout.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isConnected = false;
+            state.token = '';
+        })
+        .addCase(spotifyLogout.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true; //?
+            state.message = action.payload;
+        })
+    // extraReducers: {
+    //     // CONNECT
+    //     [connect.pending]: (state) => {
+    //         state.isLoading = true;
+    //     },
+    //     [connect.fulfilled]: (state, action) => {
+    //         console.log(action) //!
+    //         state.isLoading = false;
+    //         state.isConnected = true;
+    //         state.token = action.payload;
+    //     },
+    //     [connect.rejected]: (state, action) => {
+    //         state.isLoading = false;
+    //         state.isError = true; //?
+    //         state.messgae = action.payload;
+    //     },
+    //     // REFRESH TOKEN
+    //     [refreshSpotifyToken.pending]: (state) => {
+    //         state.isLoading = true;
+    //     },
+    //     [refreshSpotifyToken.fulfilled]: (state, action) => {
+    //         state.isLoading = false;
+    //         state.isConnected = true;
+    //         state.authItems[1] = action.payload; // just the refreshToken
+    //     },
+    //     [refreshSpotifyToken.rejected]: (state, action) => {
+    //         state.isLoading = false;
+    //         state.isError = true; //?
+    //         state.message = action.payload;
+    //     },
+    //     // LOGOUT
+    //     [spotifyLogout.pending]: (state) => {
+    //         state.isLoading = true;
+    //     },
+    //     [spotifyLogout.fulfilled]: (state) => {
+    //         state.isLoading = false;
+    //         state.isConnected = true;
+    //         state.authItems = []; // just the refreshToken
+    //     },
+    //     [spotifyLogout.rejected]: (state) => {
+    //         state.isLoading = false;
+    //         state.isError = true; //?
+    //     }
     }
 })
 
 
-export const { resetS } = spotifySlice.actions
+export const { disconnect } = spotifySlice.actions
 export const accessToken = connect()
 export default spotifySlice.reducer

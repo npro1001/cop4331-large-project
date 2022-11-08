@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react' 
 import { useNavigate} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
-import { accessToken, spotifyLogout } from '../../features/spotify/spotifySlice'
+import { disconnect, spotifyLogout } from '../../features/spotify/spotifySlice'
 import { logout, reset } from '../../features/auth/authSlice'
 import  {toast} from 'react-toastify'
 // import axios from "axios";
@@ -16,10 +16,9 @@ import { createNextState } from "@reduxjs/toolkit";
 export function Testpage() {
 
     const [token, setToken] = useState(null)
-    const { user } = useSelector((userState) => userState.auth)
-    // const { isSuccess } = useSelector((spotifyState) => spotifyState.spotify)
-    // const {isError, isSuccess, message} = useSelector((spotifyState) => spotifyState.spotifyAuth) 
-    //! auto loads this?
+    const { user } = useSelector((store) => store.auth)
+    const { isConnected, isLoading } = useSelector((store) => store.spotify)
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -38,7 +37,9 @@ export function Testpage() {
         //     setToken(true)
         // }
 
-        setToken(accessToken)
+        
+
+        // setToken(accessToken)
 
     }, [])
 
@@ -68,17 +69,22 @@ export function Testpage() {
     }
 
     const onSpotifyLogout = () => {
-        dispatch(spotifyLogout())
+        // dispatch(spotifyLogout())
+        // .then(() => {
+        //     window.location.reload()
+        // })
+        dispatch(logout())
         .then(() => {
             window.location.reload()
-            //!!!!! Need to handle state change
         })
     }
+
+    // if isLoading
 
    
 
     return (<BoxContainer>
-        {!token ? (<>
+        {!isConnected ? (<>
             <h1>Welcome {user && user.name}</h1>
             <h1> Logged in to Anthem </h1>
             {/* <button onClick={onClick} className='btn btn-block'>Connect to spotify</button> */}

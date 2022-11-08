@@ -28,8 +28,8 @@ const LOCALSTORAGE_VALUES = {
  */
 const connect = async () => { 
 
-    console.log("ASDASDASDASD")
-    console.log(window.location.search)
+    // console.log("ASDASDASDASD")
+    // console.log(window.location.search)
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
 
@@ -64,7 +64,6 @@ const connect = async () => {
         // Return access token from query params
         return queryParams[LOCALSTORAGE_KEYS.accessToken]
     }
-    //!!! HERE NOW
 
     return null
 }
@@ -104,7 +103,7 @@ const connect = async () => {
       }
   
       // Use `/refresh_token` endpoint from our Node app
-      const { data } = await axios.get(`/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
+      const { data } = await axios.get(`/api/spotify/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
   
       // Update localStorage values
       window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token)
@@ -134,7 +133,7 @@ export const logout = () => {
 //  axios.defaults.baseURL = 'https://api.spotify.com/v1';
 //  axios.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
 //  axios.defaults.headers['Content-Type'] = 'application/json';
-// axios.defaults.headers['Allow-Access-Control-Origin'] = '*';
+//  axios.defaults.headers['Allow-Access-Control-Origin'] = '*';
 
 const spotifyService = {
     connect,

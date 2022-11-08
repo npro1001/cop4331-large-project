@@ -81,9 +81,7 @@ const spotifyAuthCallback = asyncHandler(async (req, res) => {
                 refresh_token,
                 expires_in,
             })
-            res.redirect(`http://localhost:3000?${params}`)
-            //! redirecting but then stopping what the fuck
-            
+            res.redirect(`http://localhost:3000/testpage?${params}`)            
         
         } else {
             res.redirect(`/?${querystring.stringify({error: "invalid_token"})}`)
@@ -102,6 +100,7 @@ const spotifyAuthCallback = asyncHandler(async (req, res) => {
 // @access  Private
 const getRefreshToken = asyncHandler(async (req, res) => {
     const { refresh_token } = req.query;
+    console.log(refresh_token) //!
 
     axios({
         method: 'post',

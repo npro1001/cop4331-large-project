@@ -1,19 +1,19 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react' 
+import { useEffect } from 'react' 
 import { useNavigate} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
 import { spotifyLogout, connect } from '../../features/spotify/spotifySlice'
 import { logout, reset } from '../../features/auth/authSlice'
 import  {toast} from 'react-toastify'
-import axios from 'axios'
-
 
 
 export function Testpage() {
 
     const { user } = useSelector((store) => store.auth)
-    const { isConnected, isLoading, token} = useSelector((store) => store.spotify)
+    const { isConnected, isLoading, token, isError, message} = useSelector((store) => store.spotify)
+    //! TODO - check for rate limiting error because code is perfect
+
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -21,29 +21,19 @@ export function Testpage() {
     useEffect(() => {
 
         // Check for error
-        // if(isError) {
-        //     toast.error(message)
-        // }
+        if(isError) {
+            toast.error(message)
+        }
 
         //!
         // if (!user) {
         //     navigate('/')
         // }
-
-        // if (isSuccess || token ) {
-        //     setToken(true)
-        // }
-        // dispatch(connect())
-
-    }, [])
+    }, [isError, message])
 
     const onClick = (e) => {
-        // e.preventDefault()
-        // axios.get("http://localhost:5555/api/spotify/connect")
-        // window.location.href = "http://localhost:5555/api/spotify/connect"
-        // .then(() => {
+        e.preventDefault()
         dispatch(connect())
-        // })
     }
 
     const onLogout = () => {

@@ -34,7 +34,6 @@ export const refreshSpotifyToken = createAsyncThunk('spotify/refresh_token', asy
 // Logout spotify
 export const spotifyLogout = createAsyncThunk('spotify/logout', async() => {
     return await spotifyService.logout()
-    //! RETURN? ****
 })
 
 

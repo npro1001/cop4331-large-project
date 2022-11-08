@@ -48,7 +48,6 @@ const connectToSpotify = asyncHandler(async (req, res) => {
         scope: scope
     })
 
-    //! REDIRECT TRIGGERS CORS
     res.redirect(302, `https://accounts.spotify.com/authorize?${params}`)
 })
 
@@ -75,7 +74,6 @@ const spotifyAuthCallback = asyncHandler(async (req, res) => {
         if (response.status === 200) {
             const { access_token, refresh_token, expires_in } = response.data
 
-            
             // Redirect to react app
             // Pass along tokens in query parameters
             const params = querystring.stringify({
@@ -84,6 +82,7 @@ const spotifyAuthCallback = asyncHandler(async (req, res) => {
                 expires_in,
             })
             res.redirect(`http://localhost:3000?${params}`)
+            //! redirecting but then stopping what the fuck
             
         
         } else {

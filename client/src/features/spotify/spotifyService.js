@@ -28,21 +28,10 @@ const LOCALSTORAGE_VALUES = {
  */
 const connect = async () => { 
 
-    // // const response = await axios.get(`http://localhost:3000${API_URL}`)
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- 
-    // window.location = `http://localhost:5555/api/spotify/connect`
+    console.log("ASDASDASDASD")
+    console.log(window.location.search)
     const queryString = window.location.search
-    // const queryString = response.queryParams
-    
-    // const response = await axios.get(API_URL + "connect")
-    // if(response.data) {
-    //     console.log(response.data)
-    //     queryString = response.queryParams //!
-    // }
-
     const urlParams = new URLSearchParams(queryString)
-    console.log(urlParams) //!
 
     const queryParams = {
         [LOCALSTORAGE_KEYS.accessToken]: urlParams.get('access_token'),
@@ -64,9 +53,7 @@ const connect = async () => {
     
     // If there is a token in the URL query params, user is logging in for the first time
     if(queryParams[LOCALSTORAGE_KEYS.accessToken]) {
-
-
-        console.log("THIS FUNCTion")
+        
         // Store the query params in localStorage
         for (const property in queryParams) {
             window.localStorage.setItem(property, queryParams[property])
@@ -77,7 +64,7 @@ const connect = async () => {
         // Return access token from query params
         return queryParams[LOCALSTORAGE_KEYS.accessToken]
     }
-    console.log("will return false")
+    //!!! HERE NOW
 
     return null
 }
@@ -111,14 +98,12 @@ const connect = async () => {
         LOCALSTORAGE_VALUES.refreshToken === 'undefined' ||
         (Date.now() - Number(LOCALSTORAGE_VALUES.timestamp) / 1000) < 1000
       ) {
-        console.log("OKAY LETS GO1")
 
         console.error('No refresh token available')
         logout()
       }
   
       // Use `/refresh_token` endpoint from our Node app
-      console.log("OKAY LETS GO")
       const { data } = await axios.get(`/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
   
       // Update localStorage values
@@ -127,8 +112,6 @@ const connect = async () => {
   
       // Reload the page for localStorage updates to be reflected
       window.location.reload()
-
-    //   return data; //!
   
     } catch (e) {
       console.error(e)
@@ -142,19 +125,20 @@ export const logout = () => {
     localStorage.removeItem('spotify_token_timestamp')
 }
 
-export const accessToken = connect()
+// export const accessToken = connect()
 
 // /**
 //  * Axios global request headers
 //  */
+
 //  axios.defaults.baseURL = 'https://api.spotify.com/v1';
 //  axios.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
 //  axios.defaults.headers['Content-Type'] = 'application/json';
 // axios.defaults.headers['Allow-Access-Control-Origin'] = '*';
 
 const spotifyService = {
-    refreshToken,
     connect,
+    refreshToken,
     hasTokenExpired,
     logout,
 } 

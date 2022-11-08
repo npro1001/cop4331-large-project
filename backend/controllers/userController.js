@@ -81,8 +81,15 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/me
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user)
+  const {_id, name, email, username, profilePicture, about} = await User.findById(req.user.id)
+  res.status(200).json({
+    id: _id, 
+    name,
+    email,
+    username,
+  })
 })
+
 
 // Generate JWT
 const generateToken = (id) => {
@@ -125,9 +132,14 @@ const mailForEmailVerification = asyncHandler(async (req, res) => {
 	}
 });
 
+
+
+
+
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  //getUser,
   mailForEmailVerification
 }

@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const sendMail = require('../utils/sendMail')
+const userModel = require('../models/userModel')
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -103,6 +104,50 @@ const getMe = asyncHandler(async (req, res) => {
 })
 
 
+//getUser
+
+
+// @desc update a users data
+// @route PUT /api/users/update/:id
+// @access Private
+const updateUser = asyncHandler(async (req, res) => {
+	// do not include the hashed password when fetching this user
+	const user = await User.findById(req.params.id)//.select('-password');
+  const {currentUserId, password} = req.body
+	if (user.id == currentUserId) {
+    try{
+      if(password){
+        const salt = await bcrypt.genSalt(10);
+        req.body.password = await bcrypt.hash(password, salt)
+      }
+
+      const user = await userModel.findByIdAndUpdate(id, req.body, {new: true,})
+      res.status(200).json("User updated successfully");
+    } catch (error){
+    res.status(500).json("Error updating user");
+    }
+  } else{
+    res.status(403).json("Access Denied! you can only update your own profile");
+  }
+});
+
+// update whicever field was sent in the rquest body
+		// user.name = req.body.name || user.name;
+		// user.isConfirmed = req.body.email === user.email;
+		// user.email = req.body.email || user.email;
+		// user.isAdmin = req.body.isAdmin;
+		// const updatedUser = await user.save();
+		// if (updatedUser) {
+		// 	res.json({
+		// 		id: updatedUser._id,
+		// 		email: updatedUser.email,
+		// 		name: updatedUser.name,
+		// 		isAdmin: updatedUser.isAdmin,
+		// 		isConfirmed: updatedUser.isConfirmed,
+		// 	});
+		// }
+
+
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -181,7 +226,7 @@ module.exports = {
   registerUser,
   loginUser,
   getMe,
-  //getUser,
+  updateUser,
   mailForEmailVerification,
   mailForResetPassword
 }

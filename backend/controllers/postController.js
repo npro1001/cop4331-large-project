@@ -1,13 +1,13 @@
 const asyncHandler = require('express-async-handler');
 const fs = require('fs');
 const multer = require('multer');
+var mongoose = require('mongoose');
 
 const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink);
 
 const User = require('../models/userModel');
 const Post = require('../models/postModel');
-const path = require('path');
   
 // @desc    Create a new post
 // @route   POST /api/post
@@ -64,8 +64,72 @@ const createPost = asyncHandler(async (req, res) => {
 // @route   POST /api/post/like
 // @access  Public
 const likePost = asyncHandler(async (req, res) => {
+    // Pass user ID and post ID
+    const {postId, userId} = req.body;
 
+    const post = await Post.findById(mongoose.Types.ObjectId(postId));
+    const user = await User.findById(mongoose.Types.ObjectId(userId));
 
+    if (!user)
+    {
+        res.status(400);
+		throw new Error('Cannot Find User');
+    }
+    else if (!post)
+    {
+        res.status(400);
+		throw new Error('Cannot Find Post');
+    }
+    else
+    {
+        (user.likes).push(post._id);
+        (post.likes).push(user._id);
+        user.save();
+        post.save();
+
+        res.status(201).json({
+            username: user.username,
+            userlikes: user.likes,
+            postId: post._id,
+            postLikes: post
+        });
+    }
+})
+
+// @desc    Comment on a post
+// @route   POST /api/post/comment
+// @access  Public
+const commentPost = asyncHandler(async (req, res) => {
+    // Pass user ID and post ID
+    const {postId, userId, comment} = req.body;
+
+    const post = await Post.findById(mongoose.Types.ObjectId(postId));
+    const user = await User.findById(mongoose.Types.ObjectId(userId));
+
+    if (!user)
+    {
+        res.status(400);
+		throw new Error('Cannot Find User');
+    }
+    else if (!post)
+    {
+        res.status(400);
+		throw new Error('Cannot Find Post');
+    }
+    else
+    {
+        (user.likes).push(post._id);
+        (post.likes).push(user._id);
+        user.save();
+        post.save();
+
+        res.status(201).json({
+            username: user.username,
+            userlikes: user.likes,
+            postId: post._id,
+            postLikes: post
+        });
+    }
 })
 
 module.exports = {

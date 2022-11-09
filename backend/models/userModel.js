@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+let Post = require('./postModel');
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -29,6 +31,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false,
     }, 
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
+    }],
     followers: [], 
     following: []
   },

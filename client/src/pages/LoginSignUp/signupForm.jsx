@@ -8,33 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from "styled-components";
 
 // let userController = require('../../../backend/controllers/userController');
 // let duplicateEmail = userController.dupilcateEmail;
 // let duplicateUser = userController.duplicateUser;
-
-const Message = styled.div`
-    display:inline;
-    background:  #391F59;
-    color: white;
-    position: relative;
-`;
-const Header = styled.div`
-    color: white;
-`;
-const Crit = styled.p`
-    font-size: 12px;
-    font-weight: 500;
-    padding: 10px;     
-    &:invalid{
-            color:red;
-        }
-
-    &:invalid:before{
-    content: "WRONG U DUMBASS";
-    }
-`;
 
 
 //signup form
@@ -104,49 +81,40 @@ export function SignupForm(props) {
             password
         };
 
-        console.log("CHECKING IF PASSWORDS MATCH")
         if (formData.password !== formData.confirmpass) {
-            console.log("PASSWORDS DO NOT MATCH")
             setConfirmPass(false);
             passvalid = false;
-
         }
 
         //in the event that user matches the passwords on second try
         else {
+            setConfirmPass(true);
             passvalid = true;
         }
 
-
-        console.log("CHECKING IF EMAIL MATCH")
         if (formData.email !== formData.confirmemail) {
-            console.log("EMAILS DO NOT MATCH")
             setconfirmEmail(false);
             emailvalid = false;
         }
 
         else {
+            setconfirmEmail(true);
             emailvalid = true;
         }
 
 
         if (passvalid && emailvalid) {
-            setTimeout(10000);
             console.log("GOOD TO GO :)")
             dispatch(register(userData));
             //reload page to have user sign in
             window.location.reload(false);
         }
 
-        console.log("END OF HANDLING SUBMIT")
     };
 
     //box container is the entire form
     //marginer creates margins between elements
     return <BoxContainer>
-        {/* <script type="text/javascript" src="./formValidation.js">
-            console.log("script")
-        </script> */}
         <FormContainer onSubmit={handleSubmit}>
             <Marginer direction="vertical" margin={75} />
             <SidebSide>
@@ -155,8 +123,8 @@ export function SignupForm(props) {
             </SidebSide>
             <Marginer direction="vertical" margin={15} />
             <SidebSide>
-                <Input name="email" type="email" placeholder="Email" onChange={onChange} required />
-                <Input name="confirmemail" type="email" placeholder="Confirm Email" onChange={onChange} required />
+                <Input name="email" type="email" placeholder="Email" onChange={onChange} required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"/>
+                <Input name="confirmemail" type="email" placeholder="Confirm Email" onChange={onChange} required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"/>
             </SidebSide>
             <Marginer direction="vertical" margin={15} />
             <SidebSide>
@@ -177,14 +145,6 @@ export function SignupForm(props) {
             </MutedLink>
             <Marginer direction="vertical" margin={15} />
 
-        </FormContainer>
-        {/* <Message id="message">
-            <Header>Password must contain the following: </Header>
-            <Crit id="letter" className="invalid"> A lowercase letter</Crit>
-            <Crit id="capital" className="invalid"> A capital letter</Crit>
-            <Crit id="number" className="invalid"> A number</Crit>
-            <Crit id="length" className="invalid"> A minimum of 8 characters</Crit>
-        </Message> */}
-        
+        </FormContainer>        
     </BoxContainer>
 } 

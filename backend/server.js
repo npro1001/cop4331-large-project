@@ -43,9 +43,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
  
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/post', require('./routes/postRoutes'));
 app.use('/api/spotify', require('./routes/spotifyRoutes'));
  
-// Serve frontend
+// Server frontend
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
  

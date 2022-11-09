@@ -60,6 +60,15 @@ const createPost = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    like a post
+// @route   POST /api/post/like
+// @access  Public
+const likePost = asyncHandler(async (req, res) => {
+
+
+})
+
 module.exports = {
-    createPost
+    createPost,
+    likePost
 }

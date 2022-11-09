@@ -145,6 +145,35 @@ const mailForEmailVerification = asyncHandler(async (req, res) => {
 });
 
 
+// @desc send a mail with the link to reset password
+// @route POST /api/users/reset
+// @access PUBLIC
+const mailForResetPassword = asyncHandler(async (req, res) => {
+	try {
+		const { email } = req.body;
+
+		const user = await User.findOne({ email });
+		console.log(user);
+		if (user) {
+			// send the mail
+			await sendMail(user._id, email, 'forgot password');
+      
+			res.status(201).json({
+				id: user._id,
+        name: user.name,
+				email: user.email,
+				isConfirmed: user.isConfirmed,
+			});
+		} else {
+      res.status(400);
+				throw new Error('Email does not belong to a user');
+    }
+	} catch (error) {
+		console.log(error);
+		res.status(401);
+		throw new Error('Could not send the mail. Please retry.');
+	}
+});
 
 
 
@@ -153,5 +182,6 @@ module.exports = {
   loginUser,
   getMe,
   //getUser,
-  mailForEmailVerification
+  mailForEmailVerification,
+  mailForResetPassword
 }

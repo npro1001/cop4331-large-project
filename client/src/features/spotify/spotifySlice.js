@@ -59,8 +59,15 @@ export const spotifySlice = createSlice({
         })
         .addCase(connect.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.isConnected = true;
-            state.token = action.payload;
+            if(action.payload != null) {
+                state.isConnected = true;
+                state.token = action.payload;
+            }
+            else {
+                state.isConnected = false;
+                state.isError = true
+                state.message = "Error recieving spotify access token"
+            }
         })
         .addCase(connect.rejected, (state, action) => {
             state.isLoading = false;

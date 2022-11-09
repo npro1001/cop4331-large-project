@@ -1,11 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react' 
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
 import { BoxContainer } from "../LoginSignUp/common";
 import { spotifyLogout, connect } from '../../features/spotify/spotifySlice'
 import { logout, reset } from '../../features/auth/authSlice'
 import  {toast} from 'react-toastify'
+import axios from "axios";
 
 
 export function Testpage() {
@@ -29,11 +30,23 @@ export function Testpage() {
         // if (!user) {
         //     navigate('/')
         // }
+        // dispatch(connect())
+
     }, [isError, message])
 
     const onClick = (e) => {
-        e.preventDefault()
+        e.preventDefault() 
+
+        // window.open('http://localhost:5555/api/spotify/connect', '_self');
+        // window.location.href = 'http://localhost:5555/api/spotify/connect'
+
         dispatch(connect())
+        .then(() => {
+            if(isError) {
+                toast.error(message)
+            }
+        })
+        return true
     }
 
     const onLogout = () => {
@@ -57,13 +70,15 @@ export function Testpage() {
         return (<BoxContainer><h1>LOADING ...</h1></BoxContainer>)
     }
 
+    // Onclick triggers first
+    // HREF is followed after if onClick returns true
     return (<BoxContainer>
         {!isConnected ? (<>
             <h1>Welcome {user && user.name}</h1>
             <h1> Logged in to Anthem </h1>
             {/* <button onClick={onClick} className='btn btn-block'>Connect to spotify</button> */}
-            <a href="http://localhost:5555/api/spotify/connect" target="_self" onClick={onClick}>Connect to spotify</a>
-            {/* <a onClick={onClick} target="_self">Connect to spotify</a> */}
+            <a href="http://localhost:5555/api/spotify/connect" target="_self" > 1. PRE Connect to spotify</a>
+            <a href="#" target="_self" onClick={onClick}> 2. Connect to spotify </a>
             <button onClick={onLogout} className='btn btn-block'>Logout of Anthem</button>
         </>) : (<>
             <h1> Logged in to Anthem and spotify !!!</h1>

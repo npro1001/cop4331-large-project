@@ -8,6 +8,7 @@ const unlinkAsync = promisify(fs.unlink);
 
 const User = require('../models/userModel');
 const Post = require('../models/postModel');
+const Comment = require('../models/commentModel');
   
 // @desc    Create a new post
 // @route   POST /api/post
@@ -101,7 +102,7 @@ const likePost = asyncHandler(async (req, res) => {
 // @access  Public
 const commentPost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId, comment} = req.body;
+    const {postId, userId, content} = req.body;
 
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));
@@ -116,23 +117,42 @@ const commentPost = asyncHandler(async (req, res) => {
         res.status(400);
 		throw new Error('Cannot Find Post');
     }
+    else if (!content)
+    {
+        res.status(400);
+        throw new Error('Please enter a comment')
+    }
     else
     {
-        (user.likes).push(post._id);
-        (post.likes).push(user._id);
-        user.save();
-        post.save();
-
-        res.status(201).json({
-            username: user.username,
-            userlikes: user.likes,
-            postId: post._id,
-            postLikes: post
+        const comment = await Comment.create({
+            author: userId,
+            post: postId,
+            content: content
         });
+
+        if (comment)
+        {
+            (user.comments).push(comment._id);
+            (post.comments).push(comment._id);
+            user.save();
+            post.save();
+
+            res.status(201).json({
+                username: user.username,
+                postId: post._id,
+                comment: content
+            });
+        }
+        else
+        {
+            res.status(400);
+            throw new Error('Could not create comment');
+        }
     }
-})
+});
 
 module.exports = {
     createPost,
-    likePost
+    likePost,
+    commentPost
 }

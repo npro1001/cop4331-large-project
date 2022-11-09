@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 let Post = require('./postModel');
+let Comment = require('./commentModel');
 
 const userSchema = mongoose.Schema(
   {
@@ -34,6 +35,10 @@ const userSchema = mongoose.Schema(
     likes: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Post'
+    }],
+    comments: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment'
     }],
     followers: [], 
     following: []

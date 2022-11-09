@@ -4,7 +4,7 @@
     background-color: white;
     padding: 1rem;
     border-radius: 1rem;
-    width: 78rem;
+    width: 100%;
     position: relative;
 }
 
@@ -99,7 +99,7 @@
     align-self: center;
     text-shadow: 0 0 2px #999;
     font-family: 'Ubuntu', sans-serif;
-    width: 13rem;
+    width: 18%;
     display: inline-block;
     position: relative;
     margin-left: 1em;

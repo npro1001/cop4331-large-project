@@ -30,4 +30,21 @@ infoInput*/
     width: 6rem;
     height: 2rem;
     align-self: flex-end;
+    padding: 11px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    color: white;
+    background: #CDBEE0;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all, 240ms ease-in-out;
+    background: var(--purple);
+    text-shadow: 0 0 2px #999;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.infoButton:hover {
+    background: rgba(93, 48, 149, 1);
+    filter: brightness(1.2);
 }

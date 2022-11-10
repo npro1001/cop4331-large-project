@@ -1,11 +1,12 @@
 .SongRecsCard{
-    width: 100%;
+    width: 95%;
     border-radius: 1.5rem;
     gap: 1rem;
     display: flex;
     flex-direction: column;
     font-size: 13px;
     background-color: white;
+    align-self: center;
 }
 
 .SongRecsCard>h3{

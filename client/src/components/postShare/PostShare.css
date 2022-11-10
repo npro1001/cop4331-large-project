@@ -4,7 +4,8 @@
     background-color: white;
     padding: 1rem;
     border-radius: 1rem;
-    width: 100%;
+    width: 95%;
+    align-self: center;
     position: relative;
 }
 

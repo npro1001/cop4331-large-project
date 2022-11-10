@@ -6,7 +6,8 @@
     gap: 1rem;
     overflow-x: clip;
     background: white;
-    width: 100%;
+    width: 95%;
+    align-self: center;
 }
 
 .ProfileImages{
@@ -96,4 +97,9 @@
     color: var(--purple);
     cursor: pointer;
     margin-bottom: 1rem;
+}
+
+.ProfileCard>span:hover {
+    color: rgba(93, 48, 149, 1);
+    filter: brightness(1.2);
 }

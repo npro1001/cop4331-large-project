@@ -5,7 +5,8 @@
     background-color: white;
     padding: 1rem;
     border-radius: 1.3rem;
-    width: 90%;
+    width: 95%;
+    align-self: center;
 }
 
 .InfoHead {

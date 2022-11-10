@@ -229,7 +229,7 @@ export function LoginSignUp(props) {
                 <BackDrop inital = {false} animate={isExpanded ? "expanded" : "collapsed" } 
                 variants={backdropVariants} transition={expandingTransition}/>
                 {active === "login" && <HeaderContainer>
-                    <HeaderText>welcome back</HeaderText>
+                    <HeaderText>welcome</HeaderText>
                     <SmallText>login to continue</SmallText>
                 </HeaderContainer>}
                 {active === "signup" && <HeaderContainer>

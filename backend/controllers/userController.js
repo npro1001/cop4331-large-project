@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const sendMail = require('../utils/sendMail')
 const userModel = require('../models/userModel')
+const multer = require('multer')
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -92,6 +93,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const getMe = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id)
   
+  
   res.status(200).json(user)
 })
 
@@ -106,21 +108,21 @@ const getMe = asyncHandler(async (req, res) => {
 // @access  Private
 const updateUser = asyncHandler(async (req, res) => {
   //const user = await User.findById(req.user.id)
-  const User = await User.findById(req.user.id)
+  const user = await User.findById(req.user.id)
 
   
-  if (!User) {
+  if (!user) {
     res.status(400)
     throw new Error('User not found')
   }
 
   // Make sure the logged in user matches the goal user
-  if (User.id !== req.body.id) {
+  if (user.id !== req.body.id) {
     res.status(401)
     throw new Error('User not authorized')
   }
 
-  if(User.password != req.body.password){
+  if(user.password != req.body.password){
     const salt = await bcrypt.genSalt(10);
     req.body.password = await bcrypt.hash(req.body.password, salt)
   }
@@ -131,6 +133,9 @@ const updateUser = asyncHandler(async (req, res) => {
 
   res.status(200).json(updatedUser)
 })
+
+
+//upload profile picture
 
 
 // Follow a User

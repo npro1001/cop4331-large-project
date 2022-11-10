@@ -27,8 +27,8 @@ const InfoCard = () => {
             <div className="InfoHead">
                 <h4>Your Info</h4>
                 <div><UilPen width='2rem' height='1.2rem' onClick={() => setModalOpened(true)} /></div>
-                <ProfileModal modalOpened={modalOpened}
-                    setModalOpened={setModalOpened} />
+                {/* <ProfileModal modalOpened={modalOpened}
+                    setModalOpened={setModalOpened} /> */}
 
             </div>
 

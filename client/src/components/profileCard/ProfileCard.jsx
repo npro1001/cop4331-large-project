@@ -25,8 +25,8 @@ const ProfileCard = ({location}) => {
             </div>
 
             <div className="ProfileName">
-                <span>Laura Johnson</span>
-                <span>Indie Rock</span>
+                <span>{user.name}</span>
+                <span>@{user.username}</span>
             </div>
 
             <div className="followStatus">

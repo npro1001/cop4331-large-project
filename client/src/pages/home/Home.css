@@ -1,6 +1,11 @@
 .Home{
     position: relative;
     display: grid;
-    grid-template-columns: 18rem auto 20rem;
+    grid-template-columns: 28rem auto;
     gap: 1rem;
+    margin-right: 9rem;
+}
+
+.Home>PostSide{
+    margin-top: 2.7rem;
 }

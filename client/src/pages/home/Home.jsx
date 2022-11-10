@@ -9,7 +9,7 @@ const Home = () => {
         <div className="Home">
             <ProfileSide/>
             <PostSide/>
-            <RightSide/>
+            {/* <RightSide/> */}
         </div>
 
     )

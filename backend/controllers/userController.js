@@ -90,62 +90,45 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/me
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
-  const {_id, name, email, username, isConfirmed, about, followers, following} = await User.findById(req.user.id)
-  res.status(200).json({
-    id: _id, 
-    name,
-    email,
-    username,
-    isConfirmed, 
-    about, 
-    followers, 
-    following
-  })
+  const user = await User.findById(req.user.id)
+  
+  res.status(200).json(user)
 })
 
 
 //getUser
 
 
-// @desc update a users data
-// @route PUT /api/users/update/:id
-// @access Private
+// @desc    Update user
+// @route   PUT /api/user/:id
+// @access  Private
 const updateUser = asyncHandler(async (req, res) => {
-	// do not include the hashed password when fetching this user
-	const user = await User.findById(req.params.id)//.select('-password');
-  const {currentUserId, password} = req.body
-	if (user.id == currentUserId) {
-    try{
-      if(password){
-        const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(password, salt)
-      }
+  //const user = await User.findById(req.user.id)
+  const User = await User.findById(req.user.id)
 
-      const user = await userModel.findByIdAndUpdate(id, req.body, {new: true,})
-      res.status(200).json("User updated successfully");
-    } catch (error){
-    res.status(500).json("Error updating user");
-    }
-  } else{
-    res.status(403).json("Access Denied! you can only update your own profile");
+  
+  if (!User) {
+    res.status(400)
+    throw new Error('User not found')
   }
-});
 
-// update whicever field was sent in the rquest body
-		// user.name = req.body.name || user.name;
-		// user.isConfirmed = req.body.email === user.email;
-		// user.email = req.body.email || user.email;
-		// user.isAdmin = req.body.isAdmin;
-		// const updatedUser = await user.save();
-		// if (updatedUser) {
-		// 	res.json({
-		// 		id: updatedUser._id,
-		// 		email: updatedUser.email,
-		// 		name: updatedUser.name,
-		// 		isAdmin: updatedUser.isAdmin,
-		// 		isConfirmed: updatedUser.isConfirmed,
-		// 	});
-		// }
+  // Make sure the logged in user matches the goal user
+  if (User.id !== req.body.id) {
+    res.status(401)
+    throw new Error('User not authorized')
+  }
+
+  if(User.password != req.body.password){
+    const salt = await bcrypt.genSalt(10);
+    req.body.password = await bcrypt.hash(req.body.password, salt)
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(req.body.id, req.body, {
+    new: true,
+  })
+
+  res.status(200).json(updatedUser)
+})
 
 
 // Generate JWT

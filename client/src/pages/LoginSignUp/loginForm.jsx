@@ -14,7 +14,6 @@ import {useNavigate} from 'react-router-dom';
 //login form
 export function LoginForm(props) {
     
-    //! Added by nick
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -56,9 +55,12 @@ export function LoginForm(props) {
         }
 
         dispatch(login(userData))
+        .then( () => {
+            navigate('/Home', {replace: true})
+            // navigate('/testpage', {replace: true})
+        })
     }
 
-    //! --
 
     //when user clicks "Signup here", the form will switch
     const {switchToSignup } = useContext(AccountContext);

@@ -9,7 +9,8 @@ const {
   unfollowUser,
   mailForEmailVerification,
   mailForResetPassword,
-  searchUser
+  searchUser,
+  checkExist,
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 
@@ -22,5 +23,6 @@ router.put('/:id/unfollow', unfollowUser)
 router.post('/confirm', mailForEmailVerification)
 router.post('/reset', mailForResetPassword)
 router.post('/search', searchUser)
+// router.post('/exist', checkExist)
 
 module.exports = router

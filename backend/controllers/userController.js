@@ -20,9 +20,17 @@ const registerUser = asyncHandler(async (req, res) => {
   const emailExists = await User.findOne({ email })
   const usernameExists = await User.findOne({ username })
 
-  if (emailExists || usernameExists) {
+  if (emailExists && usernameExists) {
     res.status(400)
-    throw new Error('User already exists')
+    throw new Error('Username and email already exist')
+  }
+  else if (emailExists) {
+    res.status(400)
+    throw new Error('Email already in use')
+  }
+  else if (usernameExists) {
+    res.status(400)
+    throw new Error('Username already in use')
   }
 
   // Hash password
@@ -280,6 +288,35 @@ const searchUser = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Check if a user already exists via username and 
+//          email when register is submitted.
+// @route   POST /api/users/exist
+// @access  Public
+// const checkExist = asyncHandler(async (req, res) => {
+//   try {
+//     const username =  req.body.username
+//     const email = req.body.email
+
+//     // If there is no username or email in the request, return
+//     if (!username && !email) {
+//       res.status(400)
+//       throw new Error('Please add all fields')
+//     }
+//     // If there is only an email, check for email
+//     else if(!username && email) {
+//       const emailExists = await User.findOne({ email })
+//     }
+//     // If there is only an 
+    
+//     const usernameExists = await User.findOne({ username })
+  
+//     if (emailExists || usernameExists) {
+//       res.status(400)
+//       throw new Error('User already exists')
+//     }
+    
+//   }
+// })
 
 module.exports = {
   registerUser,

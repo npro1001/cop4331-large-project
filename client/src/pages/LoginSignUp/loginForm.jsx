@@ -33,7 +33,8 @@ export function LoginForm(props) {
 
         // If registered or logged in
         if(isSuccess || user) {
-            navigate('/testpage', {replace: true})
+            // navigate('/testpage', {replace: true})
+            navigate('/home', {replace: true})
             dispatch(reset())
         }
     }, [user, isError, isSuccess, message, navigate, dispatch])

@@ -6,6 +6,7 @@ const {
   getMe,
   updateUser,
   followUser,
+  unfollowUser,
   mailForEmailVerification,
   mailForResetPassword,
   searchUser
@@ -17,6 +18,7 @@ router.post('/login', loginUser)
 router.get('/me', protect, getMe)
 router.put('/update', protect, updateUser)
 router.put('/:id/follow', followUser)
+router.put('/:id/unfollow', unfollowUser)
 router.post('/confirm', mailForEmailVerification)
 router.post('/reset', mailForResetPassword)
 router.post('/search', searchUser)

@@ -160,6 +160,33 @@ const followUser = async (req, res) => {
 };
 
 
+// UnFollow a User
+const unfollowUser = async (req, res) => {
+  const id = req.params.id;
+
+  const { currentUserId } = req.body;
+
+  if (currentUserId === id) {
+    res.status(403).json("Action forbidden");
+  } else {
+    try {
+      const followUser = await User.findById(id);
+      const followingUser = await User.findById(currentUserId);
+
+      if (followUser.followers.includes(currentUserId)) {
+        await followUser.updateOne({ $pull: { followers: currentUserId } });
+        await followingUser.updateOne({ $pull: { following: id } });
+        res.status(200).json("User Unfollowed!");
+      } else {
+        res.status(403).json("User is not followed by you");
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+};
+
+
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -260,6 +287,7 @@ module.exports = {
   getMe,
   updateUser,
   followUser,
+  unfollowUser,
   mailForEmailVerification,
   mailForResetPassword,
   searchUser

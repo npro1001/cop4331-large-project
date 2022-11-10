@@ -86,7 +86,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Get user data
+// @desc    Get logged in user data
 // @route   GET /api/users/me
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
@@ -95,8 +95,10 @@ const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(user)
 })
 
+//SHOULD WE ONLY RETURN CERTAIN VARIABLES IN THE GETME AND GETUSER FUNCTIONS
+//OR ARE WE RETURNING THE ENTIRE OBJECT
 
-//getUser
+//Get user? or is that just search
 
 
 // @desc    Update user
@@ -129,6 +131,33 @@ const updateUser = asyncHandler(async (req, res) => {
 
   res.status(200).json(updatedUser)
 })
+
+
+// Follow a User
+const followUser = async (req, res) => {
+  const id = req.params.id;
+
+  const { currentUserId } = req.body;
+
+  if (currentUserId === id) {
+    res.status(403).json("Action forbidden");
+  } else {
+    try {
+      const followUser = await User.findById(id);
+      const followingUser = await User.findById(currentUserId);
+
+      if (!followUser.followers.includes(currentUserId)) {
+        await followUser.updateOne({ $push: { followers: currentUserId } });
+        await followingUser.updateOne({ $push: { following: id } });
+        res.status(200).json("User followed!");
+      } else {
+        res.status(403).json("User is Already followed by you");
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+};
 
 
 // Generate JWT
@@ -230,6 +259,7 @@ module.exports = {
   loginUser,
   getMe,
   updateUser,
+  followUser,
   mailForEmailVerification,
   mailForResetPassword,
   searchUser

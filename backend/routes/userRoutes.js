@@ -6,7 +6,8 @@ const {
   getMe,
   updateUser,
   mailForEmailVerification,
-  mailForResetPassword
+  mailForResetPassword,
+  searchUser
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 
@@ -16,5 +17,6 @@ router.get('/me', protect, getMe)
 router.put('/update/:id', protect, updateUser)
 router.post('/confirm', mailForEmailVerification)
 router.post('/reset', mailForResetPassword)
+router.post('/search', searchUser)
 
 module.exports = router

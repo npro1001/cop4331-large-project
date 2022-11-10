@@ -220,6 +220,26 @@ const mailForResetPassword = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc search for users via search bar (searched for q in username)
+// @route POST /api/users/search
+// @access PUBLIC => private
+const searchUser = asyncHandler(async (req, res) => {
+  try {
+    const payload = req.body.payload
+
+    let search = await User.find({username: {$regex: new RegExp(payload), $options:"i"}}).exec();
+
+    // Limit search results to 5
+    search = search.slice(0, 5)
+
+    res.send({payload: search})
+
+  } catch (error) {
+    console.log(error);
+    res.status(401);
+    throw new Error("Could not find any matching user.")
+  }
+})
 
 
 module.exports = {
@@ -228,5 +248,6 @@ module.exports = {
   getMe,
   updateUser,
   mailForEmailVerification,
-  mailForResetPassword
+  mailForResetPassword,
+  searchUser
 }

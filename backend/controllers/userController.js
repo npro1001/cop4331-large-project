@@ -6,6 +6,9 @@ const sendMail = require('../utils/sendMail')
 const userModel = require('../models/userModel')
 const multer = require('multer')
 var mongoose = require('mongoose');
+const fs = require('fs');
+const { promisify } = require('util')
+const unlinkAsync = promisify(fs.unlink);
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -144,7 +147,47 @@ const updateUser = asyncHandler(async (req, res) => {
 })
 
 
-//upload profile picture
+// @desc    Upload a Profile Picture
+// @route   POST /api/user/uploadProfilePic
+// @access  Public
+const uploadProfilePic = asyncHandler(async (req, res) => {
+
+    if (!req.file)
+    {
+        res.status(400);
+        throw new Error('Please upload a file');
+    }
+
+    const {id} = req.body
+    const user = await User.findById(req.body.id)
+    var img = fs.readFileSync(req.file.path);
+    
+    if (!user || !img)
+    {
+        res.status(400);
+        throw new Error('Image did not successfully upload');
+    }
+
+    var encode_img = img.toString('base64');
+
+    var final_img = {
+        contentType:req.file.mimetype,
+        image:new Buffer(encode_img,'base64')
+    };
+
+    user.profilePicture =  final_img
+
+    if (user.profilePicture) {
+        res.status(201).json({
+          _id: post.id,
+          profilePicture: user.profilePicture,
+        })
+        await unlinkAsync(req.file.path);
+    } else {
+        res.status(400)
+        throw new Error('Error uploading profile picture')
+    }
+});
 
 
 // Follow a User
@@ -329,6 +372,7 @@ module.exports = {
   loginUser,
   getMe,
   updateUser,
+  uploadProfilePic,
   followUser,
   unfollowUser,
   mailForEmailVerification,

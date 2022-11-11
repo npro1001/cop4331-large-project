@@ -1,5 +1,7 @@
 const express = require('express')
+const multer = require('multer');
 const router = express.Router()
+
 const {
   registerUser,
   loginUser,
@@ -7,13 +9,14 @@ const {
   updateUser,
   followUser,
   unfollowUser,
-  //uploadProfilePic,
+  uploadProfilePic,
   mailForEmailVerification,
   mailForResetPassword,
   searchUser,
-  checkExist,
+  //checkExist,
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
+const upload = require('../middleware/uploadMiddleware');
 
 router.post('/', registerUser)
 router.post('/login', loginUser)
@@ -21,8 +24,7 @@ router.get('/me', protect, getMe)
 router.put('/update', protect, updateUser)
 router.put('/:id/follow', followUser)
 router.put('/:id/unfollow', unfollowUser)
-//router.get('/upload', uploadProfilePic)
-//router.post('/upload', uploadProfilePic)
+router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic);
 router.post('/confirm', mailForEmailVerification)
 router.post('/reset', mailForResetPassword)
 router.post('/search', searchUser)

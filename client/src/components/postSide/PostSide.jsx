@@ -1,5 +1,5 @@
 import React from "react";
-import Posts from "../posts/Posts";
+import PostContainer from "../PostContainer/PostContainer";
 import PostShare from "../postShare/PostShare";
 import './PostSide.css';
 
@@ -7,9 +7,10 @@ const PostSide = () => {
     return (
         <div className="PostSide">
             <PostShare/>
-            <Posts/>
+            <PostContainer/>
         </div>
     )
 }
+
 
 export default PostSide

@@ -5,5 +5,4 @@ export const AppContainer = styled.div`
     font-family: 'Ubuntu', sans-serif;
     background: #EDEDED;
     padding: 1rem 1rem;
-    /* overflow: hidden; */
-    `
+ `;

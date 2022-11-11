@@ -1,11 +1,10 @@
-// import React from "react";
 import styled from "styled-components";
 import { LoginForm } from "./loginForm";
 import { SignupForm } from "./signupForm";
 import Logo from '../../img/logo.png';
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
-import {React, useState} from 'react';
+import { React, useState } from 'react';
 
 
 //used styled components for the login/signup
@@ -21,14 +20,48 @@ const Auth = styled.div`
     align-items: center;
     justify-content: center;
     height: 100vh;
-    gap: 4rem;
-    position: relative;    
-`;
+    gap: 2rem;
+    position: relative;
+
+        /* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px){
+    bottom:25px;
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px)  and (max-width: 767.9px){
+    bottom:50px;
+} `;
+
+//top of the screen
+const AboveForm = styled.div`
+    position:relative;
+
+    /* Medium devices (landscape tablets, 768px and up) */
+    @media only screen and (min-width: 768px) {
+        display:none;
+    }
+    /* Large devices (laptops/desktops, 992px and up) */
+    @media only screen and (min-width: 992px) {
+        display:none;
+    }
+    /* Extra large devices (large laptops and desktops, 1200px and up) */
+    @media only screen and (min-width: 1200px) {
+        display:none;
+    }`;
 
 //Aleft will hold the logo, webname, and motto
 const Aleft = styled.div`
     position: relative;
-    `;
+
+    /* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px){
+    display:none;
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px)  and (max-width: 767.9px)
+{
+    display:none;
+}`;
 
 //this is the logo
 const ALogo = styled.img`
@@ -39,13 +72,26 @@ const ALogo = styled.img`
     justify-content: center;
     display:flex;
     margin: auto;
+`;
 
+//this is the logo
+const TopLogo = styled.img`
+    position: relative;
+    width: 8em;
+    height: 7.8rem;
+    align-items: center;
+    justify-content: center;
+    display:flex;
+    margin: auto;
 `;
 //webname
 const WebName = styled.h1`
-    font-size: 3rem;
+    font-size: 2.5rem;
     background-color: #391F59;
-
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     background-size: 100%;
     background-repeat: repeat;
 
@@ -55,7 +101,24 @@ const WebName = styled.h1`
     -moz-background-clip: text;
     -moz-text-fill-color: transparent;
 
-`;
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 599.9px){
+        display:none;
+    }
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @media only screen and (min-width: 600px) {  
+        font-size: 2.5rem;
+    }
+
+    /* Medium devices (landscape tablets, 768px and up) */
+    @media only screen and (min-width: 768px) {
+        margin:2px;
+        font-size: 2rem;
+    }
+    /* Large devices (laptops/desktops, 992px and up) */
+    @media only screen and (min-width: 992px) {
+        font-size: 2.2rem;
+    }`;
 
 //motto
 const Motto = styled.h4`
@@ -63,7 +126,28 @@ const Motto = styled.h4`
     position: relative;
     text-align: center;
     color: black;
-`;
+
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 600px){
+        display:none;
+    }
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @media only screen and (min-width: 600px) {
+        display:none;
+    }
+
+    /* Medium devices (landscape tablets, 768px and up) */
+    @media only screen and (min-width: 768px) {
+        background-color:green;
+    }
+    /* Large devices (laptops/desktops, 992px and up) */
+    @media only screen and (min-width: 992px) {
+        background-color:yellow;
+    }
+    /* Extra large devices (large laptops and desktops, 1200px and up) */
+    @media only screen and (min-width: 1200px) {
+        background-color:pink;
+    }`;
 
 //container for the form
 const BoxContainer = styled.div`
@@ -77,8 +161,7 @@ const BoxContainer = styled.div`
     box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
     position: relative;
     overflow: hidden;
-    transition: ease-in-out;
-    
+    transition: ease-in-out;    
 `;
 
 //top container contains the backdrop and the header container
@@ -118,7 +201,7 @@ const HeaderContainer = styled.div`
     flex-direction: column;
     position: relative;
     top:90px;
-`
+`;
 //self-explanatory
 const HeaderText = styled.h2`
     font-size: 28.6px;
@@ -144,13 +227,12 @@ const InnerContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0 1.8em;
-
 `;
 
 //this is what allows the teardrop to drop down and go back up again
 const backdropVariants = {
     expanded: {
-        width:"233%",
+        width: "233%",
         height: "1500px",
         borderRadius: "20%",
     },
@@ -180,24 +262,23 @@ export function LoginSignUp(props) {
     const [isExpanded, setExpanded] = useState(false);
 
     //user will start at the login page
-    const [active, setActive] = useState("login"); 
+    const [active, setActive] = useState("login");
 
     //this plays the animation
-    const playExpandingAnimation = () =>
-    {
+    const playExpandingAnimation = () => {
         setExpanded(true);
         setTimeout(() => {
             setExpanded(false);
-        }, expandingTransition.duration*1000-1500);
+        }, expandingTransition.duration * 1000 - 1500);
     };
-    
+
     //switch to signup form
     const switchToSignup = () => {
         playExpandingAnimation();
         setTimeout(() => {
             setActive("signup");
 
-        },400 )
+        }, 400)
     }
 
     //vice versa
@@ -206,45 +287,54 @@ export function LoginSignUp(props) {
         setTimeout(() => {
             setActive("login");
 
-        },400 )
+        }, 400)
     }
-    const contextValue = {switchToSignup, switchToLogin};
+    const contextValue = { switchToSignup, switchToLogin };
 
     //now to put it in html
     //note that when defining text, i dont need to put <h1> or <h2> since i already defined it in the css
     //same with div containers (like <Auth> or <BoxContainer>)
     return (
-    <AccountContext.Provider value ={contextValue}>
-    <Auth>
-        <Aleft>
-            <ALogo src={`${Logo}`} alt="Logo for Anthem which consits of 2 connected quarter notes with sound waves at the top" />
-            <WebName>
-                Welcome to Anthem
-            </WebName>
-            <Motto>Bing Bong</Motto>
-        </Aleft>
+        <AccountContext.Provider value={contextValue}>
+            <AboveForm>
+                <ALogo src={`${Logo}`} alt="Logo for Anthem which consits of 2 connected quarter notes with sound waves at the top" />
+                <WebName>
+                    Welcome to Anthem
+                </WebName>
+                <Motto>Bing Bong</Motto>
+            </AboveForm>
+            <Auth>
+                <Aleft>
+                    <ALogo src={`${Logo}`} alt="Logo for Anthem which consits of 2 connected quarter notes with sound waves at the top" />
+                    <WebName>
+                        Welcome to Anthem
+                    </WebName>
+                    <Motto>Bing Bong</Motto>
+                </Aleft>
 
-        <BoxContainer>
-            <TopContainer>
-                <BackDrop inital = {false} animate={isExpanded ? "expanded" : "collapsed" } 
-                variants={backdropVariants} transition={expandingTransition}/>
-                {active === "login" && <HeaderContainer>
-                    <HeaderText>welcome</HeaderText>
-                    <SmallText>login to continue</SmallText>
-                </HeaderContainer>}
-                {active === "signup" && <HeaderContainer>
-                    <HeaderText>new here?</HeaderText>
-                    <HeaderText>create an account.</HeaderText>
-                    <SmallText>we have cookies!</SmallText>
-                </HeaderContainer>}
-            </TopContainer>
-            <InnerContainer>
-                
-                {active === "login" && <LoginForm />}
-                {active === "signup" && <SignupForm />}
-            </InnerContainer>
-        </BoxContainer>
-    </Auth>
-    </AccountContext.Provider>
+                <BoxContainer>
+
+                    <TopContainer>
+
+                        <BackDrop inital={false} animate={isExpanded ? "expanded" : "collapsed"}
+                            variants={backdropVariants} transition={expandingTransition} />
+                        {active === "login" && <HeaderContainer>
+                            <HeaderText>welcome</HeaderText>
+                            <SmallText>login to continue</SmallText>
+                        </HeaderContainer>}
+                        {active === "signup" && <HeaderContainer>
+                            <HeaderText>new here?</HeaderText>
+                            <HeaderText>create an account.</HeaderText>
+                            <SmallText>we have cookies!</SmallText>
+                        </HeaderContainer>}
+                    </TopContainer>
+                    <InnerContainer>
+
+                        {active === "login" && <LoginForm />}
+                        {active === "signup" && <SignupForm />}
+                    </InnerContainer>
+                </BoxContainer>
+            </Auth>
+        </AccountContext.Provider>
     )
 }

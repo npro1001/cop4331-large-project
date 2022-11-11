@@ -131,23 +131,12 @@ const Motto = styled.h4`
     @media only screen and (max-width: 600px){
         display:none;
     }
-    /* Small devices (portrait tablets and large phones, 600px and up) */
-    @media only screen and (min-width: 600px) {
-        display:none;
-    }
 
-    /* Medium devices (landscape tablets, 768px and up) */
-    @media only screen and (min-width: 768px) {
-        background-color:green;
-    }
-    /* Large devices (laptops/desktops, 992px and up) */
-    @media only screen and (min-width: 992px) {
-        background-color:yellow;
-    }
-    /* Extra large devices (large laptops and desktops, 1200px and up) */
-    @media only screen and (min-width: 1200px) {
-        background-color:pink;
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @media only screen and (min-width: 600px)  and (max-width: 767.9px){
+    display:none;
     }`;
+
 
 //container for the form
 const BoxContainer = styled.div`

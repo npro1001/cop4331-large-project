@@ -282,8 +282,8 @@ const searchUser = asyncHandler(async (req, res) => {
 
     let search = await User.find({username: {$regex: new RegExp(payload), $options:"i"}}).exec();
 
-    // Limit search results to 5
-    search = search.slice(0, 5)
+    // Limit search results to 7
+    search = search.slice(0, 7)
 
     res.send({payload: search})
 

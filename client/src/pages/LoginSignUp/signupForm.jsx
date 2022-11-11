@@ -5,7 +5,7 @@ import { AccountContext } from "./accountContext";
 import { register, reset } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,8 +36,9 @@ export function SignupForm(props) {
 
     const [confirmPass, setConfirmPass] = useState(true);
     const [confirmEmail, setconfirmEmail] = useState(true);
+    const [dontExist, setDontExist] = useState(true)
 
-    const { user, isError, isSuccess, message } = useSelector((state) => state.auth)
+    const { user, isError, isSuccess, message } = useSelector((state) => state.auth, shallowEqual)
     const { fname,
         lname,
         email,
@@ -50,15 +51,18 @@ export function SignupForm(props) {
 
     // Runs initially when LoginForm function is called
     useEffect(() => {
+
         // Check for error
-        if (isError) {
-            toast.error(message);
-        }
+        // if (isError) {
+        //     toast.error(message);
+        // }
 
         // If registered or logged in
         if (isSuccess || user) {
-            dispatch(reset());
+            // dispatch(reset());
         }
+
+
     }, [user, isError, isSuccess, message, dispatch])
 
 
@@ -73,7 +77,7 @@ export function SignupForm(props) {
 
         //TODO DUPLICATE USER ERROR
         e.preventDefault()
-        console.log("HANDLING SUBMIT")
+
         const userData = {
             name,
             email,
@@ -85,30 +89,34 @@ export function SignupForm(props) {
             setConfirmPass(false);
             passvalid = false;
         }
-
         //in the event that user matches the passwords on second try
         else {
             setConfirmPass(true);
             passvalid = true;
         }
-
+        
         if (formData.email !== formData.confirmemail) {
             setconfirmEmail(false);
             emailvalid = false;
         }
-
         else {
             setconfirmEmail(true);
             emailvalid = true;
         }
 
-
-        if (passvalid && emailvalid) {
-            console.log("GOOD TO GO :)")
-            dispatch(register(userData));
-            //reload page to have user sign in
-            window.location.reload(false);
+        if(isError) {
+            setDontExist(false)
         }
+        else {
+            setDontExist(true)
+        }
+        
+        if (passvalid && emailvalid) { // && !isError) {
+            dispatch(register(userData))
+            // window.location.reload(false); // reload page to have user sign in
+        }
+
+
 
     };
 
@@ -137,6 +145,7 @@ export function SignupForm(props) {
             <Marginer direction="vertical" margin={15} />
             <span style={{ display: confirmPass ? "none" : "inline-flex", color: "red", alignSelf: "flex-end", margin: "auto" }}>Passwords do not match!</span>
             <span style={{ display: confirmEmail ? "none" : "inline-flex", color: "red", alignSelf: "flex-end", margin: "auto" }}>Emails do not match!</span>
+            <span style={{ display: !isError ? "none" : "inline-flex", color: "red", alignSelf: "flex-end", margin: "auto" }}>{message}</span>
             <Marginer direction="vertical" margin={15} />
             <SubmitButton type="submit"> Register</SubmitButton>
             <Marginer direction="vertical" margin={15} />

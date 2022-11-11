@@ -19,7 +19,7 @@ const {user} = useSelector((state) => state.auth);
             <Route path='/' element={<LoginSignUp/>} />
             <Route path='/testpage' element={<Testpage/>} />
             <Route path='/home' element={<Home/>} />
-            <Route path='/profile/:id' element={user ? <Profile/> : <Navigate to="/welcome"/>} />
+            <Route path='/profile/:id' element={user ? <Profile/> : <Navigate to="/"/>} />
           </Routes>
         </div>
       </Router>

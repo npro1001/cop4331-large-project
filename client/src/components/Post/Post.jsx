@@ -4,22 +4,30 @@ import Comment from '../../img/comment.png'
 import Share from '../../img/share.png'
 import Heart from '../../img/like.png'
 import NotLike from '../../img/notlike.png'
-import PFP from '../../img/pfp.jpg'
+import { useSelector } from 'react-redux'
+import defaultPFP from '../../img/default-profile.png'
 
 const Post = ({data}) => {
+    
+    const {user} = useSelector((state) => state.auth);
     return (
         <div className="Post">
-            {/*<img src={PFP} alt="" />*/}
-            <div className="detail">
-                <div>
-                    <span><b>{data.name}</b></span>
+            <div className="postInfo">
+            <img src={user.PFP
+              ? user.PFP
+              : defaultPFP} alt="Profile picture" />
+                <div className="content">
+                    <div>
+                        <span><b>{user.name}</b></span>
+                        <span> @{user.username}</span>
+                    </div>
+                    
+                    <span> {data.desc}</span>
                 </div>
-                
-                <span> {data.desc}</span>
             </div>
 
             
-            <img src={data.img} alt="" />
+            <img src={data.img} alt="" onClick="" />
 
             <div className="postReact">
                 <img src={data.liked?Heart: NotLike} alt="" />

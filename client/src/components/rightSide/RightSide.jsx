@@ -23,12 +23,13 @@ const RightSide = () => {
                 <UilMessage className="message"></UilMessage>
             </div>
 
-            <SwitchCard />
+           { /*<SwitchCard />*/}
 
-            <button className="button r-button" onClick={() => setModalOpened(true)}>
-                Share</button>
-            <ShareModal modalOpened={modalOpened}
-                    setModalOpened={setModalOpened}/>
+            <button className="button r-button" onClick={()=>setModalOpened(true)}>
+                    Share
+            </button>
+            {/* <ShareModal modalOpened={modalOpened}
+                    setModalOpened={setModalOpened}/> */}
         </div>
     )
 }

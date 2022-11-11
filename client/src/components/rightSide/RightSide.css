@@ -7,11 +7,10 @@
 
 .navIcons {
     display: flex;
-    margin-top: 1rem;
     margin-left: 1rem;
     margin-right: 1rem;
     justify-content: space-between;
-
+    gap: 3.7rem;
 }
 
 .home,

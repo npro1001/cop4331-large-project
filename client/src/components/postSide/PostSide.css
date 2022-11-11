@@ -4,6 +4,7 @@
     gap: 1rem;
     height: 114vh;
     overflow: auto;
+    margin-top: 2.7rem;
 }
 
 .PostSide::-webkit-scrollbar {

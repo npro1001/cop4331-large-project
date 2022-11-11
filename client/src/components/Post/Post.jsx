@@ -22,7 +22,7 @@ const Post = ({data}) => {
                         <span> @{user.username}</span>
                     </div>
                     
-                    <span> {data.desc}</span>
+                    <span> {data.caption}</span>
                 </div>
             </div>
 

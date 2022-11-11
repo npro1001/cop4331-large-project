@@ -40,8 +40,14 @@ const userSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Comment'
     }],
-    followers: [],
-    following: []
+    followers: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+  }],
+    following: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+  }]
   },
   {
     timestamps: true,

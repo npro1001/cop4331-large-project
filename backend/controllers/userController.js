@@ -5,6 +5,7 @@ const User = require('../models/userModel')
 const sendMail = require('../utils/sendMail')
 const userModel = require('../models/userModel')
 const multer = require('multer')
+var mongoose = require('mongoose');
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -156,8 +157,8 @@ const followUser = async (req, res) => {
     res.status(403).json("Action forbidden");
   } else {
     try {
-      const followUser = await User.findById(id);
-      const followingUser = await User.findById(currentUserId);
+      const followUser = await User.findById(mongoose.Types.ObjectId(id));
+      const followingUser = await User.findById(mongoose.Types.ObjectId(currentUserId));
 
       if (!followUser.followers.includes(currentUserId)) {
         await followUser.updateOne({ $push: { followers: currentUserId } });
@@ -183,8 +184,8 @@ const unfollowUser = async (req, res) => {
     res.status(403).json("Action forbidden");
   } else {
     try {
-      const followUser = await User.findById(id);
-      const followingUser = await User.findById(currentUserId);
+      const followUser = await User.findById(mongoose.Types.ObjectId(id));
+      const followingUser = await User.findById(mongoose.Types.ObjectId(currentUserId));
 
       if (followUser.followers.includes(currentUserId)) {
         await followUser.updateOne({ $pull: { followers: currentUserId } });

@@ -116,7 +116,7 @@ const LogoSearch = () => {
                                             console.log(searchee._id);
                                             console.log(searchee.name);
                                             navigate(
-                                                `/Profile/${searchee._id}`)
+                                                `/Profile/${searchee.username}`)
                                         }}>{searchee.name}</Username>
                                     </Results>
                                 </List>

@@ -320,13 +320,18 @@ const mailForResetPassword = asyncHandler(async (req, res) => {
 // @route POST /api/users/search
 // @access PUBLIC => private
 const searchUser = asyncHandler(async (req, res) => {
+
+  // TODO - fix so that your own profile does not pop up in search
+
   try {
     const payload = req.body.payload
-
+    // Changed
+    // let search = await User.find({username: {$regex: new RegExp(payload), $options:"i"}, $ne: req.user.id}).exec();
     let search = await User.find({username: {$regex: new RegExp(payload), $options:"i"}}).exec();
 
     // Limit search results to 7
     search = search.slice(0, 7)
+    // search = search.
 
     res.send({payload: search})
 
@@ -337,35 +342,31 @@ const searchUser = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Check if a user already exists via username and 
-//          email when register is submitted.
-// @route   POST /api/users/exist
+// @desc    Get another user's profile by their username
+// @route   GET /api/users/:username
 // @access  Public
-// const checkExist = asyncHandler(async (req, res) => {
-//   try {
-//     const username =  req.body.username
-//     const email = req.body.email
-
-//     // If there is no username or email in the request, return
-//     if (!username && !email) {
-//       res.status(400)
-//       throw new Error('Please add all fields')
-//     }
-//     // If there is only an email, check for email
-//     else if(!username && email) {
-//       const emailExists = await User.findOne({ email })
-//     }
-//     // If there is only an 
-    
-//     const usernameExists = await User.findOne({ username })
+const getUserProfile = asyncHandler(async (req, res) => {
+  // const id = req.params.id;
+  // const { currentUserId } = req.body;
   
-//     if (emailExists || usernameExists) {
-//       res.status(400)
-//       throw new Error('User already exists')
-//     }
-    
-//   }
-// })
+  const username = req.params.username
+
+  try { 
+    const user = await User.findOne({username})
+    res.status(201).json({
+        id: user._id,
+        name: user.name,
+        about: user.about,
+        username: user.username,
+        profilePicture: user.profilePicture,
+        followers: user.followers,
+        following: user.following, // May need more data
+    });
+
+  } catch (error) {
+    res.status(500).json("Could not find user: " + error)
+  }
+})
 
 module.exports = {
   registerUser,
@@ -377,5 +378,6 @@ module.exports = {
   unfollowUser,
   mailForEmailVerification,
   mailForResetPassword,
-  searchUser
+  searchUser,
+  getUserProfile,
 }

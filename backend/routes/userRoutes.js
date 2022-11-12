@@ -13,7 +13,7 @@ const {
   mailForEmailVerification,
   mailForResetPassword,
   searchUser,
-  //checkExist,
+  getUserProfile
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 const upload = require('../middleware/uploadMiddleware');
@@ -28,6 +28,9 @@ router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic);
 router.post('/confirm', mailForEmailVerification)
 router.post('/reset', mailForResetPassword)
 router.post('/search', searchUser)
-// router.post('/exist', checkExist)
+
+// TODO
+router.get('/:username', getUserProfile)
+
 
 module.exports = router

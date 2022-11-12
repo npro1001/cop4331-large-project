@@ -103,7 +103,7 @@ const LogoSearch = () => {
 
     return (
         <div className="LogoSearch">
-            <img src={Logo} alt="Logo" />
+            {/* <img src={Logo} alt="Logo" /> */}
             <div className="Search">
                 <input type="text" placeholder="#Explore" onChange={handleChange} />
                 <SearchContainer style={{ display: searching ? "inline" : "none" }}>

@@ -9,7 +9,9 @@ import {useNavigate} from "react-router-dom";
 const ProfileCard = ({location}) => {
 
     const navigate = useNavigate();
+    const posts = useSelector((state)=>state.post)
     const {user} = useSelector((state) => state.auth);
+    console.log(posts.PostData)
     return (
 
         <div className="ProfileCard">
@@ -46,7 +48,7 @@ const ProfileCard = ({location}) => {
                         <>
                             <div className="vl"></div>
                             <div className="follow">
-                                <span>2</span>
+                                <span>{posts.PostData.filter((post)=>post.id === user._id).length}</span>
                                 <span>Posts</span>
                             </div>
                         </>

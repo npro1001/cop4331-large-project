@@ -4,7 +4,9 @@ import { UilPen } from '@iconscout/react-unicons'
 import ProfileModal from '../profileModal/ProfileModal'
 import { logout, reset } from '../../features/auth/authSlice'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from "react"
+// import * as UserApi from '../backend/controllers/userController.js'
 
 const InfoCard = () => {
 
@@ -21,6 +23,24 @@ const InfoCard = () => {
                 dispatch(reset())
             })
     }
+
+    // const params = useParams();
+
+    // const profileUserId = params.dispatchconst[profileUser , setProfileUser] = useState({})
+    // const {user} = useSelector((state)=>state.authReducer.authData)
+
+    // useEffect(()=> {
+    //     const fetchProfileUser = async()=> {
+    //         if(profileUserId === user._id) {
+    //             setProfileUser(user)
+    //         }
+    //         else{
+    //             const profileUser = await UserApi.getUserProfile(profileUserId)
+    //             setProfileUser(profileUser)
+    //         }
+    //     }
+    //     fetchProfileUser();
+    // }, [user])
 
     return (
         <div className="InfoCard">

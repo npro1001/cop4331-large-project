@@ -58,6 +58,7 @@
 .followStatus > hr {
     width: 85%;
     border: 1px solid var(--hrColor);
+
 }
 
 .followStatus > div {

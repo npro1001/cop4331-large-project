@@ -5,8 +5,18 @@
     gap: 1rem;
 }
 
-.Home>PostSide{
-    margin-top: 2.7rem;
+
+.navIcons>img {
+    height: 42px;
+}
+
+.navIcons{
+    display: flex;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    justify-content: space-between;
+    gap: 8rem;
+    align-items: center;
 }
 
 .Top{
@@ -14,7 +24,12 @@
     flex-direction: row;
     margin-right: 9rem;
     margin-left: 9rem;
-    gap: 30.7rem;
+    justify-content: center;
+}
+
+.Top>hr {
+    width: 100%;
+    border: 15px solid var(--hrColor);
 }
 
 .Bottom{

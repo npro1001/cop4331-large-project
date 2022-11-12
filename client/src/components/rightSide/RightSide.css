@@ -5,13 +5,13 @@
     gap: 2rem;
 }
 
-.navIcons {
+/* .navIcons {
     display: flex;
     margin-left: 1rem;
     margin-right: 1rem;
     justify-content: space-between;
     gap: 3.7rem;
-}
+} */
 
 .home,
 .bell,

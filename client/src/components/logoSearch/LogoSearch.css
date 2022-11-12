@@ -1,6 +1,7 @@
 .LogoSearch {
     display: flex;
     gap: 0.75rem;
+    width: 90%;
 }
 
 .LogoSearch>img {
@@ -19,7 +20,7 @@
     background-color: white;
     border: none;
     outline: none;
-    width: 25rem;
+    width: 13.4rem;
 }
 
 .s-icon {

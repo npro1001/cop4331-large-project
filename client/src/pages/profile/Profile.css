@@ -16,7 +16,7 @@
     flex-direction: row;
     margin-right: 9rem;
     margin-left: 9rem;
-    gap: 30.7rem;
+    justify-content: center;
 }
 
 .Bottom{

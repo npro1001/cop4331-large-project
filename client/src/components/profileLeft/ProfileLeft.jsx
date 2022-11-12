@@ -19,8 +19,8 @@ const ProfileLeft = () => {
                 <UilSetting className="setting" />
                 <UilBell className="bell"></UilBell>
                 <UilMessage className="message"></UilMessage>
-            </div> 
-            <LogoSearch/> */}
+            </div> */}
+            <LogoSearch/> 
             <InfoCard/>
             <SongRecsCard/>
         </div>

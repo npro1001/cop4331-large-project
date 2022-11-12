@@ -289,7 +289,7 @@ const mailForEmailVerification = asyncHandler(async (req, res) => {
 });
 
 // @desc verify users account via email
-// @route POST /api/users/verify/:id
+// @route GET /api/users/verify/:token
 // @access PUBLIC
 const verifyUser = asyncHandler(async (req, res) => {
   const {token} = req.params
@@ -312,7 +312,7 @@ const verifyUser = asyncHandler(async (req, res) => {
 
   try {
     // Find user with matching id
-    const user = await User.findOne({_id: payload.ID}).exec()
+    const user = await User.findOne({_id: mongoose.Types.ObjectId(payload.id)}).exec()
     if(!user) {
       return res.status(404).send({message: "User does not exist"})
     }
@@ -321,7 +321,8 @@ const verifyUser = asyncHandler(async (req, res) => {
     user.isConfirmed = true
     await user.save()
 
-    return res.status(200).json({mesagge: "Account verified"})
+    // return res.status(200).json({mesagge: "Account verified"})
+    return res.status(200).redirect("http://localhost:3000/")
 
   } catch (error) {
     return res.status(500).send(err)

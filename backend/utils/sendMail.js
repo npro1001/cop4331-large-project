@@ -4,12 +4,12 @@ const generateMailToken = require('./generateMailToken');
 
 const sendMail = async (id, email, option) => {
 
-    const frontendURL = process.env.FRONTEND_BASE_URL;
+    const backendUrl = process.env.BACKEND_BASE_URL;
 
     // send email for the email verification option
     if (option === 'email verification') {
         const emailToken = generateMailToken(id, 'email');
-        const url = `${frontendURL}/user/confirm/${emailToken}`;
+        const url = `${backendUrl}api/users/verify/${emailToken}`;
 
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         const msg = {
@@ -29,9 +29,6 @@ const sendMail = async (id, email, option) => {
         }
         sgMail
         .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
         .catch((error) => {
             console.error(error)
         })

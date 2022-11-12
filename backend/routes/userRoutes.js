@@ -27,7 +27,7 @@ router.put('/:id/follow', followUser)
 router.put('/:id/unfollow', unfollowUser)
 router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic);
 router.post('/confirm', mailForEmailVerification)
-router.post('/verify/:id', verifyUser)
+router.get('/verify/:token', verifyUser)
 router.post('/reset', mailForResetPassword)
 router.post('/search', searchUser)
 router.get('/:username', getUserProfile)

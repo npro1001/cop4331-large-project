@@ -116,7 +116,8 @@ export function SignupForm(props) {
             .then( (res) => {
                 console.log(res)
                 if(!(res.meta.requestStatus == "rejected")) {
-                    console.log("All g... redirect to email sent")
+                    // console.log("All g... redirect to email sent") //!
+                    navigate('/verification_sent', {replace: true})
                 }
             })
             // window.location.reload(false); // reload page to have user sign in

@@ -15,7 +15,7 @@ import { React, useState } from 'react';
 
 
 //this portion will hold the logo, webname, motto, and form
-const Auth = styled.div`
+export const Auth = styled.div`
     display:flex;
     align-items: center;
     justify-content: center;
@@ -33,7 +33,7 @@ const Auth = styled.div`
 } `;
 
 //top of the screen
-const AboveForm = styled.div`
+export const AboveForm = styled.div`
     position:relative;
 
     /* Medium devices (landscape tablets, 768px and up) */
@@ -50,7 +50,7 @@ const AboveForm = styled.div`
     }`;
 
 //Aleft will hold the logo, webname, and motto
-const Aleft = styled.div`
+export const Aleft = styled.div`
     position: relative;
 
     /* Extra small devices (phones, 600px and down) */
@@ -64,7 +64,7 @@ const Aleft = styled.div`
 }`;
 
 //this is the logo
-const ALogo = styled.img`
+export const ALogo = styled.img`
     position: relative;
     width: 8em;
     height: 7.8rem;
@@ -75,7 +75,7 @@ const ALogo = styled.img`
 `;
 
 //this is the logo
-const TopLogo = styled.img`
+export const TopLogo = styled.img`
     position: relative;
     width: 8em;
     height: 7.8rem;
@@ -85,7 +85,7 @@ const TopLogo = styled.img`
     margin: auto;
 `;
 //webname
-const WebName = styled.h1`
+export const WebName = styled.h1`
     font-size: 2.5rem;
     background-color: #391F59;
     display:flex;
@@ -121,7 +121,7 @@ const WebName = styled.h1`
     }`;
 
 //motto
-const Motto = styled.h4`
+export const Motto = styled.h4`
     font-size: .85rem;
     position: relative;
     text-align: center;
@@ -139,7 +139,7 @@ const Motto = styled.h4`
 
 
 //container for the form
-const BoxContainer = styled.div`
+export const BoxContainer = styled.div`
     width: 400px;
     min-height: 550px;
     display:flex;
@@ -154,7 +154,7 @@ const BoxContainer = styled.div`
 `;
 
 //top container contains the backdrop and the header container
-const TopContainer = styled.div`
+export const TopContainer = styled.div`
     width: 140%;
     height:155px;
     display: flex;
@@ -167,7 +167,7 @@ const TopContainer = styled.div`
 `;
 
 //backdrop is the purple teardrop in the form, uses the framer-motion library to animate
-const BackDrop = styled(motion.div)`
+export const BackDrop = styled(motion.div)`
     width: 140%;
     height: 550px;
     position: absolute;
@@ -184,7 +184,7 @@ const BackDrop = styled(motion.div)`
 `;
 
 //contains the welcome text at the top of the form
-const HeaderContainer = styled.div`
+export const HeaderContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -192,7 +192,7 @@ const HeaderContainer = styled.div`
     top:90px;
 `;
 //self-explanatory
-const HeaderText = styled.h2`
+export const HeaderText = styled.h2`
     font-size: 28.6px;
     font-weight: 500;
     line-height: 1.24;
@@ -203,7 +203,7 @@ const HeaderText = styled.h2`
 `;
 
 //self-explanatory
-const SmallText = styled.h5`
+export const SmallText = styled.h5`
     color: white;
     font-size: 13px;
     font-weight: 500;
@@ -211,7 +211,7 @@ const SmallText = styled.h5`
 `;
 
 //contains the input fields and buttons for the login/signup forms
-const InnerContainer = styled.div`
+export const InnerContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -219,7 +219,7 @@ const InnerContainer = styled.div`
 `;
 
 //this is what allows the teardrop to drop down and go back up again
-const backdropVariants = {
+export const backdropVariants = {
     expanded: {
         width: "233%",
         height: "1500px",
@@ -238,7 +238,7 @@ const backdropVariants = {
 
 //framer-motion stuff
 //a higher stiffness will make the teardrop rebound more when it collapses
-const expandingTransition = {
+export const expandingTransition = {
     type: "spring",
     duration: 2.3,
     stiffness: 35,

@@ -11,6 +11,7 @@ const {
   unfollowUser,
   uploadProfilePic,
   mailForEmailVerification,
+  verifyUser,
   mailForResetPassword,
   searchUser,
   getUserProfile
@@ -26,10 +27,9 @@ router.put('/:id/follow', followUser)
 router.put('/:id/unfollow', unfollowUser)
 router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic);
 router.post('/confirm', mailForEmailVerification)
+router.post('/verify/:id', verifyUser)
 router.post('/reset', mailForResetPassword)
 router.post('/search', searchUser)
-
-// TODO
 router.get('/:username', getUserProfile)
 
 

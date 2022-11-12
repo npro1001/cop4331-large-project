@@ -113,6 +113,12 @@ export function SignupForm(props) {
         
         if (passvalid && emailvalid) { // && !isError) {
             dispatch(register(userData))
+            .then( (res) => {
+                console.log(res)
+                if(!(res.meta.requestStatus == "rejected")) {
+                    console.log("All g... redirect to email sent")
+                }
+            })
             // window.location.reload(false); // reload page to have user sign in
         }
 

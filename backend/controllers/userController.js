@@ -22,8 +22,8 @@ const registerUser = asyncHandler(async (req, res) => {
   }
   
   // Check if user exists
-  const emailExists = await User.findOne({ email })
-  const usernameExists = await User.findOne({ username })
+  const emailExists = await User.findOne({ email: {$regex: new RegExp("^" + email + "$", "i") }})
+  const usernameExists = await User.findOne({ username: {$regex: new RegExp("^" + username + "$", "i") }})
 
   if (emailExists && usernameExists) {
     res.status(400)
@@ -166,7 +166,7 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
         throw new Error('Please upload a file');
     }
 
-    //const {id} = req.body
+    const {id} = req.body
     const user = await User.findById(req.body.id)
     var img = fs.readFileSync(req.file.path);
     
@@ -187,7 +187,7 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
 
     if (user.profilePicture) {
         res.status(201).json({
-          _id: user.id,
+          _id: post.id,
           profilePicture: user.profilePicture,
         })
         await unlinkAsync(req.file.path);
@@ -266,33 +266,68 @@ const generateToken = (id) => {
 const mailForEmailVerification = asyncHandler(async (req, res) => {
 	try {
 		const { email } = req.body;
+		const user = await User.findOne({ email })
 
-		const user = await User.findOne({ email });
-		console.log(user);
 		if (user) {
 			// send a verification email, if this user is not a confirmed email
 			if (!user.isConfirmed) {
 				// send the mail
-				await sendMail(user._id, email, 'email verification');
+				await sendMail(user._id, email, 'email verification')
 				res.status(201).json({
 					message: `Sent a verification email to ${email}`
 				});
-        //TODO: when the user clicks the email link, isConfirmed needs to be changed to true
 			} else {
-				res.status(400);
-				throw new Error('User already confirmed');
+				res.status(400)
+				throw new Error('User already confirmed')
 			}
 		}
 	} catch (error) {
-		console.log(error);
-		res.status(401);
-		throw new Error('Could not send the mail. Please retry.');
+		console.log(error)
+		res.status(401)
+		throw new Error('Could not send the mail. Please retry.')
 	}
 });
 
 // @desc verify users account via email
-// @route POST /api/users/confirm
+// @route POST /api/users/verify/:id
 // @access PUBLIC
+const verifyUser = asyncHandler(async (req, res) => {
+  const {token} = req.params
+  
+  // Check for token
+  if (!token) {
+    return res.status(422).json({message: "Missing verification token"})
+  }
+
+  // Verify token from the URL
+  let payload = null
+  try {
+    payload = jwt.verify(
+      token,
+      process.env.JWT_EMAIL_TOKEN_SECRET
+    );
+  } catch (err) {
+    return res.status(500).send(err)
+  }
+
+  try {
+    // Find user with matching id
+    const user = await User.findOne({_id: payload.ID}).exec()
+    if(!user) {
+      return res.status(404).send({message: "User does not exist"})
+    }
+
+    // If user found from token, verify them
+    user.isConfirmed = true
+    await user.save()
+
+    return res.status(200).json({mesagge: "Account verified"})
+
+  } catch (error) {
+    return res.status(500).send(err)
+  }
+
+})
 
 
 
@@ -384,6 +419,7 @@ module.exports = {
   uploadProfilePic,
   followUser,
   unfollowUser,
+  verifyUser,
   mailForEmailVerification,
   mailForResetPassword,
   searchUser,

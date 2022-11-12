@@ -6,11 +6,16 @@ const API_URL = '/api/users/'
 
 // Register user
 const register = async (userData) => {
-    const response = await axios.post(API_URL, userData)
-    if(response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
+    const registerResponse = await axios.post(API_URL, userData)
+    if(registerResponse.data) {
+        const verifyResponse = await axios.post(API_URL + 'confirm', userData)
+        if(verifyResponse.data) {
+            // localStorage.setItem('user', JSON.stringify(response.data)) 
+            // Idk ab this... should only be in login
+            return verifyResponse.data
+        }
     }
-    return response.data
+    return registerResponse.data
 }
 
 // Login user

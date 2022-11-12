@@ -166,7 +166,7 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
         throw new Error('Please upload a file');
     }
 
-    const {id} = req.body
+    //const {id} = req.body
     const user = await User.findById(req.body.id)
     var img = fs.readFileSync(req.file.path);
     
@@ -187,7 +187,7 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
 
     if (user.profilePicture) {
         res.status(201).json({
-          _id: post.id,
+          _id: user.id,
           profilePicture: user.profilePicture,
         })
         await unlinkAsync(req.file.path);

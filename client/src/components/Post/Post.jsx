@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import './Post.css'
 import Comment from '../../img/comment.png'
 import Share from '../../img/share.png'
@@ -6,8 +6,11 @@ import Heart from '../../img/like.png'
 import NotLike from '../../img/notlike.png'
 import { useSelector } from 'react-redux'
 import defaultPFP from '../../img/default-profile.png'
+import ImageModal from '../imageModal/ImageModal'
 
 const Post = ({data}) => {
+
+    const [modalOpened, setModalOpened] = useState(false)
     
     const {user} = useSelector((state) => state.auth);
     return (
@@ -27,7 +30,7 @@ const Post = ({data}) => {
             </div>
 
             
-            <img src={data.img} alt="" onClick="" />
+            <img src={data.img} alt="" onClick={() => setModalOpened(true)} />
 
             <div className="postReact">
                 <img src={data.liked?Heart: NotLike} alt="" />
@@ -37,7 +40,8 @@ const Post = ({data}) => {
 
             <span style={{color: "var(--gray)", fontSize: '13px'}}>{data.likes} likes</span>
             
-
+            <ImageModal modalOpened={modalOpened}
+                    setModalOpened={setModalOpened} />
 
         </div>
     )

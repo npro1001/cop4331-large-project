@@ -17,10 +17,10 @@ function ProfileModal({modalOpened, setModalOpened}) {
                 <h3>Your info</h3>
 
                 <div>
-                    <input type="text" className="infoInput" name="FirstName" placeholder="First Name"/>
+                    <input type="text" className="infoInput" name="Name" placeholder="Name"/>
 
 
-                    <input type="text" className="infoInput" name="LastName" placeholder="Last Name"/>
+                    <input type="text" className="infoInput" name="Username" placeholder="Username"/>
                 </div>
 
                 <div>

@@ -26,9 +26,9 @@ export function LoginForm(props) {
     // Runs initially when LoginForm function is called
     useEffect(() => {
         // Check for error
-        if(isError) {
-            toast.error(message)
-        }
+        // if(isError) {
+        //     toast.error(message)
+        // }
 
         // If registered or logged in
         if(isSuccess || user) {
@@ -55,9 +55,11 @@ export function LoginForm(props) {
         }
 
         dispatch(login(userData))
-        .then( () => {
-            navigate('/Home', {replace: true})
-            // navigate('/testpage', {replace: true})
+        .then( (res) => {
+            if(!(res.meta.requestStatus == "rejected")) {
+                navigate('/home', {replace: true})
+                // navigate('/testpage', {replace: true})
+            }
         })
     }
 
@@ -75,8 +77,11 @@ export function LoginForm(props) {
             <MutedLink href="#">Forgot your password?</MutedLink>
             <Marginer direction="vertical" margin={25}/>
             <SubmitButton type="submit"> Login</SubmitButton>
-            <Marginer direction="vertical" margin={25}/>
+            <Marginer direction="vertical" margin={15}/>
+            <span style={{ display: !isError ? "none" : "inline-flex", color: "red", alignSelf: "flex-end", margin: "auto" }}>{message}</span>
+            <Marginer direction="vertical" margin={15}/>
             <MutedLink>New to the club? <BoldLink href="#"  onClick={switchToSignup}>Sign up here.</BoldLink>
+            <Marginer direction="vertical" margin={25}/>
             </MutedLink>
         </FormContainer>
     </BoxContainer>)

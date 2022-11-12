@@ -82,17 +82,25 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // TO DO: Add && user.isConfirmed
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      username: user.username,
-      token: generateToken(user._id),
-      isConfirmed: user.isConfirmed,
-      about: user.about, 
-      followers: user.followers, 
-      following: user.following
-    })
+
+    // Ensure the account has been verified
+    if(!user.isConfirmed) {
+      res.status(403).json({message: "Verify your account"})
+    }
+    else {
+      res.status(200).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        token: generateToken(user._id),
+        isConfirmed: user.isConfirmed,
+        about: user.about, 
+        followers: user.followers, 
+        following: user.following
+      })
+    }
+
   } else {
     res.status(400)
     throw new Error('Invalid credentials')
@@ -267,10 +275,7 @@ const mailForEmailVerification = asyncHandler(async (req, res) => {
 				// send the mail
 				await sendMail(user._id, email, 'email verification');
 				res.status(201).json({
-					id: user._id,
-          name: user.name,
-					email: user.email,
-					isConfirmed: user.isConfirmed,
+					message: `Sent a verification email to ${email}`
 				});
         //TODO: when the user clicks the email link, isConfirmed needs to be changed to true
 			} else {
@@ -284,6 +289,11 @@ const mailForEmailVerification = asyncHandler(async (req, res) => {
 		throw new Error('Could not send the mail. Please retry.');
 	}
 });
+
+// @desc verify users account via email
+// @route POST /api/users/confirm
+// @access PUBLIC
+
 
 
 // @desc send a mail with the link to reset password
@@ -346,9 +356,7 @@ const searchUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/:username
 // @access  Public
 const getUserProfile = asyncHandler(async (req, res) => {
-  // const id = req.params.id;
-  // const { currentUserId } = req.body;
-  
+
   const username = req.params.username
 
   try { 

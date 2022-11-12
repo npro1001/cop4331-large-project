@@ -1,11 +1,27 @@
 .Home{
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.Home>PostSide{
+    margin-top: 2.7rem;
+}
+
+.Top{
+    display: flex;
+    flex-direction: row;
+    margin-right: 9rem;
+    margin-left: 9rem;
+    gap: 30.7rem;
+}
+
+.Bottom{
+    position: relative;
     display: grid;
     grid-template-columns: 28rem auto;
     gap: 1rem;
     margin-right: 9rem;
 }
 
-.Home>PostSide{
-    margin-top: 2.7rem;
-}

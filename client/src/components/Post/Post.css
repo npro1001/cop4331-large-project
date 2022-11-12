@@ -5,6 +5,8 @@
     background-color: white;
     border-radius: 1rem;
     gap: 1rem;
+    width: 95%;
+    align-self: center;
 }
 
 .Post>img{

@@ -12,7 +12,7 @@ import { UilMessage } from '@iconscout/react-unicons'
 const ProfileSide = () => {
     return (
         <div className="ProfileSide">
-            <div className="navIcons">
+            {/* <div className="navIcons">
                 <Link to='../Home'>
                     <UilHome className="home"></UilHome>
                 </Link>
@@ -20,7 +20,7 @@ const ProfileSide = () => {
                 <UilBell className="bell"></UilBell>
                 <UilMessage className="message"></UilMessage>
             </div> 
-            <LogoSearch/>
+            <LogoSearch/> */}
             <ProfileCard location="homePage"/>
             <SongRecsCard/>
         </div>

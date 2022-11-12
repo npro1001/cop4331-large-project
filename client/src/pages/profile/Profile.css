@@ -1,13 +1,28 @@
 .Profile{
     position: relative;
-    display: grid;
-    grid-template-columns: 28rem auto;
-    gap: 2rem;
-    margin-right: 9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .Profile-center{
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.Top{
+    display: flex;
+    flex-direction: row;
+    margin-right: 9rem;
+    margin-left: 9rem;
+    gap: 30.7rem;
+}
+
+.Bottom{
+    position: relative;
+    display: grid;
+    grid-template-columns: 28rem auto;
+    gap: 1rem;
+    margin-right: 9rem;
 }

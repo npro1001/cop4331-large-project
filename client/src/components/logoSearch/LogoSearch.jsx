@@ -10,15 +10,15 @@ const SearchContainer = styled.div`
     position: absolute;
     background: white;
     height: 20%;
-    width: 13%;
+    width: 24%;
     z-index:10;
     align-self: center;
     border-radius:10px;
     overflow-y: auto;
     overflow-x: hidden;
     display:none;
-    top: 80px;
-    left:220px;
+    top: 40px;
+    left:150px;
     filter: drop-shadow(0 0 0.3rem black);
 
 `

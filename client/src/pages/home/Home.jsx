@@ -18,7 +18,6 @@ const Home = () => {
         <div className="Home">
             <div></div>
             <div className='Top'>
-                
                 <div className="navIcons">
                     <Link to='../Home'>
                         <UilHome className="home"></UilHome>
@@ -28,8 +27,6 @@ const Home = () => {
                     <UilBell className="bell"></UilBell>
                     <UilMessage className="message"></UilMessage>
                 </div> 
-             
-                
             </div>
             <div></div>
             <div className='Bottom'>

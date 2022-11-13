@@ -16,6 +16,7 @@ import Logo from '../../img/logo.png'
 const Home = () => {
     return (
         <div className="Home">
+            <div></div>
             <div className='Top'>
                 
                 <div className="navIcons">
@@ -30,7 +31,7 @@ const Home = () => {
              
                 
             </div>
-
+            <div></div>
             <div className='Bottom'>
                 <ProfileSide/>
                 <PostSide/>

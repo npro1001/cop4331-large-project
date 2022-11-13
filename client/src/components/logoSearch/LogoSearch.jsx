@@ -22,6 +22,18 @@ const SearchContainer = styled.div`
     filter: drop-shadow(0 0 0.3rem black);
 
 `
+
+// const SearchBar = styled.input`
+//     position: absolute;
+//     width: 100%;
+//     padding: 0.5em;
+//     margin: 0.5em;
+//     /* color: ${props => props.inputColor || "palevioletred"}; */
+//     /* background: papayawhip; */
+//     border: none;
+//     border-radius: 3px;
+// `
+
 const List = styled.ul`
   list-style: none;
 

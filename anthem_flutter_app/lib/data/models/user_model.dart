@@ -12,6 +12,7 @@ class User {
   List<dynamic> followers;
   List<dynamic> following;
   List<dynamic> comments;
+  String token; //?
   // final DateTime createdAt;
   // final String anthem; // favorite song
 
@@ -26,5 +27,6 @@ class User {
       required this.likes,
       required this.followers,
       required this.following,
-      required this.comments});
+      required this.comments,
+      required this.token});
 }

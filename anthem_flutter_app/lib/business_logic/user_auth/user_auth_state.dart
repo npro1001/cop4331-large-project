@@ -2,31 +2,29 @@
 part of 'user_auth_bloc.dart';
 
 @immutable
-abstract class UserAuthState {
+abstract class UserAuthState extends Equatable {
   // String token;
-  const UserAuthState(String token, Object error);
+  // const UserAuthState(String token, Object error);
+  @override
+  List<Object> get props => [];
 }
 
+// Waiting to persist or delete a token
 class AuthLoading extends UserAuthState {
-  const AuthLoading(super.token, super.error);
+  // const AuthLoading(super.token, super.error);
 }
 
+// Waiting to see if user is authenticated/not upon app start
+class AuthAppStart extends UserAuthState {
+  // const AuthUninitialized(super.token, super.error);
+}
+
+// Successfully authenticated
 class AuthTrue extends UserAuthState {
-  const AuthTrue(super.token, super.error);
+  // const AuthTrue(super.token, super.error);
 }
 
-class AuthFailed extends UserAuthState {
-  const AuthFailed(super.token, super.error);
+// Not authenticated
+class AuthFalse extends UserAuthState {
+  // const AuthFailed(super.token, super.error);
 }
-
-// class UserAuthInitial extends UserAuthState {}
-
-
-// final bool isLoading;
-//   final bool isAuthorized;
-//   final bool isFailed;
-
-//   UserAuthState(this.isLoading, this.isAuthorized, this.isFailed);
-
-//   @override
-//   List<Object> get props => [isLoading, isAuthorized, isFailed];

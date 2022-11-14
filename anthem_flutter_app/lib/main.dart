@@ -1,4 +1,5 @@
 import 'package:anthem_flutter_app/business_logic/user_auth/user_auth_bloc.dart';
+import 'package:anthem_flutter_app/data/repositories/user_repo.dart';
 import 'package:anthem_flutter_app/presentation/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   //   //! This will goes somewhere linked to a Bloc
-  // final storage = SecureStorage();
+  final UserRepository userRepo = UserRepository();
 
   final AppRouter _appRouter = AppRouter();
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserAuthBloc>(create: (BuildContext context) {
-          return UserAuthBloc();
+          return UserAuthBloc(userRepo: userRepo);
         }),
         // BlocProvider<SomeGlobalBloc2>(create: (BuildContext context) {
         //   return SomeGlobalBloc2();

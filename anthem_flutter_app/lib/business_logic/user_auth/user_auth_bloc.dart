@@ -1,4 +1,6 @@
+import 'package:anthem_flutter_app/data/repositories/user_repo.dart';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
 
@@ -6,28 +8,45 @@ part 'user_auth_event.dart';
 part 'user_auth_state.dart';
 
 class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
-  // UserAuthBloc(super.initialState);
+  final UserRepository userRepo;
+
+  UserAuthBloc({required this.userRepo})
+      : assert(userRepo != null),
+        super(AuthAppStart());
+
+  // @override
+  // UserAuthState get initialState => AuthAppStart();
+
   @override
-  UserAuthBloc get initialState => UserAuthBloc();
-
-  // final SecureStorageRepo repository;
-
-  Stream mapEventToState(event) async* {
-    if (event is RegisterEvent) {
-      yield AuthLoading('', event); //This aint right
-      try {
-        // Do Shit
-      } catch (error) {
-        yield AuthFailed("", error);
+  Stream<UserAuthState> mapEventToState(
+    UserAuthState currentState,
+    UserAuthEvent event,
+  ) async* {
+    if (event is AppStartedEvent) {
+      final bool hasToken = await userRepo.hasToken();
+      if (hasToken) {
+        yield AuthTrue();
+      } else {
+        yield AuthFalse();
       }
     }
     if (event is LoginEvent) {
-      yield AuthLoading('', event);
-      try {
-        // Do Shit
-      } catch (error) {
-        yield AuthFailed("", error);
-      }
+      yield AuthLoading();
+      // Do other logic for API
+      await userRepo.persistToken(event.token);
+      yield AuthTrue();
+    }
+    if (event is RegisterEvent) {
+      yield AuthLoading();
+      // Do other logic for API
+      await userRepo.persistToken(event.token);
+      yield AuthTrue();
+    }
+    if (event is LogoutEvent) {
+      yield AuthLoading();
+      // Do other logic for API
+      await userRepo.deleteToken();
+      yield AuthFalse();
     }
   }
 }

@@ -15,12 +15,26 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         child: Center(
-            child: MaterialButton(
-          child: Text('logout'),
-          onPressed: () {
-            userAuthBloc.add(LoggedOutEvent()); // add = dispatch
-            Navigator.of(context).pushNamed('/login');
-          },
+            child: Column(
+          children: [
+            BlocBuilder<UserAuthBloc, UserAuthState>(
+              bloc: userAuthBloc,
+              builder: (context, state) {
+                if (state is AuthTrue) {
+                  return Text(state.user.toString());
+                } else {
+                  return Text("no user");
+                }
+              },
+            ),
+            MaterialButton(
+              child: Text('logout'),
+              onPressed: () {
+                userAuthBloc.add(LoggedOutEvent()); // add = dispatch
+                Navigator.of(context).pushNamed('/login');
+              },
+            ),
+          ],
         )),
       ),
     );

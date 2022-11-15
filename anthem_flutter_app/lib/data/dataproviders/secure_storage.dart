@@ -1,3 +1,4 @@
+import 'package:anthem_flutter_app/data/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:ui';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,6 +8,7 @@ class SecureStorage {
 
   // Might need to add more?
   // Should these be initialized as null?
+  final String _keyUserModel = 'user';
   final String _keyIsLoggedIn = 'false';
   final String _keyUsername = 'username';
   final String _keyPassword = 'password';
@@ -16,6 +18,15 @@ class SecureStorage {
   final String _keySpotifyRefreshToken = 'refreshToken';
   final String _keySpotifyExpireTime = 'expireTime';
   final String _keySpotifyTimestamp = 'timestamp';
+
+  //! UserModel
+  Future<String?> getUser() async {
+    return await storage.read(key: _keyUserModel);
+  }
+
+  Future setUser(User model) async {
+    await storage.write(key: _keyUserModel, value: User.serialize(model));
+  }
 
   //! isLoggedIn
   Future setIsLoggedIn(String status) async {
@@ -60,6 +71,10 @@ class SecureStorage {
 
   Future<String?> getToken() async {
     return await storage.read(key: _keyToken);
+  }
+
+  Future deleteToken() async {
+    await storage.delete(key: _keyToken);
   }
 
   //! Spotify Access Token

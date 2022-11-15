@@ -1,5 +1,7 @@
 import '../dataproviders/secure_storage.dart';
 import '../models/user_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class UserRepository {
   final SecureStorage storage = SecureStorage();
@@ -15,7 +17,7 @@ class UserRepository {
   }
 
   Future deleteToken() async {
-    // await storage.
+    await storage.deleteToken();
   }
 
   Future<bool> hasToken() async {
@@ -28,8 +30,39 @@ class UserRepository {
     }
   }
 
+  Future<User> getUser() async {
+    String? userJson = null;
+    userJson = await storage.getUser();
+    User user = User.deserialize(userJson!); //! ! is not-null force
+    return user;
+  }
+
   //! API shit
-  Future authenticate(String username, String password) async {
-    // talk to express
+  // Future authenticate(String username, String password) async {
+  //   // talk to express
+  // }
+
+  Future<User> authenticate(String username, String password) async {
+    final response = await http.post(
+        Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+        body: <String, String>{
+          'username': username,
+          'password': password,
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      User user = User.fromJson(jsonDecode(response.body));
+      persistToken(user.token);
+      return user;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
   }
 }

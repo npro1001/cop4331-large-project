@@ -21,6 +21,8 @@ class AuthAppStart extends UserAuthState {
 
 // Successfully authenticated
 class AuthTrue extends UserAuthState {
+  User user;
+  AuthTrue({required this.user});
   // const AuthTrue(super.token, super.error);
 }
 

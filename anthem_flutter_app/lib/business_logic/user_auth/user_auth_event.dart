@@ -18,11 +18,11 @@ class AppStartedEvent extends UserAuthEvent {
 
 // Dispatched on successfuly login
 class LoggedInEvent extends UserAuthEvent {
-  final String token;
-  LoggedInEvent({required this.token}) : super([token]);
+  final User user;
+  LoggedInEvent({required this.user}) : super([user]);
 
   @override
-  String toString() => 'LoggedInEvent {token: $token}';
+  String toString() => 'LoggedInEvent {User: $user}';
 
   @override
   // TODO: implement props

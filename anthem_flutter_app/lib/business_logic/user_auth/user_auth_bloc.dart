@@ -1,3 +1,4 @@
+import 'package:anthem_flutter_app/data/models/user_model.dart';
 import 'package:anthem_flutter_app/data/repositories/user_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -25,7 +26,8 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
   ) async {
     final bool hasToken = await userRepo.hasToken();
     if (hasToken) {
-      emit(AuthTrue());
+      User user = await userRepo.getUser();
+      emit(AuthTrue(user: user));
     } else {
       emit(AuthFalse());
     }
@@ -37,8 +39,10 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
   ) async {
     emit(AuthLoading());
     // Do other logic for API
-    await userRepo.persistToken(event.token);
-    emit(AuthTrue());
+    User user =
+        await userRepo.authenticate(event.user.username, event.user.password);
+    // await userRepo.persistToken(event.token);
+    emit(AuthTrue(user: user));
   }
 
   void _onLoggedOutEvent(
@@ -55,13 +59,12 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
     RegisteredEvent event,
     Emitter<UserAuthState> emit,
   ) async {
-    emit(AuthLoading());
-    // Do other logic for API
-    await userRepo.persistToken(event.token);
-    emit(AuthTrue());
+    //! Need to be fixed
+    emit(AuthFalse());
   }
+}
 
   // @override
   // UserAuthState get initialState => AuthAppStart();
 
-}
+

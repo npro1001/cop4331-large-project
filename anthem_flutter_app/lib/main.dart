@@ -1,3 +1,4 @@
+import 'package:anthem_flutter_app/business_logic/login/login_bloc.dart';
 import 'package:anthem_flutter_app/business_logic/user_auth/user_auth_bloc.dart';
 import 'package:anthem_flutter_app/data/repositories/user_repo.dart';
 import 'package:anthem_flutter_app/presentation/router/app_router.dart';
@@ -10,14 +11,24 @@ import 'business_logic/user_auth/user_auth_bloc.dart';
 import 'data/dataproviders/secure_storage.dart';
 
 void main() async {
-  runApp(MyApp());
+  runApp(App(userRepo: UserRepository()));
 }
 
-class MyApp extends StatelessWidget {
-  //   //! This will goes somewhere linked to a Bloc
-  final UserRepository userRepo = UserRepository();
+class App extends StatefulWidget {
+  final UserRepository userRepo;
+  // final AppRouter _appRouter = AppRouter();
 
-  final AppRouter _appRouter = AppRouter();
+  App({Key? key, required this.userRepo}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  // UserAuthBloc userAuthBloc;
+  UserRepository get userRepo => widget.userRepo;
+
+  final AppRouter _appRouter = AppRouter(userRepo: UserRepository());
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +37,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserAuthBloc>(create: (BuildContext context) {
           return UserAuthBloc(userRepo: userRepo);
         }),
-        // BlocProvider<SomeGlobalBloc2>(create: (BuildContext context) {
-        //   return SomeGlobalBloc2();
-        // }),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -39,4 +47,17 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  // @override
+  // void initState() {
+  //   userAuthBloc = UserAuthBloc(userRepo: userRepo);
+  //   userAuthBloc.close(AppStarted());
+  //   super.initState();
+  // }
+
+  // @override
+  // void dispose() {
+  //   _appRouter.dispose();
+  //   super.dispose();
+  // }
 }

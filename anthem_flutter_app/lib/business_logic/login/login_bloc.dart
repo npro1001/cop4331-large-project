@@ -38,7 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final token =
             await userRepo.authenticate(event.username, event.password);
 
-        userAuthBloc.add(AuthTrue(token: token)); // add = dispatch
+        userAuthBloc.add(LoggedInEvent(token: token)); // add = dispatch
         yield LoginInitial();
       } catch (error) {
         yield LoginFailure(error: error.toString());

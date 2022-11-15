@@ -17,12 +17,12 @@ class AppStartedEvent extends UserAuthEvent {
 }
 
 // Dispatched on successfuly login
-class LoginEvent extends UserAuthEvent {
+class LoggedInEvent extends UserAuthEvent {
   final String token;
-  LoginEvent({required this.token}) : super([token]);
+  LoggedInEvent({required this.token}) : super([token]);
 
   @override
-  String toString() => 'LoginEvent {token: $token}';
+  String toString() => 'LoggedInEvent {token: $token}';
 
   @override
   // TODO: implement props
@@ -30,9 +30,9 @@ class LoginEvent extends UserAuthEvent {
 }
 
 // Dispatched on successful logout
-class LogoutEvent extends UserAuthEvent {
+class LoggedOutEvent extends UserAuthEvent {
   @override
-  String toString() => 'LogoutEvent';
+  String toString() => 'LoggedOutEvent';
 
   @override
   // TODO: implement props
@@ -40,12 +40,12 @@ class LogoutEvent extends UserAuthEvent {
 }
 
 // Dispatched on successful register
-class RegisterEvent extends UserAuthEvent {
+class RegisteredEvent extends UserAuthEvent {
   final String token;
-  RegisterEvent({required this.token}) : super([token]);
+  RegisteredEvent({required this.token}) : super([token]);
 
   @override
-  String toString() => 'RegisterEvent {token: $token}';
+  String toString() => 'RegisteredEvent {token: $token}';
 
   @override
   // TODO: implement props

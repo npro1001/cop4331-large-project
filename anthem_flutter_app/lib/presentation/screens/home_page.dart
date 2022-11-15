@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
             child: MaterialButton(
           child: Text('logout'),
           onPressed: () {
-            userAuthBloc.add(LogoutEvent()); // add = dispatch
+            userAuthBloc.add(LoggedOutEvent()); // add = dispatch
           },
         )),
       ),

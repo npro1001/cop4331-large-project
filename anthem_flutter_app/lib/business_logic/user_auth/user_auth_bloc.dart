@@ -30,19 +30,19 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
         yield AuthFalse();
       }
     }
-    if (event is LoginEvent) {
+    if (event is LoggedInEvent) {
       yield AuthLoading();
       // Do other logic for API
       await userRepo.persistToken(event.token);
       yield AuthTrue();
     }
-    if (event is RegisterEvent) {
+    if (event is RegisteredEvent) {
       yield AuthLoading();
       // Do other logic for API
       await userRepo.persistToken(event.token);
       yield AuthTrue();
     }
-    if (event is LogoutEvent) {
+    if (event is LoggedOutEvent) {
       yield AuthLoading();
       // Do other logic for API
       await userRepo.deleteToken();

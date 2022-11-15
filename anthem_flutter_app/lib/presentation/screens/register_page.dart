@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

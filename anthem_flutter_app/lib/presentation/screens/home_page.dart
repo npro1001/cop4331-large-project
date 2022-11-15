@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
           child: Text('logout'),
           onPressed: () {
             userAuthBloc.add(LoggedOutEvent()); // add = dispatch
+            Navigator.of(context).pushNamed('/login');
           },
         )),
       ),

@@ -1,7 +1,4 @@
 // ignore_for_file: unnecessary_null_comparison
-
-import 'dart:html';
-
 import 'package:anthem_flutter_app/business_logic/user_auth/user_auth_bloc.dart';
 import 'package:anthem_flutter_app/data/repositories/user_repo.dart';
 import 'package:bloc/bloc.dart';
@@ -21,28 +18,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required this.userAuthBloc,
   })  : assert(userRepo != null),
         assert(userAuthBloc != null),
-        super(LoginInitial());
+        super(LoginInitial()) {
+    on<LoginButtonPressed>(_onLoginButtonPressed);
+  }
+
+  void _onLoginButtonPressed(
+    LoginButtonPressed event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(LoginLoading());
+    try {
+      // To be implemented
+      final token = await userRepo.authenticate(event.username, event.password);
+      userAuthBloc.add(LoggedInEvent(token: token)); // add = dispatch
+      emit(LoginInitial());
+    } catch (error) {
+      emit(LoginFailure(error: error.toString()));
+    }
+  }
 
   @override
   LoginState get initialState => LoginInitial();
-
-  @override
-  Stream<LoginState> mapEventToState(
-    LoginState currentState,
-    LoginEvent event,
-  ) async* {
-    if (event is LoginButtonPressed) {
-      yield LoginLoading();
-      try {
-        // To be implemented
-        final token =
-            await userRepo.authenticate(event.username, event.password);
-
-        userAuthBloc.add(LoggedInEvent(token: token)); // add = dispatch
-        yield LoginInitial();
-      } catch (error) {
-        yield LoginFailure(error: error.toString());
-      }
-    }
-  }
 }

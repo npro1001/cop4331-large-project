@@ -12,41 +12,56 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
 
   UserAuthBloc({required this.userRepo})
       : assert(userRepo != null),
-        super(AuthAppStart());
+        super(AuthAppStart()) {
+    on<AppStartedEvent>(_onAppStartedEvent);
+    on<RegisteredEvent>(_onRegisteredEvent);
+    on<LoggedOutEvent>(_onLoggedOutEvent);
+    on<LoggedInEvent>(_onLoggedInEvent);
+  }
+
+  void _onAppStartedEvent(
+    AppStartedEvent event,
+    Emitter<UserAuthState> emit,
+  ) async {
+    final bool hasToken = await userRepo.hasToken();
+    if (hasToken) {
+      emit(AuthTrue());
+    } else {
+      emit(AuthFalse());
+    }
+  }
+
+  void _onLoggedInEvent(
+    LoggedInEvent event,
+    Emitter<UserAuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    // Do other logic for API
+    await userRepo.persistToken(event.token);
+    emit(AuthTrue());
+  }
+
+  void _onLoggedOutEvent(
+    LoggedOutEvent event,
+    Emitter<UserAuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    // Do other logic for API
+    await userRepo.deleteToken();
+    emit(AuthFalse());
+  }
+
+  void _onRegisteredEvent(
+    RegisteredEvent event,
+    Emitter<UserAuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    // Do other logic for API
+    await userRepo.persistToken(event.token);
+    emit(AuthTrue());
+  }
 
   // @override
   // UserAuthState get initialState => AuthAppStart();
 
-  @override
-  Stream<UserAuthState> mapEventToState(
-    UserAuthState currentState,
-    UserAuthEvent event,
-  ) async* {
-    if (event is AppStartedEvent) {
-      final bool hasToken = await userRepo.hasToken();
-      if (hasToken) {
-        yield AuthTrue();
-      } else {
-        yield AuthFalse();
-      }
-    }
-    if (event is LoggedInEvent) {
-      yield AuthLoading();
-      // Do other logic for API
-      await userRepo.persistToken(event.token);
-      yield AuthTrue();
-    }
-    if (event is RegisteredEvent) {
-      yield AuthLoading();
-      // Do other logic for API
-      await userRepo.persistToken(event.token);
-      yield AuthTrue();
-    }
-    if (event is LoggedOutEvent) {
-      yield AuthLoading();
-      // Do other logic for API
-      await userRepo.deleteToken();
-      yield AuthFalse();
-    }
-  }
 }

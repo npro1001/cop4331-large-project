@@ -83,5 +83,6 @@ class _LoginFormState extends State<LoginForm> {
       username: _usernameController.text,
       password: _passwordController.text,
     ));
+    Navigator.of(context).pushNamed('/');
   }
 }

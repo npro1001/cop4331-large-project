@@ -8,41 +8,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
 
-part 'signup_event.dart';
-part 'signup_state.dart';
+part 'register_event.dart';
+part 'register_state.dart';
 
-class SignupBloc extends Bloc<SignupEvent, SignupState> {
+class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository userRepo;
   final UserAuthBloc userAuthBloc;
 
-  SignupBloc({
+  RegisterBloc({
     required this.userRepo,
     required this.userAuthBloc,
   })  : assert(userRepo != null),
         assert(userAuthBloc != null),
-        super(SignupInitial()) {
-    on<SignupButtonPressed>(_onSignupButtonPressed);
+        super(RegisterInitial()) {
+    on<RegisterButtonPressed>(_onRegisterButtonPressed);
   }
 
-  void _onSignupButtonPressed(
-    SignupButtonPressed event,
-    Emitter<SignupState> emit,
+  void _onRegisterButtonPressed(
+    RegisterButtonPressed event,
+    Emitter<RegisterState> emit,
   ) async {
-    emit(SignupLoading());
+    emit(RegisterLoading());
     try {
       // final User user =
       //     await userRepo.authenticate(event.username, event.password);
-      userAuthBloc.add(SignedInEvent(
+      userAuthBloc.add(RegisteredEvent(
           username: event.username,
           password: event.password)); // add = dispatch
-      emit(SignupInitial());
+      emit(RegisterInitial());
       // Navigator.of(context).pushNamed('/');
 
     } catch (error) {
-      emit(SignupFailure(error: error.toString()));
+      emit(RegisterFailure(error: error.toString()));
     }
   }
 
   @override
-  SignupState get initialState => SignupInitial();
+  RegisterState get initialState => RegisterInitial();
 }

@@ -1,15 +1,15 @@
-part of 'signup_bloc.dart';
+part of 'register_bloc.dart';
 
 @immutable
-abstract class SignupEvent extends Equatable {
-  const SignupEvent();
+abstract class RegisterEvent extends Equatable {
+  const RegisterEvent();
 }
 
-class SignupButtonPressed extends SignupEvent {
+class RegisterButtonPressed extends RegisterEvent {
   final String username;
   final String password;
 
-  const SignupButtonPressed({
+  const RegisterButtonPressed({
     required this.username,
     required this.password,
   });
@@ -19,7 +19,7 @@ class SignupButtonPressed extends SignupEvent {
 
   @override
   String toString() =>
-      'SignupButtonPressed {username: $username, password: $password}';
+      'RegisterButtonPressed {username: $username, password: $password}';
 }
 
 // Field X was completed Event... do this. (idk)

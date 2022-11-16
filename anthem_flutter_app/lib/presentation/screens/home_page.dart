@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
                 if (state is AuthTrue) {
                   return Text(state.user.name);
                 } else {
+                  Navigator.of(context).pushNamed('/login');
                   return Text("no user");
                 }
               },

@@ -56,10 +56,15 @@ class UserRepository {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
+      print("Request sent and 200 response");
+      print("asdasdasd");
       User user = User.fromJson(jsonDecode(response.body));
+      print(user.username);
       persistToken(user.token);
       return user;
     } else {
+      print("Request failed");
+
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load user');

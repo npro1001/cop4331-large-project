@@ -3,64 +3,75 @@ import 'dart:convert';
 
 class User {
   String id;
-  String username;
+  String name;
   String email;
-  String password;
-  bool isConfirmed;
-  String about;
-  String profilePicture;
-  List<dynamic> likes;
-  List<dynamic> followers;
-  List<dynamic> following;
-  List<dynamic> comments;
+  String username;
   String token; //?
+  bool isConfirmed;
+  // String about;
+  List<String> followers;
+  List<String> following; //<dynamic>?
+  // String profilePicture;
+  // List<dynamic> likes;
+  // String password;
+  // List<dynamic> comments;
   // final DateTime createdAt;
   // final String anthem; // favorite song
 
-  User(
-      {required this.id,
-      required this.username,
-      required this.email,
-      required this.password,
-      required this.isConfirmed,
-      required this.about,
-      required this.profilePicture,
-      required this.likes,
-      required this.followers,
-      required this.following,
-      required this.comments,
-      required this.token});
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.username,
+    required this.token,
+    required this.isConfirmed,
+    required this.followers,
+    required this.following,
+    // required this.about,
+    // required this.profilePicture,
+    // required this.likes,
+    // required this.password,
+    // required this.comments,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    var followersArray = json['followers'];
+    List<String> followersList = List<String>.from(followersArray);
+    var followingArray = json['following'];
+    List<String> followingList = List<String>.from(followingArray);
+
     return User(
       id: json['_id'],
-      username: json['username'],
+      name: json['name'],
       email: json['email'],
-      password: json['password'],
+      username: json['username'],
+      token: json['token'],
       isConfirmed: json['isConfirmed'],
-      about: json['about'],
-      profilePicture: json['profilePicture'],
-      likes: json['likes'],
-      followers: json['followers'],
-      following: json['following'],
-      comments: json['comments'],
-      token: json['comments'],
+      // about: json['about'],
+      followers:
+          followersList, //! Unhandled Exception: type 'Null' is not a subtype of type 'Iterable<dynamic>' or String
+      following: followingList,
+      // password: json['password'],
+      // profilePicture: json['profilePicture'],
+      // likes: json['likes'],
+      // comments: json['comments'],
     );
   }
 
   static Map<String, dynamic> toMap(User model) => <String, dynamic>{
-        'id': model.id,
-        'username': model.username,
+        '_id': model.id,
+        'name': model.name,
         'email': model.email,
-        'password': model.password,
+        'username': model.username,
+        'token': model.token,
         'isConfirmed': model.isConfirmed,
-        'about': model.about,
-        'profilePicture': model.profilePicture,
-        'likes': model.likes,
         'followers': model.followers,
         'following': model.following,
-        'comments': model.comments,
-        'token': model.token,
+        // 'about': model.about,
+        // 'password': model.password,
+        // 'profilePicture': model.profilePicture,
+        // 'likes': model.likes,
+        // 'comments': model.comments,
       };
 
   static String serialize(User model) => json.encode(User.toMap(model));

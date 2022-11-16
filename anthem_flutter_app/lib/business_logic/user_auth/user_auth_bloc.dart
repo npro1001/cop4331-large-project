@@ -39,9 +39,8 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
   ) async {
     emit(AuthLoading());
     // Do other logic for API
-    User user =
-        await userRepo.authenticate(event.user.username, event.user.password);
-    // await userRepo.persistToken(event.token);
+    User user = await userRepo.authenticate(event.username, event.password);
+    await userRepo.persistToken(user.token);
     emit(AuthTrue(user: user));
   }
 

@@ -3,7 +3,7 @@ const fs = require('fs');
 const multer = require('multer');
 var mongoose = require('mongoose');
 
-const { promisify } = require('util')
+const { promisify } = require('util');
 const unlinkAsync = promisify(fs.unlink);
 
 const User = require('../models/userModel');
@@ -56,8 +56,8 @@ const createPost = asyncHandler(async (req, res) => {
         })
         await unlinkAsync(req.file.path);
     } else {
-        res.status(400)
-        throw new Error('Invalid post data')
+        res.status(400);
+        throw new Error('Invalid post data');
     }
 });
 
@@ -83,6 +83,12 @@ const likePost = asyncHandler(async (req, res) => {
     }
     else
     {
+        if (user.likes.includes(post._id) || post.likes.includes(user._id))
+        {
+            res.status(400);
+            throw new Error('Post Has Already Been Liked');
+        }
+
         (user.likes).push(post._id);
         (post.likes).push(user._id);
         user.save();
@@ -92,10 +98,54 @@ const likePost = asyncHandler(async (req, res) => {
             username: user.username,
             userlikes: user.likes,
             postId: post._id,
-            postLikes: post
+            postLikes: post.likes
         });
     }
-})
+});
+
+// @desc unlike a post
+// @route POST /api/post/unlike
+// @access Public
+const unlikePost = asyncHandler(async (req, res) => {
+    // Pass user ID and post ID
+    const {postId, userId} = req.body;
+
+    const post = await Post.findById(mongoose.Types.ObjectId(postId));
+    const user = await User.findById(mongoose.Types.ObjectId(userId));
+
+    if (!user)
+    {
+        res.status(400);
+		throw new Error('Cannot Find User');
+    }
+    else if (!post)
+    {
+        res.status(400);
+		throw new Error('Cannot Find Post');
+    }
+    else
+    {
+        userIdx = user.likes.indexOf(post._id);
+        postIdx = post.likes.indexOf(user._id);
+        if (userIdx < 0 || postIdx < 0)
+        {
+            res.status(400);
+            throw new Error('Post Has Not Already Been Liked');
+        }
+
+        (user.likes).splice(userIdx, 1);
+        (post.likes).splice(postIdx, 1);
+        user.save();
+        post.save();
+
+        res.status(201).json({
+            username: user.username,
+            userlikes: user.likes,
+            postId: post._id,
+            postLikes: post.likes
+        });
+    }
+});
 
 // @desc    Comment on a post
 // @route   POST /api/post/comment
@@ -154,5 +204,6 @@ const commentPost = asyncHandler(async (req, res) => {
 module.exports = {
     createPost,
     likePost,
+    unlikePost,
     commentPost
 }

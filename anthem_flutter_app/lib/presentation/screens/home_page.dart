@@ -21,8 +21,9 @@ class HomePage extends StatelessWidget {
               bloc: userAuthBloc,
               builder: (context, state) {
                 if (state is AuthTrue) {
-                  return Text(state.user.toString());
+                  return Text(state.user.name);
                 } else {
+                  // Navigator.of(context).pushNamed('/login'); THIS DOESNT WORK
                   return Text("no user");
                 }
               },

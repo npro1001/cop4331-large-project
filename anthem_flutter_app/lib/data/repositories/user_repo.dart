@@ -90,6 +90,7 @@ class UserRepository {
       print("Request sent and 201 response");
       print("asdasdasd");
       print(user.username);
+      print(user.email);
       final confirm = await http.post(
           Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/confirm'),
           headers: <String, String>{
@@ -103,6 +104,7 @@ class UserRepository {
           });
 
       if (confirm.statusCode == 201) {
+        print("email sent");
         return user;
       } else {
         print("email verification request failed");

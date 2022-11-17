@@ -8,7 +8,7 @@ class User {
   String username;
   String token; //?
   bool isConfirmed;
-  String about;
+  // String about;
   List<String> followers;
   List<String> following; //<dynamic>?
   // String profilePicture;
@@ -27,7 +27,7 @@ class User {
     required this.isConfirmed,
     required this.followers,
     required this.following,
-    required this.about,
+    // required this.about,
     // required this.profilePicture,
     // required this.likes,
     // required this.password,
@@ -47,7 +47,7 @@ class User {
       username: json['username'],
       token: json['token'],
       isConfirmed: json['isConfirmed'],
-      about: json['about'],
+      // about: json['about'],
       followers:
           followersList, //! Unhandled Exception: type 'Null' is not a subtype of type 'Iterable<dynamic>' or String
       following: followingList,
@@ -67,7 +67,7 @@ class User {
         'isConfirmed': model.isConfirmed,
         'followers': model.followers,
         'following': model.following,
-        'about': model.about,
+        // 'about': model.about,
         // 'password': model.password,
         // 'profilePicture': model.profilePicture,
         // 'likes': model.likes,

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 let Post = require('./postModel');
 let Comment = require('./commentModel');

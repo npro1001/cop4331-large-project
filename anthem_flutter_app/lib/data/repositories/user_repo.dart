@@ -91,7 +91,6 @@ class UserRepository {
       print("asdasdasd");
       User user = User.fromJson(jsonDecode(response.body));
       print(user.username);
-      persistToken(user.token);
       return user;
     } else {
       print("Request failed");

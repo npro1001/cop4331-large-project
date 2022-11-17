@@ -24,15 +24,21 @@ class HomePage extends StatelessWidget {
                   return Text(state.user.name);
                 } else {
                   // Navigator.of(context).pushNamed('/login'); THIS DOESNT WORK
-                  return Text("no user");
+                  return Text("You have no signed in yet!");
                 }
               },
             ),
             MaterialButton(
-              child: Text('logout'),
+              child: Text('Login'),
               onPressed: () {
                 userAuthBloc.add(LoggedOutEvent()); // add = dispatch
                 Navigator.of(context).pushNamed('/login');
+              },
+            ),
+            MaterialButton(
+              child: Text('Register'),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/register');
               },
             ),
           ],

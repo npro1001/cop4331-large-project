@@ -71,7 +71,8 @@ class UserRepository {
     }
   }
 
-  Future<User> register(String name, String email, String username, String password) async {
+  Future<User> register(
+      String name, String email, String username, String password) async {
     final response = await http.post(
         Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/'),
         headers: <String, String>{
@@ -85,23 +86,30 @@ class UserRepository {
         });
 
     if (response.statusCode == 201) {
-      final confirm = await http.post(Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/confirm'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        },
-        body: <String, String>{
-          'email': email,
-        });
+      User user = User.fromJson(jsonDecode(response.body));
+      print("Request sent and 201 response");
+      print("asdasdasd");
+      print(user.username);
+      final confirm = await http.post(
+          Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/confirm'),
+          headers: <String, String>{
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          },
+          body: <String, String>{
+            'email': user.email,
+          });
+
+      if (confirm.statusCode == 201) {
+        return user;
+      } else {
+        print("email verification request failed");
+        throw Exception("Failed to send email");
+      }
 
       // If the server did return a 201 OK response,
       // then parse the JSON.
-      print("Request sent and 201 response");
-      print("asdasdasd");
-      User user = User.fromJson(jsonDecode(response.body));
-      print(user.username);
-      return user;
     } else {
-      print("Request failed");
+      print("Register request failed");
 
       // If the server did not return a 200 OK response,
       // then throw an exception.

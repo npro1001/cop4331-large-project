@@ -45,7 +45,7 @@ class LoggedOutEvent extends UserAuthEvent {
 
 // Dispatched on successful register
 class RegisteredEvent extends UserAuthEvent {
-  final String token;
+  final String name, email, username, password;
   RegisteredEvent({required this.name, required this.email, required this.username, required this.password}) : super([name, email, username, password]);
 
   @override

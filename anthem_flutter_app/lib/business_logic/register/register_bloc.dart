@@ -33,6 +33,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       // final User user =
       //     await userRepo.authenticate(event.username, event.password);
       userAuthBloc.add(RegisteredEvent(
+          name: event.name,
+          email: event.email,
           username: event.username,
           password: event.password)); // add = dispatch
       emit(RegisterInitial());

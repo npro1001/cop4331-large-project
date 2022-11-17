@@ -16,7 +16,7 @@ class AppRouter {
   Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case '/register':
-        return MaterialPageRoute(builder: (_) => RegisterPage());
+        return MaterialPageRoute(builder: (_) => RegisterPage(userRepo: userRepo));
       case '/login':
         return MaterialPageRoute(builder: (_) => LoginPage(userRepo: userRepo));
       case '/':

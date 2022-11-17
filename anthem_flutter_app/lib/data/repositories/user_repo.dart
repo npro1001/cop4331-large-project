@@ -70,4 +70,35 @@ class UserRepository {
       throw Exception('Failed to load user');
     }
   }
+
+  Future<User> register(String name, String email, String username, String password) async {
+    final response = await http.post(
+        Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+        body: <String, String>{
+          'name': name,
+          'email': email,
+          'username': username,
+          'password': password,
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print("Request sent and 200 response");
+      print("asdasdasd");
+      User user = User.fromJson(jsonDecode(response.body));
+      print(user.username);
+      persistToken(user.token);
+      return user;
+    } else {
+      print("Request failed");
+
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
+  }
 }

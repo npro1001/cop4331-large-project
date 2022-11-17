@@ -46,10 +46,10 @@ class LoggedOutEvent extends UserAuthEvent {
 // Dispatched on successful register
 class RegisteredEvent extends UserAuthEvent {
   final String token;
-  RegisteredEvent({required this.token}) : super([token]);
+  RegisteredEvent({required this.name, required this.email, required this.username, required this.password}) : super([name, email, username, password]);
 
   @override
-  String toString() => 'RegisteredEvent {token: $token}';
+  String toString() => 'RegisteredEvent {Name: $name , Email: $email, Username: $username , Password: $password}';
 
   @override
   // TODO: implement props

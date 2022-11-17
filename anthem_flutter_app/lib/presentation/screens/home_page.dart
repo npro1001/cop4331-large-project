@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
                   return Text(state.user.name);
                 } else {
                   // Navigator.of(context).pushNamed('/login'); THIS DOESNT WORK
-                  return Text("You have no signed in yet!");
+                  return Text("You have not signed in yet!");
                 }
               },
             ),

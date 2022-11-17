@@ -122,8 +122,9 @@ const getRefreshToken = asyncHandler(async (req, res) => {
     })
 })
 
+
 module.exports = {
     connectToSpotify,
     spotifyAuthCallback,
-    getRefreshToken
+    getRefreshToken,
 }

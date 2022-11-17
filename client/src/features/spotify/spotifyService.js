@@ -135,11 +135,34 @@ export const logout = () => {
 //  axios.defaults.headers['Content-Type'] = 'application/json';
 //  axios.defaults.headers['Allow-Access-Control-Origin'] = '*';
 
+// @desc    Get user's top artist
+// @route   GET /api/spotify/top_artist
+// @access  Private
+export const getTopArtist = async () => {
+
+    try{
+        const response = await axios({
+            method: 'get',
+            url: `https://api.spotify.com/v1/me/top/artists?limit=1`,
+            headers: {
+                'Content-type':'application/json',
+                'Authorization':`Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+            }
+        })
+        // console.log(response);
+        // console.log(response.items[0]);
+        if(response) return response;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 const spotifyService = {
     connect,
     refreshToken,
     hasTokenExpired,
     logout,
+    getTopArtist,
 } 
 
 export default spotifyService

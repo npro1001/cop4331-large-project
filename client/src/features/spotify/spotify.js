@@ -1,24 +1,24 @@
-// import axios from 'axios'
-// import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import axios from 'axios'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
-// // API URL
-// const API_URL = 'api/spotify'
+// API URL
+const API_URL = 'api/spotify'
 
-// // Map for localStorage keys
-// const LOCALSTORAGE_KEYS = {
-//     accessToken: 'spotify_access_token',
-//     refreshToken: 'spotify_refresh_token',
-//     expireTime: 'spotify_token_expire_time',
-//     timestamp: 'spotify_token_timestamp',
-// }
+// Map for localStorage keys
+const LOCALSTORAGE_KEYS = {
+    accessToken: 'spotify_access_token',
+    refreshToken: 'spotify_refresh_token',
+    expireTime: 'spotify_token_expire_time',
+    timestamp: 'spotify_token_timestamp',
+}
 
-// // Map to retrieve localStorage values
-// const LOCALSTORAGE_VALUES = {
-//     accessToken: window.localStorage.getItem(LOCALSTORAGE_KEYS.accessToken),
-//     refreshToken:  window.localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken),
-//     expireTime:  window.localStorage.getItem(LOCALSTORAGE_KEYS.expireTime),
-//     timestamp:  window.localStorage.getItem(LOCALSTORAGE_KEYS.timestamp),
-// }
+// Map to retrieve localStorage values
+const LOCALSTORAGE_VALUES = {
+    accessToken: window.localStorage.getItem(LOCALSTORAGE_KEYS.accessToken),
+    refreshToken:  window.localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken),
+    expireTime:  window.localStorage.getItem(LOCALSTORAGE_KEYS.expireTime),
+    timestamp:  window.localStorage.getItem(LOCALSTORAGE_KEYS.timestamp),
+}
 
 // /**
 //  * HAandles logic for retrieving the Spotify access token from localStorage
@@ -126,15 +126,47 @@
 //     return axios.get(`/me/playlists?limit=${limit}`);
 //   };
 
-// /**
-//  * Get a User's Top Artists and Tracks
-//  * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-top-artists-and-tracks
-//  * @param {string} time_range - 'short_term' (last 4 weeks) 'medium_term' (last 6 months) or 'long_term' (calculated from several years of data and including all new data as it becomes available). Defaults to 'short_term'
-//  * @returns {Promise}
-//  */
-// export const getTopArtists = (time_range = 'short_term') => {
-//     return axios.get(`/me/top/artists?time_range=${time_range}`);
-//   };
+/**
+ * Get a User's Top Artists and Tracks
+ * https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-top-artists-and-tracks
+ * @param {string} time_range - 'short_term' (last 4 weeks) 'medium_term' (last 6 months) or 'long_term' (calculated from several years of data and including all new data as it becomes available). Defaults to 'short_term'
+ * @returns {Promise}
+ */
+export const getTopArtists = async (time_range = 'short_term') => {
+    const response = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/me/top/artists?time_range=${time_range}`,
+        headers: {
+            'Content-type':'application/json',
+            'Authorization':`Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+        }
+    });
+    console.log(response);
+    return response;
+  };
+
+  
+// // @desc    Get user's top artist
+// // @route   GET /api/spotify/top_artist
+// // @access  Private
+// export const getTopArtist = async () => {
+
+//     try{
+//         const response = await axios({
+//             method: 'get',
+//             url: `https://api.spotify.com/v1/me/top/artists?limit=1`,
+//             headers: {
+//                 'Content-type':'application/json',
+//                 'Authorization':`Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+//             }
+//         })
+//         // console.log(response);
+//         // console.log(response.items[0]);
+//         if(response) return response;
+//     } catch (error) {
+//         console.error(error)
+//     }
+// }
 
 // /**
 //  * Get a User's Top Tracks

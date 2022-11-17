@@ -36,6 +36,11 @@ export const spotifyLogout = createAsyncThunk('spotify/logout', async() => {
     return await spotifyService.logout()
 })
 
+// Get user's top artist
+export const getTopArtist = createAsyncThunk('spotify/getTopArtist', async() => {
+    return await spotifyService.getTopArtist();
+})
+
 
 
 

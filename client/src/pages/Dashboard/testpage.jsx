@@ -45,6 +45,7 @@ export function Testpage() {
             if(isError) {
                 toast.error(message)
             }
+            navigate("/home", { replacae: true})
         })
         return true
     }

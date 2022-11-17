@@ -57,6 +57,7 @@ class _LoginFormState extends State<LoginForm> {
                 obscureText: true,
               ),
               MaterialButton(
+                //! Deal with error here after login button response
                 onPressed:
                     state is! LoginLoading ? _onLoginButtonPressed : null,
                 child: Text('Login'),

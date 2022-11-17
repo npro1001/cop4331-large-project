@@ -73,7 +73,7 @@ class UserRepository {
 
   Future<User> register(String name, String email, String username, String password) async {
     final response = await http.post(
-        Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/register'),
+        Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         },

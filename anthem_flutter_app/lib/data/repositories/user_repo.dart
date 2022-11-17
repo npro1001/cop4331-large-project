@@ -85,7 +85,15 @@ class UserRepository {
         });
 
     if (response.statusCode == 201) {
-      // If the server did return a 200 OK response,
+      final confirm = await http.post(Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/confirm'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+        body: <String, String>{
+          'email': email,
+        });
+
+      // If the server did return a 201 OK response,
       // then parse the JSON.
       print("Request sent and 201 response");
       print("asdasdasd");

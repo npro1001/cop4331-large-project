@@ -84,10 +84,10 @@ class UserRepository {
           'password': password,
         });
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print("Request sent and 200 response");
+      print("Request sent and 201 response");
       print("asdasdasd");
       User user = User.fromJson(jsonDecode(response.body));
       print(user.username);

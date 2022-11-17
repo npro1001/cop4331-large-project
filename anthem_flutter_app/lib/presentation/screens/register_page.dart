@@ -1,7 +1,9 @@
 import 'package:anthem_flutter_app/business_logic/login/login_bloc.dart';
+import 'package:anthem_flutter_app/business_logic/register/register_bloc.dart';
 import 'package:anthem_flutter_app/business_logic/user_auth/user_auth_bloc.dart';
 import 'package:anthem_flutter_app/data/repositories/user_repo.dart';
 import 'package:anthem_flutter_app/presentation/widgets/login_form.dart';
+import 'package:anthem_flutter_app/presentation/widgets/register_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

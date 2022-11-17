@@ -1,4 +1,5 @@
 import 'package:anthem_flutter_app/business_logic/login/login_bloc.dart';
+import 'package:anthem_flutter_app/business_logic/register/register_bloc.dart';
 import 'package:anthem_flutter_app/business_logic/user_auth/user_auth_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -72,8 +73,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 child: Text('Register'),
               ),
               Container(
-                child:
-                    state is RegisterLoading ? CircularProgressIndicator() : null,
+                child: state is RegisterLoading
+                    ? CircularProgressIndicator()
+                    : null,
               ),
             ],
           ),

@@ -59,6 +59,8 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
     Emitter<UserAuthState> emit,
   ) async {
     //! Need to be fixed
+    User user = await userRepo.register(event.name, event.email, event.username, event.password);
+    await userRepo.persistToken(user.token);
     emit(AuthFalse());
   }
 }

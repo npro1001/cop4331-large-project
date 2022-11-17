@@ -96,7 +96,10 @@ class UserRepository {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
           },
           body: <String, String>{
-            'email': user.email,
+            'name': name,
+            'email': email,
+            'username': username,
+            'password': password,
           });
 
       if (confirm.statusCode == 201) {

@@ -38,119 +38,130 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(25),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 40),
-                Icon(Icons.music_note_sharp), //MUST BE REPLACED WITH IMAGE
-                SizedBox(height: 13),
-                Text(
-                  "Welcome Back",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "Sign in to continue",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey[400],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/lib/background0.png"),
+              fit: BoxFit.fill),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(25),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 40),
+                  Image(
+                    image: AssetImage("assets/lib/logo.png"),
+                    width: 40,
+                    height: 40,
                   ),
-                ),
-                SizedBox(height: 30),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
+                  SizedBox(height: 13),
+                  Text(
+                    "Welcome Back",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Sign in to continue",
                     style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[400],
                     ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.mail, size: 30),
-                      labelText: "EMAIL",
-                      labelStyle: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: TextFormField(
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.mail, size: 30),
+                        labelText: "Username",
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    obscureText: true,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.lock, size: 30),
-                      labelText: "Password",
-                      labelStyle: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: TextFormField(
+                      obscureText: true,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.lock, size: 30),
+                        labelText: "Password",
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Forgot Passw0rd",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Forgot Passw0rd",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 55,
+                    width: double.infinity,
+                    child: FloatingActionButton.extended(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        label: Text('Login'),
+                        onPressed: () {}),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account?",
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
                         ),
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 10),
-                SizedBox(
-                  height: 55,
-                  width: double.infinity,
-                  child: FloatingActionButton.extended(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      label: Text('Login'),
-                      onPressed: () {}),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account?",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/register');
-                      },
-                      child: Text(
-                        "Register",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/register');
+                        },
+                        child: Text(
+                          "Register",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

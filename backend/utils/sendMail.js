@@ -42,8 +42,8 @@ const sendMail = async (id, email, option) => {
         const msg = {
         to: email, // Change to your recipient
         from: process.env.AUTH_EMAIL, // Change to your verified sender
-        subject: 'Anthem Password Reset',
-        text: '',
+        subject: 'Anthem Account Password Reset',
+        text: 'Please follow the instructions to reset your password for your Anthem Account',
         html: `
             <div>
 					<h2>Forgot Password?</h2>

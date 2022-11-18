@@ -118,11 +118,6 @@ const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(user)
 })
 
-//SHOULD WE ONLY RETURN CERTAIN VARIABLES IN THE GETME AND GETUSER FUNCTIONS
-//OR ARE WE RETURNING THE ENTIRE OBJECT
-
-//Get user? or is that just search
-
 
 // @desc    Update user
 // @route   PUT /api/user/:id
@@ -160,7 +155,7 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route   POST /api/user/uploadProfilePic
 // @access  Public
 const uploadProfilePic = asyncHandler(async (req, res) => {
-
+    console.log("test")
     if (!req.file)
     {
         res.status(400);
@@ -168,7 +163,7 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
     }
 
     //const {id} = req.body
-    const user = await User.findById(req.body.id)
+    var user = await User.findById(req.body.id)
     var img = fs.readFileSync(req.file.path);
     
     if (!user || !img)
@@ -339,19 +334,15 @@ const verifyUser = asyncHandler(async (req, res) => {
 const mailForResetPassword = asyncHandler(async (req, res) => {
 	try {
 		const { email } = req.body;
-
 		const user = await User.findOne({ email });
-		console.log(user);
+
 		if (user) {
 			// send the mail
 			await sendMail(user._id, email, 'forgot password');
       
 			res.status(201).json({
-				id: user._id,
-        name: user.name,
-				email: user.email,
-				isConfirmed: user.isConfirmed,
-			});
+        message: `Sent a password reset email to ${email}`
+      });
 		} else {
       res.status(400);
 				throw new Error('Email does not belong to a user');

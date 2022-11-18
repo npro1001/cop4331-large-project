@@ -333,13 +333,13 @@ const verifyUser = asyncHandler(async (req, res) => {
 // @access PUBLIC
 const mailForResetPassword = asyncHandler(async (req, res) => {
 	try {
-		const { email } = req.body;
+    const { email } = req.body;
 		const user = await User.findOne({ email });
 
 		if (user) {
 			// send the mail
 			await sendMail(user.id, email, 'forgot password');
-      
+
 			res.status(201).json({
         message: `Sent a password reset email to ${email}`
       });
@@ -361,22 +361,34 @@ const mailForResetPassword = asyncHandler(async (req, res) => {
 const resetUserPassword = asyncHandler(async (req, res) => {
 	try {
 		// update the user password if the jwt is verified successfully
-		const { passwordToken, password } = req.body;
-		const decodedToken = jwt.verify(
-			passwordToken,
-			process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET
-		);
-		const user = await User.findById(decodedToken.id);
+		const { passwordToken, password} = req.body;
+    console.log(passwordToken)
+    console.log(password)
+
+		let payload = null
+    try { 
+      payload = jwt.verify(
+			  passwordToken,
+			  process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET
+		  );
+    } catch(err){
+      return res.status(500).send(err)
+    }
+		//const user = await User.findById(payload._id);
+    const user = await User.findOne({_id: mongoose.Types.ObjectId(payload.id)}).exec()
 
 		if (user && password) {
 			user.password = password;
+      //const salt = await bcrypt.genSalt(10);
+      //user.password = await bcrypt.hash(password, salt)
 			const updatedUser = await user.save();
 
 			if (updatedUser) {
 				res.status(200).json({
-					id: updatedUser.id,
+					id: updatedUser._id,
 					email: updatedUser.email,
-					name: updatedUser.name
+					name: updatedUser.name,
+          password: updatedUser.password
 				});
 			} else {
 				res.status(401);

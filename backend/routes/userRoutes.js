@@ -30,7 +30,7 @@ router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic);
 router.post('/confirm', mailForEmailVerification)
 router.get('/verify/:token', verifyUser)
 router.post('/resetEmail', mailForResetPassword)
-router.put('/reset', resetUserPassword)
+router.get('/reset/:token', resetUserPassword)
 router.post('/search', searchUser)
 router.get('/:username', getUserProfile)
 

@@ -36,7 +36,8 @@ const sendMail = async (id, email, option) => {
 	// send a mail for resetting password if forgot password
 	else if (option === 'forgot password') {
 		const forgetPasswordToken = generateMailToken(id, 'forgot password');
-        const url = `${frontendURL}/user/reset/${forgetPasswordToken}`;
+        console.log(forgetPasswordToken)
+        const url = `${backendUrl}/api/users/reset/${forgetPasswordToken}`;
 
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         const msg = {

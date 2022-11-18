@@ -3,6 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 const {
     createPost,
+    deletePost,
     likePost,
     unlikePost,
     commentPost,
@@ -13,6 +14,7 @@ const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
 router.post('/', upload.single('picture'), createPost);
+router.delete('/delete', deletePost);
 router.put('/like', likePost);
 router.put('/unlike', unlikePost);
 router.put('/comment', commentPost);

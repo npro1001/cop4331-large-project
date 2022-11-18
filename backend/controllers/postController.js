@@ -45,6 +45,8 @@ const createPost = asyncHandler(async (req, res) => {
     }) 
 
     if (post) {
+        await User.findByIdAndUpdate(author, { $push: { posts: post._id } });
+
         res.status(201).json({
           _id: post.id,
           author: post.author,
@@ -59,6 +61,33 @@ const createPost = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error('Invalid post data');
     }
+});
+
+// @desc    Create a new post
+// @route   DELETE /api/post/delete
+// @access  Public
+const deletePost = asyncHandler(async (req, res) => {
+
+    const {postId} = req.body;
+
+    const post = await Post.findById(mongoose.Types.ObjectId(postId));
+    if (!post)
+    {
+        res.status(400);
+        throw new error("Post does not exist");
+    }
+    const user = await User.findById(mongoose.Types.ObjectId(post.author));
+    if (!user)
+    {
+        res.status(400);
+        throw new error("Cannot find author");
+    }
+
+    await user.updateOne({ $pull: { posts: postId } });
+    await Post.findByIdAndDelete(mongoose.Types.ObjectId(postId));
+
+    res.status(200).json({User: user._id});
+
 });
 
 // @desc    like a post
@@ -219,9 +248,6 @@ const deleteComment = asyncHandler(async (req, res) => {
         throw new error("Post could not be found");
     }
 
-    userIdx = user.comments.indexOf(commentId);
-    postIdx = post.comments.indexOf(commentId);
-
     if (!user.comments.includes(commentId) || !post.comments.includes(commentId))
     {
         res.status(400);
@@ -241,6 +267,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 
 module.exports = {
     createPost,
+    deletePost,
     likePost,
     unlikePost,
     commentPost,

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from "react"
 import { catchErrors } from "../../utils"
 import { StyledGrid } from "../styles/StyledGrid.js"
-
+import { spotifyLogout, connect } from '../../features/spotify/spotifySlice'
 import { getTopArtists } from "../../features/spotify/spotify.js"
 // import { getTopArtist } from "../../features/spotify/spotifyService"
 import { getTopArtist } from "../../features/spotify/spotifySlice"
@@ -18,8 +18,9 @@ import { getTopArtist } from "../../features/spotify/spotifySlice"
 const InfoCard = () => {
 
     const [modalOpened, setModalOpened] = useState(false)
-    const [topArtist, setTopArtist] = useState("None");
+    const [topArtist, setTopArtist] = useState(null);
     const { isConnected } = useSelector((store) => store.spotify)
+
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -64,6 +65,23 @@ const InfoCard = () => {
                 dispatch(reset())
             })
 
+    }
+
+    const onClick = (e) => {
+        e.preventDefault() 
+
+        // window.open('http://localhost:5555/api/spotify/connect', '_self');
+        // window.location.href = 'http://localhost:5555/api/spotify/connect'
+
+        dispatch(connect())
+        .then(() => {
+            // if(isError) {
+            //     toast.error(message)
+            // }
+            // navigate("/home", { replacae: true})
+            window.location.reload();
+        })
+        return true
     }
 
     // const params = useParams();
@@ -114,6 +132,7 @@ const InfoCard = () => {
 
                 </span>
                 <span> 
+                    { topArtist && isConnected ? (
                     <div className="songrec">
                         <div>
                         <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg'/>
@@ -122,8 +141,13 @@ const InfoCard = () => {
                             </div>
                         </div>
                     </div>
-                
-
+                    ) : (
+                        <div>
+                            <p> You are not connected to spotify</p>
+                            <a className='button' href="http://localhost:5555/api/spotify/connect" target="_self" >Pre Connect To Spotify</a>
+                            <a className='button' href="#" target="_self" onClick={onClick}>Connect to spotify </a>
+                        </div>
+                        )}
                 {/* <StyledGrid>
                 <div className="grid__item__inner">
                     <div className="grid__item__img">

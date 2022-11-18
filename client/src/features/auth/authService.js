@@ -32,10 +32,20 @@ const logout = () => {
     localStorage.removeItem('user')
 }
 
+// Reset user password
+const reset = async (passwordToken, password) => {
+    const response = await axios.put(API_URL + "reset", passwordToken, password)
+    if(response.data) {
+        return response.data
+    }
+    return null;
+}
+
 const authService = {
     register,
     login,
-    logout
+    logout,
+    reset,
 } 
 
 export default authService

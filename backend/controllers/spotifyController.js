@@ -81,7 +81,7 @@ const spotifyAuthCallback = asyncHandler(async (req, res) => {
                 refresh_token,
                 expires_in,
             })
-            res.redirect(`http://localhost:3000/testpage?${params}`)            
+            res.redirect(`http://localhost:3000/home?${params}`)            
         
         } else {
             res.redirect(`/?${querystring.stringify({error: "invalid_token"})}`)

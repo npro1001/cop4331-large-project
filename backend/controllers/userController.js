@@ -329,7 +329,7 @@ const verifyUser = asyncHandler(async (req, res) => {
 
 
 // @desc send a mail with the link to reset password
-// @route POST /api/users/reset
+// @route POST /api/users/resetEmail
 // @access PUBLIC
 const mailForResetPassword = asyncHandler(async (req, res) => {
 	try {
@@ -338,7 +338,7 @@ const mailForResetPassword = asyncHandler(async (req, res) => {
 
 		if (user) {
 			// send the mail
-			await sendMail(user._id, email, 'forgot password');
+			await sendMail(user.id, email, 'forgot password');
       
 			res.status(201).json({
         message: `Sent a password reset email to ${email}`
@@ -353,6 +353,42 @@ const mailForResetPassword = asyncHandler(async (req, res) => {
 		throw new Error('Could not send the mail. Please retry.');
 	}
 });
+
+
+// @desc reset password of any verified user
+// @route PUT /api/users/reset
+// @access PUBLIC
+const resetUserPassword = asyncHandler(async (req, res) => {
+	try {
+		// update the user password if the jwt is verified successfully
+		const { passwordToken, password } = req.body;
+		const decodedToken = jwt.verify(
+			passwordToken,
+			process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET
+		);
+		const user = await User.findById(decodedToken.id);
+
+		if (user && password) {
+			user.password = password;
+			const updatedUser = await user.save();
+
+			if (updatedUser) {
+				res.status(200).json({
+					id: updatedUser.id,
+					email: updatedUser.email,
+					name: updatedUser.name
+				});
+			} else {
+				res.status(401);
+				throw new Error('Unable to update password');
+			}
+		}
+	} catch (error) {
+		res.status(400);
+		throw new Error('User not found.');
+	}
+});
+
 
 // @desc search for users via search bar (searched for q in username)
 // @route POST /api/users/search
@@ -415,6 +451,7 @@ module.exports = {
   verifyUser,
   mailForEmailVerification,
   mailForResetPassword,
+  resetUserPassword,
   searchUser,
   getUserProfile,
 }

@@ -9,10 +9,45 @@ import { useNavigate, Link, Navigate} from 'react-router-dom';
 // import { Form, Button, InputGroup, FloatingLabel } from 'react-bootstrap';
 import { BoxContainer, FormContainer, Input, SubmitButton} from '../LoginSignUp/common';
 import { Marginer} from '../../components/marginer/index.jsx';
+import { Auth, ALogo, backdropVariants} from '../LoginSignUp/index';
+import styled from "styled-components";
+import Logo from '../../img/logo.png';
 
+//styling for submit button
+export const ResetButton = styled.button`
+    width: 15%;
+    padding: 11px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all, 240ms ease-in-out;
+    background: #A170DE;
+    align-self: center;
+    &:not(:focus):hover {
+        filter: brightness(1.2); 
+    text-shadow: 0 0 2px #999;
+    }
+`;
 
+export const NewBackDrop = styled.div`
+    width: 120%;
+    height: 450px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: -330px;
+    left: -150px;
+    border-radius: 0%;
+    background: rgba(104,59,159,1);
+    background: linear-gradient(270deg, rgba(205,190,224,1) 6%, 
+    rgba(161,112,222,1) 29%, rgba(104,59,159,1) 69%, 
+    rgba(93,48,149,1) 75%, rgba(57,31,89,1) 96%);
 
-export function PasswordReset({match}) {
+`;
+
+export function PasswordReset({token}) {
 	const [name, setName] = useState('');
 	// const [typePassword, setTypePassword] = useState('password');
 	// const [typeConfirmPassword, setTypeConfirmPassword] = useState('password');
@@ -63,7 +98,10 @@ export function PasswordReset({match}) {
             setMessage('Passwords do not match. Please retry.');
 		} else {
             const passwordToSubmit = passwords.password
-			dispatch(resetPassword(match.params.token, passwordToSubmit));
+			dispatch(resetPassword(token, passwordToSubmit))
+            .then(() => {
+                navigate("/", {replace: true})
+            });
 		}
 	};
 
@@ -75,17 +113,24 @@ export function PasswordReset({match}) {
     }
 
     return (
-        <FormContainer onSubmit={handleSubmit}>
-        <Marginer direction="vertical" margin={75}/>
-        <Input type="password" id='password1' name='password1' value={password1} placeholder="New Password" onChange={onChange} required/>
-        <Marginer direction="vertical" margin={25}/>
-        <Input type="password" id='confirmPassword' name='confirmPassword' value={password2} placeholder="New Password" onChange={onChange} required/>
-        <Marginer direction="vertical" margin={10}/>
-        <SubmitButton type="submit">Submit</SubmitButton>
-        <Marginer direction="vertical" margin={15}/>
-        <span style={{ display: !message ? "none" : "inline-flex", color: "red", alignSelf: "flex-end", margin: "auto" }}>{message}</span>
-        <Marginer direction="vertical" margin={25}/>
-        </FormContainer>
+        
+        <Auth>
+            <BoxContainer>
+                <ALogo src={`${Logo}`} alt="Logo for Anthem which consits of 2 connected quarter notes with sound waves at the top" />
+                <NewBackDrop inital={false} variants={backdropVariants}/>
+                    <FormContainer onSubmit={handleSubmit}>
+                    <Marginer direction="vertical" margin={75}/>
+                    <Input type="password" id='password1' name='password1' value={password1} placeholder="New Password" onChange={onChange} required/>
+                    <Marginer direction="vertical" margin={25}/>
+                    <Input type="password" id='confirmPassword' name='confirmPassword' value={password2} placeholder="Confirm New Password" onChange={onChange} required/>
+                    <Marginer direction="vertical" margin={10}/>
+                    <ResetButton type="submit">Submit</ResetButton>
+                    <Marginer direction="vertical" margin={15}/>
+                    <span style={{ display: !message ? "none" : "inline-flex", color: "red", alignSelf: "flex-end", margin: "auto" }}>{message}</span>
+                    <Marginer direction="vertical" margin={25}/>
+                    </FormContainer>
+            </BoxContainer>
+        </Auth>
 		// <FormContainer>
 		// 	<h1>{name ? `${name}, reset password` : 'Reset Password'}</h1>
 		// 	{message && (

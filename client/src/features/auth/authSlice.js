@@ -101,14 +101,14 @@ export const authSlice = createSlice({
             state.user = null
         })
         // Reset state cases
-        .addCase(reset.pending, (state) => {
+        .addCase(resetPassword.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(reset.fulfilled, (state, action) => {
+        .addCase(resetPassword.fulfilled, (state, action) => {
             state.isLoading = false
             state.resetPassword = action.payload //!
         })
-        .addCase(reset.rejected, (state, action) => {
+        .addCase(resetPassword.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload

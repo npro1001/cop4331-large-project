@@ -15,7 +15,7 @@ import Logo from '../../img/logo.png';
 
 //styling for submit button
 export const ResetButton = styled.button`
-    width: 15%;
+    width: 20%;
     padding: 11px;
     font-size: 15px;
     font-weight: 600;
@@ -47,6 +47,36 @@ export const NewBackDrop = styled.div`
 
 `;
 
+export const PasswordInput = styled.input`
+    outline: none;
+    width: 20%;
+    height: 40px;
+    border:none;
+    border-radius: 10px;
+    padding: 0px 2px;
+    border-bottom: 1px solid transparent;
+    align-self: center;
+    transition: all 100ms ease-in-out;
+    font-size: 12px;
+
+    //field will be underlined pink (color can be changed, i just chose pink at random) when selected
+    &:focus{
+        outline:none;
+    }
+
+    &::placeholder{
+        color: #000000;
+    }
+
+    &:invalid{
+        border: 2px solid red;
+    }
+
+    &:empty{
+        border: none;
+    }
+`;
+
 export function PasswordReset({token}) {
 	const [name, setName] = useState('');
 	// const [typePassword, setTypePassword] = useState('password');
@@ -73,9 +103,6 @@ export function PasswordReset({token}) {
 	useEffect(() => {
 		if (resetPassword) {
             navigate('/', {replace: true})
-			// setTimeout(() => {
-			// 	history.push('/login');
-			// }, 10000);
 		}
 	}, [navigate, resetPassword]);
 
@@ -118,12 +145,14 @@ export function PasswordReset({token}) {
             <BoxContainer>
                 <ALogo src={`${Logo}`} alt="Logo for Anthem which consits of 2 connected quarter notes with sound waves at the top" />
                 <NewBackDrop inital={false} variants={backdropVariants}/>
+                <Marginer direction="vertical" margin={25}/>
+                <h1>Reset Password</h1>
                     <FormContainer onSubmit={handleSubmit}>
-                    <Marginer direction="vertical" margin={75}/>
-                    <Input type="password" id='password1' name='password1' value={password1} placeholder="New Password" onChange={onChange} required/>
                     <Marginer direction="vertical" margin={25}/>
-                    <Input type="password" id='confirmPassword' name='confirmPassword' value={password2} placeholder="Confirm New Password" onChange={onChange} required/>
-                    <Marginer direction="vertical" margin={10}/>
+                    <PasswordInput type="password" id='password1' name='password1' value={password1} placeholder="New Password" onChange={onChange} required/>
+                    <Marginer direction="vertical" margin={25}/>
+                    <PasswordInput type="password" id='confirmPassword' name='confirmPassword' value={password2} placeholder="Confirm New Password" onChange={onChange} required/>
+                    <Marginer direction="vertical" margin={25}/>
                     <ResetButton type="submit">Submit</ResetButton>
                     <Marginer direction="vertical" margin={15}/>
                     <span style={{ display: !message ? "none" : "inline-flex", color: "red", alignSelf: "flex-end", margin: "auto" }}>{message}</span>
@@ -131,118 +160,7 @@ export function PasswordReset({token}) {
                     </FormContainer>
             </BoxContainer>
         </Auth>
-		// <FormContainer>
-		// 	<h1>{name ? `${name}, reset password` : 'Reset Password'}</h1>
-		// 	{message && (
-		// 		<Message dismissible duration={8} variant='warning'>
-		// 			{message}
-		// 		</Message>
-		// 	)}
-		// 	{resetPassword && (
-		// 		<Message dismissible variant='success' duration={8}>
-		// 			Password Changed Successfully.
-		// 		</Message>
-		// 	)}
-		// 	{error && (
-		// 		<Message dismissible variant='danger'>
-		// 			{error}
-		// 		</Message>
-		// 	)}
-		// 	{loading ? (
-		// 		<Loader />
-		// 	) : (
-		// 		<Form onSubmit={handleSubmit} style={{ width: '33em' }}>
-		// 			<Form.Group className='mb-2'>
-		// 				<InputGroup style={{ width: '100%' }}>
-		// 					<FloatingLabel
-		// 						controlId='passwordinput'
-		// 						label='Password'
-		// 						className='mb-3'>
-		// 						<Form.Control
-		// 							size='lg'
-		// 							type={typePassword}
-		// 							placeholder='Enter your password'
-		// 							value={password}
-		// 							style={{
-		// 								borderRight: 'none',
-		// 								width: '205%',
-		// 							}}
-		// 							onChange={(e) =>
-		// 								setPassword(e.target.value)
-		// 							}
-		// 						/>
-		// 					</FloatingLabel>
-		// 					<div className='input-group-append'>
-		// 						<InputGroup.Text
-		// 							onClick={showHidePassword}
-		// 							style={{
-		// 								paddingLeft: '1em',
-		// 								fontSize: '1rem',
-		// 								width: '17.5%',
-		// 								height: '78%',
-		// 								marginLeft: '15rem',
-		// 								background: 'transparent',
-		// 							}}>
-		// 							{typePassword === 'text' ? (
-		// 								<i className='far fa-eye-slash' />
-		// 							) : (
-		// 								<i className='far fa-eye' />
-		// 							)}
-		// 						</InputGroup.Text>
-		// 					</div>
-		// 				</InputGroup>
-		// 			</Form.Group>
-		// 			<Form.Group className='my-2'>
-		// 				<InputGroup style={{ width: '100%' }}>
-		// 					<FloatingLabel
-		// 						controlId='confirmpasswordinput'
-		// 						label='Confirm password'
-		// 						className='mb-3'>
-		// 						<Form.Control
-		// 							size='lg'
-		// 							type={typeConfirmPassword}
-		// 							placeholder='Confirm your password'
-		// 							value={confirmPassword}
-		// 							style={{
-		// 								borderRight: 'none',
-		// 								width: '205%',
-		// 							}}
-		// 							onChange={(e) =>
-		// 								setConfirmPassword(e.target.value)
-		// 							}
-		// 						/>
-		// 					</FloatingLabel>
-		// 					<div className='input-group-append'>
-		// 						<InputGroup.Text
-		// 							onClick={showHideConfirmPassword}
-		// 							style={{
-		// 								paddingLeft: '1em',
-		// 								fontSize: '1rem',
-		// 								width: '17.5%',
-		// 								height: '78%',
-		// 								marginLeft: '15rem',
-		// 								background: 'transparent',
-		// 							}}>
-		// 							{typeConfirmPassword === 'text' ? (
-		// 								<i className='far fa-eye-slash' />
-		// 							) : (
-		// 								<i className='far fa-eye' />
-		// 							)}
-		// 						</InputGroup.Text>
-		// 					</div>
-		// 				</InputGroup>
-		// 			</Form.Group>
-		// 			<Button
-		// 				type='submit'
-		// 				style={{
-		// 					padding: '0.5em 1em',
-		// 					width: '8rem',
-		// 				}}>
-		// 				Submit
-		// 			</Button>
-		// 		</Form>
-		// 	)}
-		// </FormContainer>
+		
 	);
 };
 

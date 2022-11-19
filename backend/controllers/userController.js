@@ -379,8 +379,8 @@ const resetUserPassword = asyncHandler(async (req, res) => {
 
 		if (user && password) {
 			user.password = password;
-      //const salt = await bcrypt.genSalt(10);
-      //user.password = await bcrypt.hash(password, salt)
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt)
 			const updatedUser = await user.save();
 
 			if (updatedUser) {

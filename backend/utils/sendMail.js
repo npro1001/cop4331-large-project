@@ -5,6 +5,7 @@ const generateMailToken = require('./generateMailToken');
 const sendMail = async (id, email, option) => {
 
     const backendUrl = process.env.BACKEND_BASE_URL;
+    const frontendUrl = process.env.FRONTEND_BASE_URL;
 
     // send email for the email verification option
     if (option === 'email verification') {
@@ -37,7 +38,9 @@ const sendMail = async (id, email, option) => {
 	else if (option === 'forgot password') {
 		const forgetPasswordToken = generateMailToken(id, 'forgot password');
         console.log(forgetPasswordToken)
-        const url = `${backendUrl}/api/users/reset/${forgetPasswordToken}`;
+        //const url = `${backendUrl}/api/users/reset/${forgetPasswordToken}`;
+        const url = `${frontendUrl}reset_password/${forgetPasswordToken}`;
+        
 
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         const msg = {

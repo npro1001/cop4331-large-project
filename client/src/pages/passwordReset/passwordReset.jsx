@@ -12,6 +12,7 @@ import { Marginer} from '../../components/marginer/index.jsx';
 import { Auth, ALogo, backdropVariants} from '../LoginSignUp/index';
 import styled from "styled-components";
 import Logo from '../../img/logo.png';
+import userResetPassword from '../../features/auth/authSlice'
 
 //styling for submit button
 export const ResetButton = styled.button`
@@ -121,11 +122,17 @@ export function PasswordReset({token}) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (passwords.password !== passwords.confirmPassword) {
+        console.log(password1)
+        console.log(password2)
+        console.log(passwords.password)
+        console.log(passwords.confirmPassword)
+
+		if (password1 !== password2) {
             setMessage('Passwords do not match. Please retry.');
 		} else {
+            setMessage(null)
             const passwordToSubmit = passwords.password
-			dispatch(resetPassword(token, passwordToSubmit))
+			dispatch(userResetPassword(token, passwordToSubmit))
             .then(() => {
                 navigate("/", {replace: true})
             });
@@ -151,7 +158,7 @@ export function PasswordReset({token}) {
                     <Marginer direction="vertical" margin={25}/>
                     <PasswordInput type="password" id='password1' name='password1' value={password1} placeholder="New Password" onChange={onChange} required/>
                     <Marginer direction="vertical" margin={25}/>
-                    <PasswordInput type="password" id='confirmPassword' name='confirmPassword' value={password2} placeholder="Confirm New Password" onChange={onChange} required/>
+                    <PasswordInput type="password" id='password2' name='password2' value={password2} placeholder="Confirm New Password" onChange={onChange} required/>
                     <Marginer direction="vertical" margin={25}/>
                     <ResetButton type="submit">Submit</ResetButton>
                     <Marginer direction="vertical" margin={15}/>

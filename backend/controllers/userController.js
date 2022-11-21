@@ -438,7 +438,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   try { 
     const user = await User.findOne({username})
     res.status(201).json({
-        id: user._id,
+        _id: user._id,
         name: user.name,
         about: user.about,
         username: user.username,

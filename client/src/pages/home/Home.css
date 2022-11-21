@@ -40,3 +40,10 @@
     margin-right: 9rem;
 }
 
+.Banner{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2rem;
+    justify-content: center;
+    z-index: 1;
+}

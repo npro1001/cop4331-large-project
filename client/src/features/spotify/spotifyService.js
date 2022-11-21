@@ -20,6 +20,16 @@ const LOCALSTORAGE_VALUES = {
     timestamp:  window.localStorage.getItem(LOCALSTORAGE_KEYS.timestamp),
 }
 
+// Generate random string
+const getRandomString = length => {
+    let text = ''
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    for(let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+    return text;
+}
+const stateKey = 'spotify_auth_state'
 
 /**
  * Handles logic for retrieving the Spotify access token from localStorage

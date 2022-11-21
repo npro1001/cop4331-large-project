@@ -15,7 +15,6 @@ export function Testpage() {
     const { isConnected, isLoading, token, isError, message} = useSelector((store) => store.spotify)
     //! TODO - check for rate limiting error because code is perfect
 
-
     const navigate = useNavigate()
     const dispatch = useDispatch()
 

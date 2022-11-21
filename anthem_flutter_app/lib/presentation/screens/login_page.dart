@@ -150,9 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.of(context).pushNamed('/register');
                         },
                         child: Text(
-                          "Register",
+                          " Register",
                           style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Color.fromARGB(255, 255, 255,
+                                255), // Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),

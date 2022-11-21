@@ -54,11 +54,14 @@ const InfoCard = () => {
         })
 
 
-    });
+    }, [topArtist]);
 
     const onLogout = () => {
         dispatch(logout())
             .then(() => {
+                if(isConnected) {
+                    dispatch(spotifyLogout())
+                }
                 navigate("/", { replace: true })
             })
             .then(() => {
@@ -132,7 +135,7 @@ const InfoCard = () => {
 
                 </span>
                 <span> 
-                    { topArtist && isConnected ? (
+                    { topArtist ? (
                     <div className="songrec">
                         <div>
                         <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg'/>
@@ -143,9 +146,9 @@ const InfoCard = () => {
                     </div>
                     ) : (
                         <div>
-                            <p> You are not connected to spotify</p>
-                            <a className='button' href="http://localhost:5555/api/spotify/connect" target="_self" >Pre Connect To Spotify</a>
-                            <a className='button' href="#" target="_self" onClick={onClick}>Connect to spotify </a>
+                            <p> top artist not found </p>
+                            {/* <a className='button' href="http://localhost:5555/api/spotify/connect" target="_self" >Pre Connect To Spotify</a>
+                            <a className='button' href="#" target="_self" onClick={onClick}>Connect to spotify </a> */}
                         </div>
                         )}
                 {/* <StyledGrid>

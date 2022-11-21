@@ -67,6 +67,10 @@ export const Input = styled.input`
     &:invalid{
         border: 2px solid red;
     }
+
+    &:empty{
+        border: none;
+    }
 `;
 
 //styling for submit button

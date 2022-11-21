@@ -5,6 +5,7 @@ const generateMailToken = require('./generateMailToken');
 const sendMail = async (id, email, option) => {
 
     const backendUrl = process.env.BACKEND_BASE_URL;
+    const frontendUrl = process.env.FRONTEND_BASE_URL;
 
     // send email for the email verification option
     if (option === 'email verification') {
@@ -36,14 +37,17 @@ const sendMail = async (id, email, option) => {
 	// send a mail for resetting password if forgot password
 	else if (option === 'forgot password') {
 		const forgetPasswordToken = generateMailToken(id, 'forgot password');
-        const url = `${frontendURL}/user/reset/${forgetPasswordToken}`;
+        console.log(forgetPasswordToken)
+        //const url = `${backendUrl}/api/users/reset/${forgetPasswordToken}`;
+        const url = `${frontendUrl}reset_password/${forgetPasswordToken}`;
+        
 
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         const msg = {
         to: email, // Change to your recipient
         from: process.env.AUTH_EMAIL, // Change to your verified sender
-        subject: 'Anthem Password Reset',
-        text: '',
+        subject: 'Anthem Account Password Reset',
+        text: 'Please follow the instructions to reset your password for your Anthem Account',
         html: `
             <div>
 					<h2>Forgot Password?</h2>

@@ -10,18 +10,30 @@ const SearchContainer = styled.div`
     position: absolute;
     background: white;
     height: 20%;
-    width: 13%;
+    width: 24%;
     z-index:10;
     align-self: center;
     border-radius:10px;
     overflow-y: auto;
     overflow-x: hidden;
     display:none;
-    top: 80px;
-    left:220px;
+    top: 40px;
+    left:150px;
     filter: drop-shadow(0 0 0.3rem black);
 
 `
+
+// const SearchBar = styled.input`
+//     position: absolute;
+//     width: 100%;
+//     padding: 0.5em;
+//     margin: 0.5em;
+//     /* color: ${props => props.inputColor || "palevioletred"}; */
+//     /* background: papayawhip; */
+//     border: none;
+//     border-radius: 3px;
+// `
+
 const List = styled.ul`
   list-style: none;
 
@@ -57,22 +69,19 @@ const LogoSearch = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ payload: e.value })
         })
-        console.log('New Search submit:', e.target.value);
         const userArray = await res.json();
         setUsers(userArray.payload);
         setTerm(e.target.value.replace(/[^a-z]/gi, ' '));
     }
-    console.log({users});
     if (term.length > 0) {
         searching = true;
         const lowerCase = term.toLowerCase();
         users = users.filter((index) => {
-
-            if (index.name.toLowerCase().match(lowerCase) || index.name.toLowerCase().match(term)) {
+            if (index.username.toLowerCase().match(lowerCase) || index.username.toLowerCase().match(term)) {
                 results = true;
             }
 
-            return index.name.toLowerCase().includes(lowerCase);
+            return index.username.toLowerCase().includes(lowerCase);
         })
     }
 
@@ -113,11 +122,10 @@ const LogoSearch = () => {
                                 <List>
                                     <Results>
                                         <Username onClick={() => {
-                                            console.log(searchee._id);
-                                            console.log(searchee.name);
                                             navigate(
-                                                `/Profile/${searchee.username}`)
-                                        }}>{searchee.name}</Username>
+                                                `/profile/${searchee.username}`)
+                                                window.location.reload();
+                                        }}>{searchee.username}</Username>
                                     </Results>
                                 </List>
                             </div>

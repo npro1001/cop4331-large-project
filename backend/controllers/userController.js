@@ -54,6 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user.id,
       name: user.name,
+      email: user.email,
       username: user.username,
       isConfirmed: user.isConfirmed,
       about: user.about,
@@ -117,11 +118,6 @@ const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(user)
 })
 
-//SHOULD WE ONLY RETURN CERTAIN VARIABLES IN THE GETME AND GETUSER FUNCTIONS
-//OR ARE WE RETURNING THE ENTIRE OBJECT
-
-//Get user? or is that just search
-
 
 // @desc    Update user
 // @route   PUT /api/user/:id
@@ -159,15 +155,15 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route   POST /api/user/uploadProfilePic
 // @access  Public
 const uploadProfilePic = asyncHandler(async (req, res) => {
-
+    console.log("test")
     if (!req.file)
     {
         res.status(400);
         throw new Error('Please upload a file');
     }
 
-    const {id} = req.body
-    const user = await User.findById(req.body.id)
+    //const {id} = req.body
+    var user = await User.findById(req.body.id)
     var img = fs.readFileSync(req.file.path);
     
     if (!user || !img)
@@ -187,7 +183,7 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
 
     if (user.profilePicture) {
         res.status(201).json({
-          _id: post.id,
+          _id: user.id,
           profilePicture: user.profilePicture,
         })
         await unlinkAsync(req.file.path);
@@ -333,24 +329,20 @@ const verifyUser = asyncHandler(async (req, res) => {
 
 
 // @desc send a mail with the link to reset password
-// @route POST /api/users/reset
+// @route POST /api/users/resetEmail
 // @access PUBLIC
 const mailForResetPassword = asyncHandler(async (req, res) => {
 	try {
-		const { email } = req.body;
-
+    const { email } = req.body;
 		const user = await User.findOne({ email });
-		console.log(user);
+
 		if (user) {
 			// send the mail
-			await sendMail(user._id, email, 'forgot password');
-      
+			await sendMail(user.id, email, 'forgot password');
+
 			res.status(201).json({
-				id: user._id,
-        name: user.name,
-				email: user.email,
-				isConfirmed: user.isConfirmed,
-			});
+        message: `Sent a password reset email to ${email}`
+      });
 		} else {
       res.status(400);
 				throw new Error('Email does not belong to a user');
@@ -361,6 +353,54 @@ const mailForResetPassword = asyncHandler(async (req, res) => {
 		throw new Error('Could not send the mail. Please retry.');
 	}
 });
+
+
+// @desc reset password of any verified user
+// @route PUT /api/users/reset
+// @access PUBLIC
+const resetUserPassword = asyncHandler(async (req, res) => {
+	try {
+		// update the user password if the jwt is verified successfully
+		const { passwordToken, password} = req.body;
+    console.log(passwordToken)
+    console.log(password)
+
+		let payload = null
+    try { 
+      payload = jwt.verify(
+			  passwordToken,
+			  process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET
+		  );
+    } catch(err){
+      return res.status(500).send(err)
+    }
+		//const user = await User.findById(payload._id);
+    const user = await User.findOne({_id: mongoose.Types.ObjectId(payload.id)}).exec()
+
+		if (user && password) {
+			user.password = password;
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt)
+			const updatedUser = await user.save();
+
+			if (updatedUser) {
+				res.status(200).json({
+					id: updatedUser._id,
+					email: updatedUser.email,
+					name: updatedUser.name,
+          password: updatedUser.password
+				});
+			} else {
+				res.status(401);
+				throw new Error('Unable to update password');
+			}
+		}
+	} catch (error) {
+		res.status(400);
+		throw new Error('User not found.');
+	}
+});
+
 
 // @desc search for users via search bar (searched for q in username)
 // @route POST /api/users/search
@@ -398,7 +438,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   try { 
     const user = await User.findOne({username})
     res.status(201).json({
-        id: user._id,
+        _id: user._id,
         name: user.name,
         about: user.about,
         username: user.username,
@@ -423,6 +463,7 @@ module.exports = {
   verifyUser,
   mailForEmailVerification,
   mailForResetPassword,
+  resetUserPassword,
   searchUser,
   getUserProfile,
 }

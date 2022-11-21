@@ -4,14 +4,20 @@ import './App.css';
 import { LoginSignUp } from './pages/LoginSignUp/index.jsx';
 import { EmailSent } from './pages/LoginSignUp/emailSent.jsx';
 import { Testpage } from './pages/Dashboard/testpage.jsx';
+import { PasswordReset } from './pages/passwordReset/passwordReset.jsx';
 import {AppContainer} from './components/styles/AppContainer.style';
 import Home from './pages/home/Home'
 import Profile from './pages/profile/Profile'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'mongoose';
 
 
 function App() {
 const {user} = useSelector((state) => state.auth);
+const {isConnected} = useSelector((state) => state.spotify);
+
+const dispatch = useDispatch();
+
  return( <>
     <AppContainer>
       <Router>
@@ -21,7 +27,8 @@ const {user} = useSelector((state) => state.auth);
             <Route path='/testpage' element={<Testpage/>} />
             <Route path='/verification_sent' element={<EmailSent/>} />
             <Route path='/home' element={<Home/>} />
-            <Route path='/profile/:id' element={user ? <Profile/> : <Navigate to="/"/>} />
+            <Route path='/profile/:username' element={user ? <Profile/> : <Navigate to="/"/>} />
+            <Route path='/reset_password/:token' element={<PasswordReset/>} />
           </Routes>
         </div>
       </Router>

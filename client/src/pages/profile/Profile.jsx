@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileLeft from '../../components/profileLeft/ProfileLeft';
 import ProfileCard from '../../components/profileCard/ProfileCard';
 import PostSide from '../../components/postSide/PostSide';
@@ -11,8 +11,17 @@ import { UilBell } from '@iconscout/react-unicons'
 import { UilMessage } from '@iconscout/react-unicons'
 import LogoSearch from '../../components/logoSearch/LogoSearch'
 import Logo from '../../img/logo.png'
+import {connect} from '../../features/spotify/spotifySlice'
+import {useDispatch, useNavigate, useSelector} from 'react-redux'
 
 const Profile = () => {
+
+    const dispatch = useDispatch();
+    
+    useEffect( () => {
+        dispatch(connect)
+    })
+
     return (
         <div className="Profile">
             <div className="Top">

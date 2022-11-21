@@ -13,6 +13,7 @@ const {
   mailForEmailVerification,
   verifyUser,
   mailForResetPassword,
+  resetUserPassword,
   searchUser,
   getUserProfile
 } = require('../controllers/userController')
@@ -28,7 +29,8 @@ router.put('/:id/unfollow', unfollowUser)
 router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic);
 router.post('/confirm', mailForEmailVerification)
 router.get('/verify/:token', verifyUser)
-router.post('/reset', mailForResetPassword)
+router.post('/resetEmail', mailForResetPassword)
+router.put('/reset/', resetUserPassword)
 router.post('/search', searchUser)
 router.get('/:username', getUserProfile)
 

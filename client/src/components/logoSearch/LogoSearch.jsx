@@ -69,22 +69,19 @@ const LogoSearch = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ payload: e.value })
         })
-        console.log('New Search submit:', e.target.value);
         const userArray = await res.json();
         setUsers(userArray.payload);
         setTerm(e.target.value.replace(/[^a-z]/gi, ' '));
     }
-    console.log({users});
     if (term.length > 0) {
         searching = true;
         const lowerCase = term.toLowerCase();
         users = users.filter((index) => {
-
-            if (index.name.toLowerCase().match(lowerCase) || index.name.toLowerCase().match(term)) {
+            if (index.username.toLowerCase().match(lowerCase) || index.username.toLowerCase().match(term)) {
                 results = true;
             }
 
-            return index.name.toLowerCase().includes(lowerCase);
+            return index.username.toLowerCase().includes(lowerCase);
         })
     }
 
@@ -125,11 +122,10 @@ const LogoSearch = () => {
                                 <List>
                                     <Results>
                                         <Username onClick={() => {
-                                            console.log(searchee._id);
-                                            console.log(searchee.name);
                                             navigate(
-                                                `/Profile/${searchee.username}`)
-                                        }}>{searchee.name}</Username>
+                                                `/profile/${searchee.username}`)
+                                                window.location.reload();
+                                        }}>{searchee.username}</Username>
                                     </Results>
                                 </List>
                             </div>

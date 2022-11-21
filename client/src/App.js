@@ -27,7 +27,7 @@ const dispatch = useDispatch();
             <Route path='/testpage' element={<Testpage/>} />
             <Route path='/verification_sent' element={<EmailSent/>} />
             <Route path='/home' element={<Home/>} />
-            <Route path='/profile/:id' element={user ? <Profile/> : <Navigate to="/"/>} />
+            <Route path='/profile/:username' element={user ? <Profile/> : <Navigate to="/"/>} />
             <Route path='/reset_password/:token' element={<PasswordReset/>} />
           </Routes>
         </div>

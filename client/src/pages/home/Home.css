@@ -15,7 +15,7 @@
     margin-left: 1rem;
     margin-right: 1rem;
     justify-content: space-between;
-    gap: 8rem;
+    gap: 12rem;
     align-items: center;
 }
 
@@ -24,13 +24,15 @@
     flex-direction: row;
     margin-right: 9rem;
     margin-left: 9rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     justify-content: center;
 }
 
-.Top>hr {
-    width: 100%;
-    border: 15px solid var(--hrColor);
-}
+/* .Home>hr {
+    width: 78%;
+    border: 1px solid var(--hrColor);
+} */
 
 .Bottom{
     position: relative;

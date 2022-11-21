@@ -75,7 +75,7 @@ const connect = async () => {
         return queryParams[LOCALSTORAGE_KEYS.accessToken]
     }
 
-    return null
+    return false
 }
 
 
@@ -164,6 +164,7 @@ export const getTopArtist = async () => {
         if(response) return response;
     } catch (error) {
         console.error(error)
+        return false
     }
 }
 

@@ -71,12 +71,10 @@ const ModalContent = styled.div`
 a {
     width: 70%;
     padding: 10px 24px;
-    /* background: #1DB954;
-    color: #000; */
+    text-decoration: none;
     border: none;
     border-radius: 10px;
     margin-bottom: 2%;
-    text-decoration: none;
 }
  .connect-button {
     width: 75%;
@@ -158,11 +156,11 @@ export const Modal = ({ showModal, setShowModal }) => {
 
         // window.open('http://localhost:5555/api/spotify/connect', '_self');
         // window.location.href = 'http://localhost:5555/api/spotify/connect'
-
+        
         dispatch(connect())
-        .then(() => {
-            navigate("/home", { replace: true})
-        })
+        // .then(() => {
+        //     navigate("/home", { replace: true})
+        // })
         return true
     }
 
@@ -177,8 +175,8 @@ export const Modal = ({ showModal, setShowModal }) => {
                 <p>Hey, {user.name}</p>
                 <h1>You are not connected to Spotify!</h1>
                 <p>Please connect to use the full features of Anthem</p>
-                <a className="button connect-button" href="http://localhost:5555/api/spotify/connect" target="_self" >1. Get Spotify access token</a>
-                <button className="button connect-button" onClick={onClick} >2. Connect to Spotify</button>
+                <a className="button connect-button" href="http://localhost:5555/api/spotify/connect" target="_self" >Connect to Spotify</a>
+                {/* <button className="button connect-button" onClick={onClick} >2. Connect to Spotify</button> */}
                 <button className="button logout-button" onClick={onLogout}>Logout</button>
               </ModalContent>
             </ModalWrapper>

@@ -12,6 +12,7 @@ const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 const REDIRECT_URI = process.env.REDIRECT_URI
 const SPOTIFY_URL = 'https://accounts.spotify.com/authorize'
+const FRONTEND_URL = process.env.FRONTEND_BASE_URL
 
 // Generate random string
 const getRandomString = length => {
@@ -81,7 +82,7 @@ const spotifyAuthCallback = asyncHandler(async (req, res) => {
                 refresh_token,
                 expires_in,
             })
-            res.redirect(`http://localhost:3000/home?${params}`)            
+            res.redirect(`${FRONTEND_URL}home?${params}`)            
         
         } else {
             res.redirect(`/?${querystring.stringify({error: "invalid_token"})}`)

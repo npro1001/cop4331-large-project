@@ -8,11 +8,16 @@ import { PasswordReset } from './pages/passwordReset/passwordReset.jsx';
 import {AppContainer} from './components/styles/AppContainer.style';
 import Home from './pages/home/Home'
 import Profile from './pages/profile/Profile'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'mongoose';
 
 
 function App() {
 const {user} = useSelector((state) => state.auth);
+const {isConnected} = useSelector((state) => state.spotify);
+
+const dispatch = useDispatch();
+
  return( <>
     <AppContainer>
       <Router>

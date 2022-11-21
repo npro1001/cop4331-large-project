@@ -46,15 +46,17 @@ const InfoCard = () => {
         // ? Method 2 - using spotifyService.js
         // A non-serializable value was detected in an action, in the path: `payload.headers`. Value: 
         // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
-        dispatch(getTopArtist())
-        .then(response => {
-            const userTopArtist = response;
-            setTopArtist(userTopArtist.payload.data.items[0]);
-            console.log(topArtist)
-        })
+        if(isConnected) {
+            dispatch(getTopArtist())
+            .then(response => {
+                const userTopArtist = response;
+                setTopArtist(userTopArtist.payload.data.items[0]);
+                console.log(topArtist)
+            }, [isConnected])
+        }
 
 
-    }, [topArtist]);
+    }, []);
 
     const onLogout = () => {
         dispatch(logout())

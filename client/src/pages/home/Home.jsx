@@ -10,10 +10,11 @@ import { UilBell } from '@iconscout/react-unicons'
 import { UilMessage } from '@iconscout/react-unicons'
 import LogoSearch from '../../components/logoSearch/LogoSearch'
 import Logo from '../../img/logo.png'
-import { useSelector} from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import styled from "styled-components";
 import { Modal } from '../../components/spotifyConnectModal/SpotifyModal' 
 import  {toast} from 'react-toastify'
+import { connect } from '../../features/spotify/spotifySlice'
 
 
 const Home = () => {
@@ -24,11 +25,36 @@ const Home = () => {
     //   setShowModal(prev => !prev);
     // };
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
+        // if(localStorage.getItem('spotify_access_token')) {
+        //     dispatch(connect)
+        // }
         if(isError) {
             toast.error(message);
         }
+        const urlParams = new URLSearchParams(window.location.search)
+        const token = urlParams.get("access_token")
+        console.log(token);
+        if(!isConnected && token != null) {
+            dispatch(connect())
+            .then(() => {
+                window.location.hash = "";
+            })
+        }
     }, [])
+
+    const getTokenFromUrl = () => {
+        return window.location.hash
+          .substring(1)
+          .split("&")
+          .reduce((initial, item) => {
+            let parts = item.split("=");
+            initial[parts[0]] = decodeURIComponent(parts[1]);
+            return initial;
+          }, {});
+      };
     
 
     return ( <div>

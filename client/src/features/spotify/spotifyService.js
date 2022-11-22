@@ -50,6 +50,7 @@ const connect = async () => {
     }
 
     const hasError = urlParams.get('error')
+    // console.log(hasError)
     
     // If theres an error OR the token has expired => refresh token
     if(hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
@@ -150,6 +151,7 @@ export const logout = () => {
 // @access  Private
 export const getTopArtist = async () => {
 
+    //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
     try{
         const response = await axios({
             method: 'get',

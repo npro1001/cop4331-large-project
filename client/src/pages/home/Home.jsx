@@ -34,14 +34,14 @@ const Home = () => {
         if(isError) {
             toast.error(message);
         }
-        // const urlParams = new URLSearchParams(window.location.search)
-        // const token = urlParams.get("access_token")
-        // if(!isConnected && token != null) {
-        //     dispatch(connect())
-        //     .then(() => {
-        //         window.location.hash = "";
-        //     })
-        // }
+        const urlParams = new URLSearchParams(window.location.search)
+        const token = urlParams.get("access_token")
+        if(!isConnected && token != null) {
+            dispatch(connect())
+            .then(() => {
+                window.location.hash = "";
+            })
+        }
     }, [])
 
     const getTokenFromUrl = () => {

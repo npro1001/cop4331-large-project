@@ -9,5 +9,6 @@ export const store = configureStore({
     auth: authReducer,
     spotify: spotifyReducer,
     post: postReducer
-  }
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

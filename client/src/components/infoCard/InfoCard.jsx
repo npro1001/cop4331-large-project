@@ -24,7 +24,7 @@ const InfoCard = () => {
     const { user } = useSelector((state) => state.auth)
     
     const [modalOpened, setModalOpened] = useState(false)
-    const [topArtist, setTopArtist] = useState("None");
+    const [topArtist, setTopArtist] = useState(null);
     const [activeUser, setActiveUser] = useState({})
 
     const profileUsername = params.username;
@@ -50,19 +50,11 @@ const InfoCard = () => {
         // ? Method 2 - using spotifyService.js
         // A non-serializable value was detected in an action, in the path: `payload.headers`. Value: 
         // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
-        // dispatch(getTopArtist())
-        // .then(response => {
-        //     const userTopArtist = response;
-        //     setTopArtist(userTopArtist.payload.data.items[0]);
-        //     console.log(topArtist)
-        // })
         if (isConnected) {
             dispatch(getTopArtist())
                 .then(response => {
-                    const userTopArtist = response;
-                    setTopArtist(userTopArtist.payload.data.items[0]);
-                    console.log(topArtist)
-                }, [isConnected])
+                    setTopArtist(response.payload.data.items[0]);
+                })
         }
 
         const fetchProfileUser = async () => {
@@ -80,7 +72,7 @@ const InfoCard = () => {
             }
         }
         fetchProfileUser()
-    }, [user]);
+    }, []);
 
 
     const onLogout = () => {
@@ -131,11 +123,11 @@ const InfoCard = () => {
 
                 </span>
                 <span>
-                    {/* {topArtist ? (
+                    {topArtist ? (
                         <div className="songrec">
                             <div>
                                 <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg' />
-                                <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg' />
+                                {/* <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg' /> */}
                                 <div className="songname">
                                     <span>{topArtist.name}</span>
                                 </div>
@@ -145,20 +137,20 @@ const InfoCard = () => {
             ) : (
             <div>
                 <p> top artist not found </p>
-                <a className='button' href="http://localhost:5555/api/spotify/connect" target="_self" >Pre Connect To Spotify</a>
-                <a className='button' href="#" target="_self" onClick={onClick}>Connect to spotify </a>
+                {/* <a className='button' href="http://localhost:5555/api/spotify/connect" target="_self" >Pre Connect To Spotify</a> */}
+                {/* <a className='button' href="#" target="_self" onClick={onClick}>Connect to spotify </a> */}
             </div>
                     )}
 
 
-            <StyledGrid>
+            {/* <StyledGrid>
                 <div className="grid__item__inner">
                     <div className="grid__item__img">
                         <img src={topArtist.images[0].url} alt={topArtist.name} />
                     </div>
                     <h3 class="grid__item__name overflow-ellipsis">{topArtist.name}</h3>
                 </div>
-            </StyledGrid> */}
+            </StyledGrid>  */}
 
                 </span>
             </div >

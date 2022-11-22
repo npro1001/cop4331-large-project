@@ -155,7 +155,7 @@ export const getTopArtist = async () => {
             method: 'get',
             url: `https://api.spotify.com/v1/me/top/artists?limit=1`,
             headers: {
-                'Content-type':'application/json',
+                'Content-Type':'application/json',
                 'Authorization':`Bearer ${LOCALSTORAGE_VALUES.accessToken}`
             }
         })

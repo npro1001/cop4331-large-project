@@ -9,14 +9,21 @@ import {AppContainer} from './components/styles/AppContainer.style';
 import Home from './pages/home/Home'
 import Profile from './pages/profile/Profile'
 import { useSelector, useDispatch } from 'react-redux'
-import { connect } from 'mongoose';
+// import { connect } from 'mongoose';
+import { useEffect } from 'react';
+import { connect } from './features/spotify/spotifySlice'
 
 
 function App() {
 const {user} = useSelector((state) => state.auth);
-const {isConnected} = useSelector((state) => state.spotify);
-
+const {isConnected} = useSelector((store) => store.spotify);
 const dispatch = useDispatch();
+
+useEffect(() =>{ 
+  if(!isConnected && localStorage.getItem('spotify_access_token') != null) {
+    dispatch(connect())
+  }
+})
 
  return( <>
     <AppContainer>

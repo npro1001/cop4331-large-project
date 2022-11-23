@@ -8,7 +8,7 @@ const initialState = {
     isConnected: false,
     message: '',
     isLoading: false,
-    topArtist: '',
+    // topArtist: '',
 }
 
 
@@ -55,7 +55,7 @@ export const spotifySlice = createSlice({
             state.isConnected = false
             state.isError = false
             state.message = ''
-            state.topArtist = ''
+            // state.topArtist = ''
         },
         reconnect: (state) => {
             state.token = localStorage.getItem('spotify_access_token')
@@ -123,12 +123,14 @@ export const spotifySlice = createSlice({
         })
         .addCase(getTopArtist.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.topArtist = action.payload;
+                        console.log("Action Payload:  " + action.payload.data.items[0])
+            // state.topArtist = action.payload;
         })
-        .addCase(getTopArtist.rejected, (state, action) => {
+        .addCase(getTopArtist.rejected, (state) => {
             state.isLoading = false;
             state.isError = true; //?
-            state.message = action.payload;
+            // console.log("Action Payload:  " + action.payload)
+            // state.message = action.payload.statusText;
         })
     }
 })

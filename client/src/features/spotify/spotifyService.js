@@ -50,10 +50,11 @@ const connect = async () => {
     }
 
     const hasError = urlParams.get('error')
-    // console.log(hasError)
+    console.log("hadError: " + hasError)
     
     // If theres an error OR the token has expired => refresh token
     if(hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+        console.log("refreshToken called")
         refreshToken()
     }
     
@@ -86,6 +87,7 @@ const connect = async () => {
  * @returns {boolean} Whether or not the access token in localStorage has expired
  */
  const hasTokenExpired = () => {
+    console.log('inside hasTokenExpired');
     const { accessToken, timestamp, expireTime } = LOCALSTORAGE_VALUES
 
     if (!accessToken || !timestamp) {
@@ -122,6 +124,8 @@ const connect = async () => {
   
       // Reload the page for localStorage updates to be reflected
       window.location.reload()
+
+      console.log("TOKEN WAS REFRESHED")
   
     } catch (e) {
       console.error(e)
@@ -146,6 +150,9 @@ export const logout = () => {
 //  axios.defaults.headers['Content-Type'] = 'application/json';
 //  axios.defaults.headers['Allow-Access-Control-Origin'] = '*';
 
+export const accessToken = connect()
+// {\n  \"error\": {\n    \"status\": 400,\n    \"message\": \"Only valid bearer authentication supported\"\n  }\n}"
+
 // @desc    Get user's top artist
 // @route   GET /api/spotify/top_artist
 // @access  Private
@@ -153,12 +160,14 @@ export const getTopArtist = async () => {
 
     //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
     try{
+        console.log("getTopArtist was called")
+        console.log(localStorage.getItem(LOCALSTORAGE_KEYS.accessToken));
         const response = await axios({
             method: 'get',
             url: `https://api.spotify.com/v1/me/top/artists?limit=1`,
             headers: {
                 'Content-Type':'application/json',
-                'Authorization':`Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
             }
         })
         // console.log(response);

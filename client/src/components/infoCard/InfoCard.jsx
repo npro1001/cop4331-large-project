@@ -51,6 +51,7 @@ const InfoCard = () => {
         // A non-serializable value was detected in an action, in the path: `payload.headers`. Value: 
         // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
         if (isConnected) {
+            console.log("dispatched getTopArtist from InfoCard")
             dispatch(getTopArtist())
                 .then(response => {
                     setTopArtist(response.payload.data.items[0]);
@@ -72,7 +73,7 @@ const InfoCard = () => {
             }
         }
         fetchProfileUser()
-    }, []);
+    }, [isConnected]); //! Important
 
 
     const onLogout = () => {

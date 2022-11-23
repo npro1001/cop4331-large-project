@@ -1,0 +1,46 @@
+
+SpotifyState and connection issue ->>
+
+
+Inital log in to app with spotify connect pressed:
+    isConnected = true;
+    localStorage full;
+
+Go to profile page:
+    isConnected = true;
+    localStorage full;
+    Top artist not found
+    Error: (2x)
+        GET https://api.spotify.com/v1/me/top/artists?limit=1 401
+
+        AxiosError {message: 'Request failed with status code 401', name: 'AxiosError', code: 'ERR_BAD_REQUEST'
+        {\n  \"error\": {\n    \"status\": 401,\n    \"message\": \"Invalid access token\"\n  }\n}
+
+        InfoCard.jsx:56 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'items')
+        at InfoCard.jsx:56:1
+
+
+
+Go back to home page:
+
+
+--- localstorage.getItem(localstoragevalues.accessToekn) -> seemed to work
+--- Errors:
+    A non-serializable value was detected in the state, in the path: `spotify.topArtist.headers`. Value: 
+    AND 'payload.headers' ... idk this 443
+
+    Issues with reducers
+
+    PAYLOAD.HEADERS
+        In CONFIG:
+        Authorization : "Bearer BQDg1RRoo1_w8QAaXYkyADRFWld5N3ARx_N_CEokh6GQGi7-G4W5_GTkzklQJdrUJssQvwFYesa8VkGGHBW30f614CkagynZpKBP8WOcjrmceLyhWHzjlF_0dkXKiXkr4Kw5gNuV3s_rLc6Vx73JlpuF4tDPEMYytR0UqMD4SqHoe_11DfbKyuCmnjl_CvvFiV1j-LO7"
+        Content-Type : null
+
+        Data is populated
+        
+
+NEW ISSUE:
+    On profile page reload - top artist not found
+    Most likely a useEffect issue: https://stackoverflow.com/questions/67133211/why-doesnt-useeffect-hook-work-on-page-refresh
+    https://daveceddia.com/useeffect-hook-examples/
+

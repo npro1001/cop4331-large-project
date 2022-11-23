@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const fs = require('fs');
 const multer = require('multer');
 const mongoose = require('mongoose');
+var path = require('path');
 
 const { promisify } = require('util');
 const unlinkAsync = promisify(fs.unlink);
@@ -23,7 +24,8 @@ const createPost = asyncHandler(async (req, res) => {
 
     // Author is the objectID of the user who created the post
     var {author, caption} = req.body;
-    var img = fs.readFileSync(req.file.path);
+    var imgPath = __dirname + '/../middleware/temp/';
+    var img = fs.readFileSync(path.join(imgPath + req.file.filename));
     
     if (!author || !caption || !img)
     {
@@ -31,11 +33,11 @@ const createPost = asyncHandler(async (req, res) => {
         throw new Error('Please add all required elements of a post');
     }
 
-    var encode_img = img.toString('base64');
+    // var encode_img = img.toString('base64');
 
     var final_img = {
         contentType:req.file.mimetype,
-        image:new Buffer(encode_img,'base64')
+        data: img
     };
 
     const post = await Post.create({
@@ -56,7 +58,7 @@ const createPost = asyncHandler(async (req, res) => {
           likes: post.likes,
           createdAt: post.createdAt 
         })
-        await unlinkAsync(req.file.path);
+        await unlinkAsync(imgPath + req.file.filename);
     } else {
         res.status(400);
         throw new Error('Invalid post data');

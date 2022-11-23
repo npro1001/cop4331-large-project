@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 const fs = require('fs');
 const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink);
+var path = require('path');
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -164,7 +165,8 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
 
     //const {id} = req.body
     var user = await User.findById(req.body.id)
-    var img = fs.readFileSync(req.file.path);
+    var imgPath = __dirname + '/../middleware/temp/';
+    var img = fs.readFileSync(path.join(imgPath + req.file.filename));
     
     if (!user || !img)
     {
@@ -172,21 +174,21 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
         throw new Error('Image did not successfully upload');
     }
 
-    var encode_img = img.toString('base64');
+    // var encode_img = img.toString('base64');
 
     var final_img = {
         contentType:req.file.mimetype,
-        image:new Buffer(encode_img,'base64')
+        data: img
     };
 
-    user.profilePicture =  final_img
+    await user.updateOne({profilePicture: final_img});
 
     if (user.profilePicture) {
         res.status(201).json({
           _id: user.id,
           profilePicture: user.profilePicture,
         })
-        await unlinkAsync(req.file.path);
+        await unlinkAsync(imgPath + req.file.filename);
     } else {
         res.status(400)
         throw new Error('Error uploading profile picture')

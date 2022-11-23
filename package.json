@@ -26,6 +26,7 @@
     "@iconscout/react-unicons": "^1.1.6",
     "@mantine/core": "^5.7.1",
     "@mantine/hooks": "^5.7.1",
+    "@reduxjs/toolkit": "^1.9.0",
     "@sendgrid/mail": "^7.7.0",
     "axios": "^1.1.3",
     "bcryptjs": "^2.4.3",
@@ -42,10 +43,15 @@
     "multer": "^1.4.5-lts.1",
     "querystring": "^0.2.1",
     "react-helmet": "^6.1.0",
+    "react-icons": "^4.6.0",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
+    "react-scripts": "^5.0.1",
+    "react-spring": "^9.5.5",
     "react-toastify": "^9.1.0",
     "styled-components": "^5.3.6",
-    "urlsearchparams": "^0.1.1"
+    "urlsearchparams": "^0.1.1",
+    "web-vitals": "^3.1.0"
   },
   "devDependencies": {
     "concurrently": "^7.5.0",

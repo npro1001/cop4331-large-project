@@ -47,6 +47,27 @@ export const getTopGenre = createAsyncThunk('spotify/getTopGenre', async() => {
     return await spotifyService.getTopGenre();
 })
 
+// // Get array of tracks from search
+export const searchTracks = createAsyncThunk('spotify/searchTracks', async(param) => {
+    try {        
+        console.log(param)
+        return await spotifyService.searchTracks(param);
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+        throw Error({message: message});
+    }
+})
+// export const searchTracks = async (param) => {
+//     try {        
+//         console.log("PARAM: " + param)
+//         return await spotifyService.searchTracks(param);
+//     } catch (error) {
+//         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+//         throw Error({message: message});
+//     }
+// }
+
+
 
 
 
@@ -152,6 +173,21 @@ export const spotifySlice = createSlice({
             // console.log("Action Payload:  " + action.payload)
             // state.message = action.payload.statusText;
         })
+        // // Search tracks
+        // .addCase(searchTracks.pending, (state) => {
+        //     state.isLoading = true
+        // })
+        // .addCase(searchTracks.fulfilled, (state, action) => {
+        //     state.isLoading = false;
+        //     console.log("Action Payload:  " + action.payload.data.items[0])
+        //     // state.topArtist = action.payload;
+        // })
+        // .addCase(searchTracks.rejected, (state) => {
+        //     state.isLoading = false;
+        //     state.isError = true; //?
+        //     // console.log("Action Payload:  " + action.payload)
+        //     // state.message = action.payload.statusText;
+        // })
     }
 })
 

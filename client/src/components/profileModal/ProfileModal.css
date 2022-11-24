@@ -17,6 +17,20 @@ infoInput*/
     border-radius: 8px;
     padding: 20px;
     flex:1;
+    position: relative;
+}
+
+.infoInput:focus {
+    background: #CDBEE0;
+    outline: rgb(25, 16, 37);
+}
+
+
+.searchContainer{
+    position:relative;
+    display: grid;
+    flex: auto;
+    flex-direction: column;
 }
 
 .infoForm>div{

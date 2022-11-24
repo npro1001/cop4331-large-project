@@ -205,13 +205,40 @@ export const getTopGenre = async () => {
     }
 }
 
+// @desc    Get user's top artist
+// @route   GET /api/spotify/top_genre
+// @access  Private
+// API documentation: https://developer.spotify.com/documentation/web-api/reference/#/operations/search
+export const searchTracks = async (param) => {
+    try{
+
+        const token = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken);
+        const response = await axios({
+            method: 'get',
+            url: `https://api.spotify.com/v1/search?q=${param}&type=track&include_external=audio&limit=7`,
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
+            }
+        })
+        // console.log(response);
+        // console.log(response.items);
+        if(response) return response;
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
+
+
 const spotifyService = {
     connect,
     refreshToken,
     hasTokenExpired,
     logout,
     getTopArtist,
-    getTopGenre
+    getTopGenre,
+    searchTracks,
 } 
 
 export default spotifyService

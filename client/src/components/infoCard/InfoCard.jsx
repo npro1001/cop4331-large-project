@@ -10,6 +10,7 @@ import { useEffect } from "react"
 import { catchErrors } from "../../utils"
 import { StyledGrid } from "../styles/StyledGrid.js"
 import { getTopArtists } from "../../features/spotify/spotify.js"
+import SongCard from "../SongCard/SongCard.jsx"
 
 // import { getTopArtist } from "../../features/spotify/spotifyService"
 import { getTopArtist, getTopGenre } from "../../features/spotify/spotifySlice"
@@ -58,13 +59,13 @@ const InfoCard = () => {
                     console.log("dispatched getTopArtist from InfoCard")
                     setTopArtist(response.payload.data.items[0]);
             })
-            .then( () => {
-                dispatch(getTopGenre())
-                .then(response => {
-                    console.log("dispatched getTopGenre from InfoCard")
-                    setTopGenre(response.payload.data.items[0]);
-                })
-            })
+            // .then( () => {
+            //     dispatch(getTopGenre())
+            //     .then(response => {
+            //         console.log("dispatched getTopGenre from InfoCard")
+            //         setTopGenre(response.payload.data.items[0]);
+            //     })
+            // })
         }
 
         const fetchProfileUser = async () => {
@@ -117,7 +118,10 @@ const InfoCard = () => {
                 <span>
                     <b>Anthem</b>
                 </span>
-                <span> Eternal Summer- The Strokes</span>
+                <span> {user.anthem ? 
+                    <SongCard name={user.anthem.title} artist1={user.anthem.artist1} image={user.anthem.image}> </SongCard>
+                : 
+                <p>Eternal Summer- The Strokes</p>}</span>
             </div>
 
             <div className="info">

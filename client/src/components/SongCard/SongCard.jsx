@@ -2,7 +2,7 @@ import React from 'react'
 import './SongCard.css'
 import styled from "styled-components";
 
-
+// id?
 const SongCard = ({name, artist1, image, url}) => {
     return (
         <div className="SongCard">

@@ -42,6 +42,11 @@ export const getTopArtist = createAsyncThunk('spotify/getTopArtist', async() => 
     return await spotifyService.getTopArtist();
 })
 
+//get a user's top genre
+export const getTopGenre = createAsyncThunk('spotify/getTopGenre', async() => {
+    return await spotifyService.getTopGenre();
+})
+
 
 
 
@@ -127,6 +132,21 @@ export const spotifySlice = createSlice({
             // state.topArtist = action.payload;
         })
         .addCase(getTopArtist.rejected, (state) => {
+            state.isLoading = false;
+            state.isError = true; //?
+            // console.log("Action Payload:  " + action.payload)
+            // state.message = action.payload.statusText;
+        })
+        // Get top genre
+        .addCase(getTopGenre.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(getTopGenre.fulfilled, (state, action) => {
+            state.isLoading = false;
+                        console.log("Action Payload:  " + action.payload.data.items[0])
+            // state.topArtist = action.payload;
+        })
+        .addCase(getTopGenre.rejected, (state) => {
             state.isLoading = false;
             state.isError = true; //?
             // console.log("Action Payload:  " + action.payload)

@@ -10,8 +10,9 @@ import { useEffect } from "react"
 import { catchErrors } from "../../utils"
 import { StyledGrid } from "../styles/StyledGrid.js"
 import { getTopArtists } from "../../features/spotify/spotify.js"
+
 // import { getTopArtist } from "../../features/spotify/spotifyService"
-import { getTopArtist } from "../../features/spotify/spotifySlice"
+import { getTopArtist, getTopGenre } from "../../features/spotify/spotifySlice"
 
 
 const InfoCard = () => {
@@ -25,6 +26,7 @@ const InfoCard = () => {
     
     const [modalOpened, setModalOpened] = useState(false)
     const [topArtist, setTopArtist] = useState(null);
+    const [topGenre, setTopGenre] = useState(null);
     const [activeUser, setActiveUser] = useState({})
 
     const profileUsername = params.username;
@@ -55,6 +57,11 @@ const InfoCard = () => {
             dispatch(getTopArtist())
                 .then(response => {
                     setTopArtist(response.payload.data.items[0]);
+                })
+            console.log("dispatched getTopGenre from InfoCard")
+            dispatch(getTopGenre())
+                .then(response => {
+                    setTopGenre(response.payload.data.items[0]);
                 })
         }
 
@@ -115,13 +122,27 @@ const InfoCard = () => {
                 <span>
                     <b>Top Genre</b>
                 </span>
-                <span> Indie Rock</span>
+                <span>
+                    {topGenre ? (
+                        <div className="songrec">
+                            <div className="songname">
+                                <span>{topGenre.name}</span>
+                            </div>
+                        </div>
+            ) : (
+                <div>
+                    <p> top genre not found </p>
+                    {/* <a className='button' href="http://localhost:5555/api/spotify/connect" target="_self" >Pre Connect To Spotify</a> */}
+                    {/* <a className='button' href="#" target="_self" onClick={onClick}>Connect to spotify </a> */}
+                </div>  
+            )}  
+                </span>
             </div>
+            
 
             <div className="info">
                 <span>
                     <b>Top Artist</b>
-
                 </span>
                 <span>
                     {topArtist ? (

@@ -179,12 +179,39 @@ export const getTopArtist = async () => {
     }
 }
 
+// @desc    Get user's top artist
+// @route   GET /api/spotify/top_genre
+// @access  Private
+export const getTopGenre = async () => {
+
+    //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
+    try{
+        console.log("getTopGenre was called")
+        console.log(localStorage.getItem(LOCALSTORAGE_KEYS.accessToken));
+        const response = await axios({
+            method: 'get',
+            url: `https://api.spotify.com/v1/me/top/genre?limit=1`,
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
+            }
+        })
+        console.log(response);
+        console.log(response.items[0]);
+        if(response) return response;
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
+
 const spotifyService = {
     connect,
     refreshToken,
     hasTokenExpired,
     logout,
     getTopArtist,
+    getTopGenre
 } 
 
 export default spotifyService

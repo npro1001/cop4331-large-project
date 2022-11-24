@@ -53,16 +53,18 @@ const InfoCard = () => {
         // A non-serializable value was detected in an action, in the path: `payload.headers`. Value: 
         // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
         if (isConnected) {
-            console.log("dispatched getTopArtist from InfoCard")
             dispatch(getTopArtist())
-                .then(response => {
+            .then(response => {
+                    console.log("dispatched getTopArtist from InfoCard")
                     setTopArtist(response.payload.data.items[0]);
-                })
-            console.log("dispatched getTopGenre from InfoCard")
-            dispatch(getTopGenre())
+            })
+            .then( () => {
+                dispatch(getTopGenre())
                 .then(response => {
+                    console.log("dispatched getTopGenre from InfoCard")
                     setTopGenre(response.payload.data.items[0]);
                 })
+            })
         }
 
         const fetchProfileUser = async () => {

@@ -128,7 +128,7 @@ export const spotifySlice = createSlice({
         })
         .addCase(getTopArtist.fulfilled, (state, action) => {
             state.isLoading = false;
-                        console.log("Action Payload:  " + action.payload.data.items[0])
+            console.log("Action Payload:  " + action.payload.data.items[0])
             // state.topArtist = action.payload;
         })
         .addCase(getTopArtist.rejected, (state) => {
@@ -143,7 +143,7 @@ export const spotifySlice = createSlice({
         })
         .addCase(getTopGenre.fulfilled, (state, action) => {
             state.isLoading = false;
-                        console.log("Action Payload:  " + action.payload.data.items[0])
+            console.log("Action Payload:  " + action.payload.data.items[0])
             // state.topArtist = action.payload;
         })
         .addCase(getTopGenre.rejected, (state) => {

@@ -159,6 +159,22 @@ export const getTopArtists = async (time_range = 'short_term') => {
      return response;
    };
 
+
+   //get recommended songs/artists?
+   export const recommendSongs = async (token, user) => {
+        const response = await axios({
+            method: 'get',
+            url: `${API}/user/${user._id}/recommendations`,//might be wrong
+            headers: {
+                'Accept': "application/json",
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+            }
+        });
+		console.log(response);
+		return response;
+    };
+
   
 // // @desc    Get user's top artist
 // // @route   GET /api/spotify/top_artist

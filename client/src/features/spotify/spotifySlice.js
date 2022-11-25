@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import spotifyService from './spotifyService'
 import axios from 'axios'
+import { recommendSongs } from './spotify'
 
 
 const initialState = {
@@ -173,6 +174,22 @@ export const spotifySlice = createSlice({
             // console.log("Action Payload:  " + action.payload)
             // state.message = action.payload.statusText;
         })
+        // Get recommended songs
+        .addCase(recommendSongs.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(recommendSongs.fulfilled, (state, action) => {
+            state.isLoading = false;
+            console.log("Action Payload:  " + action.payload.data.items[0])
+            // state.topArtist = action.payload;
+        })
+        .addCase(recommendSongs.rejected, (state) => {
+            state.isLoading = false;
+            state.isError = true; //?
+            // console.log("Action Payload:  " + action.payload)
+            // state.message = action.payload.statusText;
+        })
+
         // // Search tracks
         // .addCase(searchTracks.pending, (state) => {
         //     state.isLoading = true

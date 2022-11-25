@@ -205,6 +205,23 @@ export const getTopGenre = async () => {
     }
 }
 
+// @desc    Get recommended songs
+// @route   GET /api/spotify/recommendSongs
+// @access  Private
+export const recommendSongs = async (token, user) => {
+    const response = await axios({
+        method: 'get',
+        url: `${API}/user/${user._id}/recommendations`,//might be wrong
+        headers: {
+            'Accept': "application/json",
+            'Content-Type': "application/json",
+            'Authorization': `Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+        }
+    });
+    console.log(response);
+    return response;
+};
+
 // @desc    Get user's top artist
 // @route   GET /api/spotify/top_genre
 // @access  Private
@@ -238,6 +255,7 @@ const spotifyService = {
     logout,
     getTopArtist,
     getTopGenre,
+    recommendSongs,
     searchTracks,
 } 
 

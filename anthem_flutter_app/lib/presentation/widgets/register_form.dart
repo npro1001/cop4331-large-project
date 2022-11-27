@@ -51,26 +51,80 @@ class _RegisterFormState extends State<RegisterForm> {
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'name'),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.person_outlined, size: 30),
+                  labelText: "Name",
+                  labelStyle: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 controller: _nameController,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'email'),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.mail, size: 30),
+                  labelText: "Email",
+                  labelStyle: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 controller: _emailController,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'username'),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.person_outline, size: 30),
+                  labelText: "Username",
+                  labelStyle: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 controller: _usernameController,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'password'),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.lock, size: 30),
+                  labelText: "Password",
+                  labelStyle: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 controller: _passwordController,
                 obscureText: true,
               ),
-              MaterialButton(
+              SizedBox(height: 10),
+              FloatingActionButton.extended(
                 onPressed:
                     state is! RegisterLoading ? _onRegisterButtonPressed : null,
-                child: Text('Register'),
+                backgroundColor: Theme.of(context).primaryColor,
+                label: Text('Create Account'),
               ),
               Container(
                 child: state is RegisterLoading

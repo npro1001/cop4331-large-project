@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import React from 'react'
 import './ProfileCard.css'
-import { follow, reset } from '../../features/interactions/intSlice';
+// import { follow, reset } from '../../features/interactions/intSlice';
 import defaultCover from '../../img/default-cover-4.jpg'
 import defaultPFP from '../../img/default-profile.png'
 import { useReducedMotion } from 'framer-motion'

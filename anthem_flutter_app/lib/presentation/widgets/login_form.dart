@@ -48,36 +48,19 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.mail, size: 30),
-                  labelText: "Username",
-                  labelStyle: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
+                decoration: InputDecoration(labelText: 'username'),
                 controller: _usernameController,
               ),
               TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.lock, size: 30),
-                  labelText: "Password",
-                  labelStyle: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
+                decoration: InputDecoration(labelText: 'password'),
                 controller: _passwordController,
                 obscureText: true,
               ),
-              FloatingActionButton.extended(
+              MaterialButton(
                 //! Deal with error here after login button response
                 onPressed:
                     state is! LoginLoading ? _onLoginButtonPressed : null,
-                backgroundColor: Theme.of(context).primaryColor,
-                label: Text('Login'),
+                child: Text('Login'),
               ),
               Container(
                 child:

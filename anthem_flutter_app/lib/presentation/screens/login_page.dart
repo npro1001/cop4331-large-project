@@ -70,9 +70,45 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(height: 30),
-                  LoginForm(
-                    userAuthBloc: _userAuthBloc,
-                    loginBloc: _loginBloc,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: TextFormField(
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.mail, size: 30),
+                        labelText: "Username",
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: TextFormField(
+                      obscureText: true,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.lock, size: 30),
+                        labelText: "Password",
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -91,6 +127,14 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   SizedBox(height: 10),
+                  SizedBox(
+                    height: 55,
+                    width: double.infinity,
+                    child: FloatingActionButton.extended(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        label: Text('Login'),
+                        onPressed: () {}),
+                  ),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
             ),

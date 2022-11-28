@@ -39,9 +39,9 @@ class _AppState extends State<App> {
         }),
       ],
       child: MaterialApp(
-        title: 'Anthem',
+        title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primarySwatch: Colors.blue,
         ),
         onGenerateRoute: _appRouter.onGenerateRoute,
       ),

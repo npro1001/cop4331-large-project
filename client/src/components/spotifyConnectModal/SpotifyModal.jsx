@@ -6,13 +6,21 @@ import styled from 'styled-components';
 import { MdClose } from 'react-icons/md';
 import { logout, reset } from '../../features/auth/authSlice'
 import { connect } from '../../features/spotify/spotifySlice'
+import { useState } from 'react';
 
+//holds everything
+const Container = styled.div`
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 2rem;
+    position: relative;
+`;
 
 const Background = styled.div`
   width: 100%;
   height: 100%;
-  /* left: -5%;
-  top: -5%; */
   background: rgba(0, 0, 0, 0.8);
   position: absolute;
   display: flex;
@@ -20,9 +28,22 @@ const Background = styled.div`
   align-items: center;
 `;
 
+//image for modal
+const ModalImg = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  background: #000;
+  position: relative;
+
+  /* Extra small devices*/
+  @media only screen and (max-width: 590px) {
+    display: none;
+  }
+
+`;
+
 const ModalWrapper = styled.div`
-  width: 50%;
-  height: 50%;
   margin: auto;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #fff;
@@ -30,17 +51,75 @@ const ModalWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   position: relative;
-  z-index: 10;
   border-radius: 10px;
   object-fit: fill;
+
+  /* EXTRA extra small devices */
+  @media only screen and (max-width: 379px) {
+    width: 300px;
+  }
+  /* Extra small devices (600px and down) */
+  @media only screen and (min-width: 380px) and (max-width: 600px) {
+  width: 350px;
+  }
+
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    width: 580px;
+  }
+
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+    width: 650px;
+  }
+
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    width: 700px;
+  }
+
+  /* Extra large devices (large laptops and desktops, 1200px and up) */
+  @media only screen and (min-width: 1200px) {
+    width: 1000px;
+  
+  }
 `;
 
-const ModalImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  border-radius: 10px 0 0 10px;
-  background: #000;
+
+const Greeting = styled.p`
+
+  margin-bottom: 1rem;
+  text-align: center;
+
+  /* EXTRA extra small devices */
+  @media only screen and (max-width: 379px) {
+  font-size:15px;
+  width: 300px;
+  }
+  
+  /* Extra small devices (phones, 600px and down) */
+  @media only screen and (min-width: 380px) and (max-width: 600px) {
+  font-size:15px;
+  width: 350px;
+  }
+
+`;
+
+const SpotifyMessage = styled.h1`
+
+  margin-bottom: 1rem;
+  text-align: center;
+  position: relative;
+
+  /* EXTRA extra small devices */
+  @media only screen and (max-width: 379px) {
+    font-size:20px;
+  }
+  
+  /* Extra small devices (phones, 600px and down) */
+  @media only screen and (min-width: 380px) and (max-width: 600px) {
+  font-size:20px;
+  }
 `;
 
 const ModalContent = styled.div`
@@ -48,17 +127,10 @@ const ModalContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  line-height: 1.8;
   color: #141414;
   object-fit: fill;
   padding: 5%;
-  h1 {
-    text-align: center;
-  }
-  p {
-    margin-bottom: 1rem;
-    text-align: center;
-  }
+
   button {
     width: 70%;
     padding: 10px 24px;
@@ -67,15 +139,15 @@ const ModalContent = styled.div`
     border: none;
     border-radius: 10px;
     margin-bottom: 2%;
-}
-a {
-    width: 70%;
-    padding: 10px 24px;
-    text-decoration: none;
-    border: none;
-    border-radius: 10px;
-    margin-bottom: 2%;
-}
+  }
+  a {
+      width: 70%;
+      padding: 10px 24px;
+      text-decoration: none;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 2%;
+    }
  .connect-button {
     width: 75%;
     padding: 11px;
@@ -89,11 +161,16 @@ a {
     transition: all, 240ms ease-in-out;
     align-self: center;
     text-shadow: 0 0 2px #999;
+
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (min-width: 320px) and (max-width: 379px) {
+    width:200px;
+    }
   }
   .connect-button:hover {
     background: #1db954;
     filter: brightness(1.2);
-}
+  }
   .logout-button {
     width: 75%;
     padding: 11px;
@@ -108,11 +185,17 @@ a {
     background: var(--purple);
     align-self: center;
     text-shadow: 0 0 2px #999;
-}
+
+    /* EXTRA extra small devices */
+    @media only screen and (min-width: 320px) and (max-width: 379px) {
+    width:200px;
+    }
+
+  }
 .logout-button:hover {
     background: rgba(93, 48, 149, 1);
     filter: brightness(1.2);
-}
+  }
 `;
 
 const CloseModalButton = styled(MdClose)`
@@ -127,10 +210,11 @@ const CloseModalButton = styled(MdClose)`
 `;
 
 
-export const Modal = ({ showModal, setShowModal }) => {
+export const Modal = () => {
+  const [showModal, setShowModal] = useState(true);
   const { user } = useSelector((store) => store.auth)
   const modalRef = useRef();
-  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const animation = useSpring({
@@ -142,47 +226,51 @@ export const Modal = ({ showModal, setShowModal }) => {
   });
 
   const onLogout = () => {
+    setShowModal(false);
+
     dispatch(logout())
-        .then(() => {
-            navigate("/", { replace: true })
-        })
-        .then(() => {
-            dispatch(reset())
-        })
-    }
+      .then(() => {
+        navigate("/", { replace: true })
+      })
+      .then(() => {
+        dispatch(reset())
+      })
+  }
 
-    const onClick = (e) => {
-        e.preventDefault() 
+  const onClick = (e) => {
+    e.preventDefault()
 
-        // window.open('http://localhost:5555/api/spotify/connect', '_self');
-        // window.location.href = 'http://localhost:5555/api/spotify/connect'
-        
-        dispatch(connect())
-        // .then(() => {
-        //     navigate("/home", { replace: true})
-        // })
-        return true
-    }
+    // window.open('http://localhost:5555/api/spotify/connect', '_self');
+    // window.location.href = 'http://localhost:5555/api/spotify/connect'
+
+    dispatch(connect())
+    // .then(() => {
+    //     navigate("/home", { replace: true})
+    // })
+    return true
+  }
 
   return (
     <>
       {showModal ? (
-        <Background ref={modalRef}>
-          <animated.div style={animation}>
-            <ModalWrapper showModal={showModal}>
-              <ModalImg src={require('./spotify_modal4.png')} alt='camera' />
-              <ModalContent>
-                <p>Hey, {user.name}</p>
-                <h1>You are not connected to Spotify!</h1>
-                <p>Please connect to use the full features of Anthem</p>
-                <a className="button connect-button" href="http://localhost:5555/api/spotify/connect" target="_self" >Connect to Spotify</a>
-                {/* <button className="button connect-button" onClick={onClick} >2. Connect to Spotify</button> */}
-                <button className="button logout-button" onClick={onLogout}>Logout</button>
-              </ModalContent>
-            </ModalWrapper>
-          </animated.div>
-        </Background>
-      ) : null}
+        <Container>
+          <Background ref={modalRef}>
+            <animated.div style={animation}>
+              <ModalWrapper showModal={showModal}>
+                <ModalImg src={require('./spotify_modal4.png')} alt='camera' />
+                <ModalContent>
+                  <Greeting>Hey, {user.name}</Greeting>
+                  <SpotifyMessage>You are not connected to Spotify!</SpotifyMessage>
+                  <Greeting>Please connect to use the full features of Anthem</Greeting>
+                  <a className="button connect-button" href="http://localhost:5555/api/spotify/connect" target="_self" >Connect to Spotify</a>
+                  {/* <button className="button connect-button" onClick={onClick} >2. Connect to Spotify</button> */}
+                  <button className="button logout-button" onClick={onLogout}>Logout</button>
+                </ModalContent>
+              </ModalWrapper>
+            </animated.div>
+          </Background>
+        </Container>
+      ) : ""}
     </>
   );
 };

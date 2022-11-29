@@ -212,6 +212,7 @@ export const recommendSongs = async (token, user) => {
     const response = await axios({
         method: 'get',
         url: `${API_URL}/user/${user._id}/recommendations`,//might be wrong
+        //url: `https://api.spotify.com/v1/recommendations`,//might be wrong
         headers: {
             'Accept': "application/json",
             'Content-Type': "application/json",

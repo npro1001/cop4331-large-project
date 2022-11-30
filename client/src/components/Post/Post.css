@@ -16,9 +16,9 @@
     border-radius: 0.5rem;
 }
 
-.Post>img:hover{
+/* .Post>img:hover{
     cursor:pointer;
-}
+} */
 
 .postReact{
     display: flex;

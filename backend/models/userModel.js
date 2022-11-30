@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 let Post = require('./postModel');
 let Comment = require('./commentModel');
+let Anthem = require('./anthemModel');
 
 const userSchema = mongoose.Schema(
   {
@@ -31,6 +32,10 @@ const userSchema = mongoose.Schema(
     about:{
       type: String,
       required: false,
+    }, 
+    anthem:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Anthem'
     }, 
     likes: [{
       type: mongoose.Schema.Types.ObjectId,

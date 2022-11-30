@@ -41,11 +41,34 @@ const reset = async (passwordToken, password) => {
     return null;
 }
 
+const update = async (name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl, token) => {
+
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+    }
+
+    const response = await axios({
+        method: 'put',
+        url: API_URL + 'update',
+        data: {name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl},
+        headers: {Authorization: `Bearer ${token}`}});
+
+    if(response.data) {
+        //! This is potentially dangerous - response is not always good
+        // localStorage.setItem('user', JSON.stringify(response.data))
+        return response.data
+    }
+    return null;
+}
+
 const authService = {
     register,
     login,
     logout,
     reset,
+    update,
 } 
 
 export default authService

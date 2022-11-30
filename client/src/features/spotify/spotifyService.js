@@ -179,12 +179,85 @@ export const getTopArtist = async () => {
     }
 }
 
+// @desc    Get user's top artist
+// @route   GET /api/spotify/top_genre
+// @access  Private
+export const getTopGenre = async () => {
+
+    //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
+    try{
+        console.log("getTopGenre was called")
+        console.log(localStorage.getItem(LOCALSTORAGE_KEYS.accessToken));
+        const response = await axios({
+            method: 'get',
+            url: `https://api.spotify.com/v1/me/top/genre?limit=1`,
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
+            }
+        })
+        console.log(response);
+        console.log(response.items[0]);
+        if(response) return response;
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
+
+// @desc    Get recommended songs
+// @route   GET /api/spotify/recommendSongs
+// @access  Private
+export const recommendSongs = async (token, user) => {
+    const response = await axios({
+        method: 'get',
+        url: `${API_URL}/user/${user._id}/recommendations`,//might be wrong
+        //url: `https://api.spotify.com/v1/recommendations`,//might be wrong
+        headers: {
+            'Accept': "application/json",
+            'Content-Type': "application/json",
+            'Authorization': `Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+        }
+    });
+    console.log(response);
+    return response;
+};
+
+// @desc    Get user's top artist
+// @route   GET /api/spotify/top_genre
+// @access  Private
+// API documentation: https://developer.spotify.com/documentation/web-api/reference/#/operations/search
+export const searchTracks = async (param) => {
+    try{
+
+        const token = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken);
+        const response = await axios({
+            method: 'get',
+            url: `https://api.spotify.com/v1/search?q=${param}&type=track&include_external=audio&limit=7`,
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
+            }
+        })
+        // console.log(response);
+        // console.log(response.items);
+        if(response) return response;
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
+
+
 const spotifyService = {
     connect,
     refreshToken,
     hasTokenExpired,
     logout,
     getTopArtist,
+    getTopGenre,
+    recommendSongs,
+    searchTracks,
 } 
 
 export default spotifyService

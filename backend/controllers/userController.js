@@ -2,8 +2,10 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
+const Anthem = require('../models/anthemModel')
 const sendMail = require('../utils/sendMail')
 const userModel = require('../models/userModel')
+const anthemModel = require('../models/anthemModel')
 const multer = require('multer')
 var mongoose = require('mongoose');
 const fs = require('fs');
@@ -99,7 +101,8 @@ const loginUser = asyncHandler(async (req, res) => {
         isConfirmed: user.isConfirmed,
         about: user.about, 
         followers: user.followers, 
-        following: user.following
+        following: user.following,
+        anthem: user.anthem
       })
     }
 
@@ -121,30 +124,39 @@ const getMe = asyncHandler(async (req, res) => {
 
 
 // @desc    Update user
-// @route   PUT /api/user/:id
+// @route   PUT /api/user/update
 // @access  Private
 const updateUser = asyncHandler(async (req, res) => {
   //const user = await User.findById(req.user.id)
   const user = await User.findById(req.user.id)
 
+  // All possible updateable user fields from frontend currently
+  const {name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl} = req.body;
   
   if (!user) {
     res.status(400)
     throw new Error('User not found')
   }
 
-  // Make sure the logged in user matches the goal user
-  if (user.id !== req.body.id) {
-    res.status(401)
-    throw new Error('User not authorized')
-  }
+  // Create anthem
+  const newAnthem = await Anthem.create({
+    user: user,
+    id: anthemId,
+    title: anthemTitle,
+    artist1: anthemArtist1,
+    image: anthemImage,
+    url: anthemUrl
+  })
 
-  if(user.password != req.body.password){
-    const salt = await bcrypt.genSalt(10);
-    req.body.password = await bcrypt.hash(req.body.password, salt)
-  }
 
-  const updatedUser = await User.findByIdAndUpdate(req.body.id, req.body, {
+ //! Remove password update for now
+  // if(user.password != req.body.password){
+  //   const salt = await bcrypt.genSalt(10);
+  //   req.body.password = await bcrypt.hash(req.body.password, salt)
+  // }
+
+
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, {name: name, username: username, anthem: newAnthem}, {
     new: true,
   })
 
@@ -447,6 +459,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         profilePicture: user.profilePicture,
         followers: user.followers,
         following: user.following, // May need more data
+        anthem: user.anthem, //! Added this
     });
 
   } catch (error) {

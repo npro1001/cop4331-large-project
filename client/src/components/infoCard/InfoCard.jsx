@@ -10,8 +10,10 @@ import { useEffect } from "react"
 import { catchErrors } from "../../utils"
 import { StyledGrid } from "../styles/StyledGrid.js"
 import { getTopArtists } from "../../features/spotify/spotify.js"
+import SongCard from "../SongCard/SongCard.jsx"
+
 // import { getTopArtist } from "../../features/spotify/spotifyService"
-import { getTopArtist } from "../../features/spotify/spotifySlice"
+import { getTopArtist, getTopGenre } from "../../features/spotify/spotifySlice"
 
 
 const InfoCard = () => {
@@ -25,6 +27,7 @@ const InfoCard = () => {
     
     const [modalOpened, setModalOpened] = useState(false)
     const [topArtist, setTopArtist] = useState(null);
+    const [topGenre, setTopGenre] = useState(null);
     const [activeUser, setActiveUser] = useState({})
 
     const profileUsername = params.username;
@@ -51,11 +54,18 @@ const InfoCard = () => {
         // A non-serializable value was detected in an action, in the path: `payload.headers`. Value: 
         // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
         if (isConnected) {
-            console.log("dispatched getTopArtist from InfoCard")
             dispatch(getTopArtist())
-                .then(response => {
+            .then(response => {
+                    console.log("dispatched getTopArtist from InfoCard")
                     setTopArtist(response.payload.data.items[0]);
-                })
+            })
+            // .then( () => {
+            //     dispatch(getTopGenre())
+            //     .then(response => {
+            //         console.log("dispatched getTopGenre from InfoCard")
+            //         setTopGenre(response.payload.data.items[0]);
+            //     })
+            // })
         }
 
         const fetchProfileUser = async () => {
@@ -108,20 +118,37 @@ const InfoCard = () => {
                 <span>
                     <b>Anthem</b>
                 </span>
-                <span> Eternal Summer- The Strokes</span>
+                <span> {user.anthem ? 
+                    <SongCard name={user.anthem.title} artist1={user.anthem.artist1} image={user.anthem.image}> </SongCard>
+                : 
+                <p>Eternal Summer- The Strokes</p>}</span>
             </div>
 
             <div className="info">
                 <span>
                     <b>Top Genre</b>
                 </span>
-                <span> Indie Rock</span>
+                <span>
+                    {topGenre ? (
+                        <div className="songrec">
+                            <div className="songname">
+                                <span>{topGenre.name}</span>
+                            </div>
+                        </div>
+            ) : (
+                <div>
+                    <p> top genre not found </p>
+                    {/* <a className='button' href="http://localhost:5555/api/spotify/connect" target="_self" >Pre Connect To Spotify</a> */}
+                    {/* <a className='button' href="#" target="_self" onClick={onClick}>Connect to spotify </a> */}
+                </div>  
+            )}  
+                </span>
             </div>
+            
 
             <div className="info">
                 <span>
                     <b>Top Artist</b>
-
                 </span>
                 <span>
                     {topArtist ? (

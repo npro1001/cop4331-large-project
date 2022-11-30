@@ -51,6 +51,21 @@ export const userResetPassword = createAsyncThunk('auth/reset', async(passwordTo
     }
 })
 
+//! Update user info
+export const updateUser = createAsyncThunk('auth/update', async(name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl, thunkAPI) => {
+    try {
+        console.log("USER UPDATE FUCNTIONS")
+        const token = user.token
+        console.log(token)
+        return await authService.update(name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl, token);
+    } catch (error) {
+        console.log("fucks")
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -111,6 +126,20 @@ export const authSlice = createSlice({
         .addCase(userResetPassword.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
+            state.message = action.payload
+        })
+        // Update user state cases
+        .addCase(updateUser.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(updateUser.fulfilled, (state, action) => {
+            state.isLoading = false
+        })
+        .addCase(updateUser.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            console.log(action.payload)
+            console.log(state)
             state.message = action.payload
         })
     }

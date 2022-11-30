@@ -145,6 +145,37 @@ export const getTopArtists = async (time_range = 'short_term') => {
     return response;
   };
 
+  //get a user's top genre
+ export const getTopGenre = async (time_range = 'short_term') => {
+     const response = await axios({
+         method: 'get',
+         url: `https://api.spotify.com/v1/me/top/genre?time_range=${time_range}`,
+         headers: {
+             'Content-type':'application/json',
+             'Authorization':`Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+         }
+     });
+     console.log(response);
+     return response;
+   };
+
+
+   //get recommended songs/artists?
+   export const recommendSongs = async (token, user) => {
+        const response = await axios({
+            method: 'get',
+            url: `${API_URL}/user/${user._id}/recommendations`,//might be wrong
+            //url: `https://api.spotify.com/v1/recommendations`,//might be wrong
+            headers: {
+                'Accept': "application/json",
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${LOCALSTORAGE_VALUES.accessToken}`
+            }
+        });
+		console.log(response);
+		return response;
+    };
+
   
 // // @desc    Get user's top artist
 // // @route   GET /api/spotify/top_artist

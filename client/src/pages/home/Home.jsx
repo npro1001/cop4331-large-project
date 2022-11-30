@@ -80,7 +80,7 @@ const Home = () => {
         // If NOT connected to spotify:
         ) : ( 
             <div className="modal-stretch">
-                <Modal showModal={true} />
+                <Modal/>
             </div>
         )}
     </div>

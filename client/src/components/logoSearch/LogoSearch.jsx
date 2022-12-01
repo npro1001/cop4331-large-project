@@ -10,7 +10,7 @@ const SearchContainer = styled.div`
     position: absolute;
     background: white;
     height: 20%;
-    width: 24%;
+    width: 200px;
     z-index:10;
     align-self: center;
     border-radius:10px;
@@ -18,7 +18,6 @@ const SearchContainer = styled.div`
     overflow-x: hidden;
     display:none;
     top: 40px;
-    left:150px;
     filter: drop-shadow(0 0 0.3rem black);
 
 `

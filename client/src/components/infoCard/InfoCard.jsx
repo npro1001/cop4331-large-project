@@ -3,7 +3,7 @@ import './InfoCard.css'
 import { UilPen } from '@iconscout/react-unicons'
 import ProfileModal from '../profileModal/ProfileModal'
 import { logout, reset, getMe } from '../../features/auth/authSlice'
-import { spotifyLogout, connect } from '../../features/spotify/spotifySlice'
+import { spotifyLogout } from '../../features/spotify/spotifySlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from "react"
@@ -30,8 +30,6 @@ const InfoCard = () => {
 
     const profileUsername = params.username;
     let profileUser;
-    let targetUser;
-//
 
     useEffect(() => {
 
@@ -124,10 +122,12 @@ const InfoCard = () => {
                     
                     {user.username === activeUser.username && topGenres ? (
                         <div>
-                                {topGenres.map((genres) => {
+                                {topGenres.map((genres, index) => {
+                                    <div key ={index}>
                                     return (
                                         <><span>{genres}  </span></>
                                     )
+                                    </div>
                                 })}
                         </div>
                     ) : (

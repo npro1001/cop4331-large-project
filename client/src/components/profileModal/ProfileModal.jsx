@@ -9,7 +9,9 @@ import { UilSearch } from '@iconscout/react-unicons'
 import styled from "styled-components";
 import { searchTracks } from "../../features/spotify/spotifySlice"
 import { updateUser } from "../../features/auth/authSlice"
-import SongCard from "../SongCard/SongCard.jsx" 
+import SongCard from "../SongCard/SongCard.jsx"
+import { getMe, uploadPFP } from '../../features/auth/authSlice';
+
 
 const ResultsContainer = styled.div`
     /* margin-top: ; */
@@ -43,56 +45,79 @@ cursor: pointer;
 
 `
 
-function ProfileModal({modalOpened, setModalOpened}) {
+function ProfileModal({ modalOpened, setModalOpened, data }) {
     const theme = useMantineTheme();
+
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.auth)
-    const [tempName, setTempName] = useState(null)
-    const [tempUsername, setTempUsername] = useState(null)
+    const navigate = useNavigate();
+   
+    const [user, setUser] = useState({})
+    const [profileImage, setProfileImage] = useState(null)
+    const [coverImage, setCoverImage] = useState(null)
     const [songList, setSongList] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
-    let searching = false;
-    let results = false;
+
+    const [tempName, setTempName] = useState(null)
+    const [tempUsername, setTempUsername] = useState(null)
+
     const [tempAnthemId, setTempAnthemId] = useState(null)
     const [tempAnthemName, setTempAnthemName] = useState(null)
     const [tempAnthemImage, setTempAnthemImage] = useState(null)
     const [tempAnthemArtist1, setTempAnthemArtist1] = useState(null)
     const [tempAnthemUrl, setTempAnthemUrl] = useState(null)
 
+    const [holdName, setHoldName] = useState(null)
+    const [holdUsername, setHoldUsername] = useState(null)
+
+    let creds;
+    let searching = false;
 
     useEffect(() => {
-        setTempName(user.name);
-        setTempUsername(user.username);
-        // if(user.anthem) {
-        //     setTempAnthemName(user.anthem.name)
-        //     // setTempAnthemImage(user.anthem.image)
-        //     setTempAnthemName(user.anthem.name)
-        // }
-        searching = false;
-    }) //[tempAnthemName])
+
+        const fetchProfileUser = async () => {
+            dispatch(getMe())
+                .then((response) => {
+                    setUser(response.payload);
+                    setHoldName(data.name);
+                    setHoldUsername(data.username);
+                })
+            searching = false;
+        }
+        fetchProfileUser()
+
+    }, [user])
+
+
+
+    const onImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            let img = event.target.files[0];
+
+            event.target.name === "picture" ? setProfileImage(img) : setCoverImage(img)
+        }
+    };
 
     const handleChange = async (e) => {
         e.preventDefault();
         setSearchTerm(e.target.value)
         dispatch(searchTracks(e.target.value))
-        .then((response) => {
-            setSongList(response.payload.data.tracks.items)
-            console.log(response)     
-        })
+            .then((response) => {
+                setSongList(response.payload.data.tracks.items)
+            })
     }
 
     const handleClick = (e, song) => {
         console.log("clicked " + song.name)
         // TODO Only choose song on a double click
         // if (e.detail === 2) {
-            // console.log('double clicked!')
-            setTempAnthemName(song.name)
-            setTempAnthemArtist1(song.artists[0].name)
-            setTempAnthemImage(song.album.images[0].url)
-            setTempAnthemId(song.id)
-            setTempAnthemUrl(song.preview_url)
-            setSearchTerm('');
-            
+        // console.log('double clicked!')
+        setTempAnthemName(song.name)
+        setTempAnthemArtist1(song.artists[0].name)
+        setTempAnthemImage(song.album.images[0].url)
+        setTempAnthemId(song.id)
+        setTempAnthemUrl(song.preview_url)
+        setSearchTerm('');
+
     }
 
     if (searchTerm.length > 0) {
@@ -104,95 +129,229 @@ function ProfileModal({modalOpened, setModalOpened}) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        dispatch(updateUser({
-            name: tempName,
-            username: tempUsername,
-            anthemId: tempAnthemId,
-            anthemTitle: tempAnthemName,
-            anthemArtist1: tempAnthemArtist1,
-            anthemImage: tempAnthemImage,
-            anthemUrl: tempAnthemUrl}))
-        .then((response) => {
-            // console.log(JSON.stringify(response))
-            window.location.reload()
-        })
-    }
-    
+        const prof = new FormData();
+        if(profileImage)
+        {
+            
+            prof.append("picture", profileImage);
+            prof.append("id", user._id)
+            dispatch(uploadPFP(prof))
+        }
 
-    return(
+        //user didnt change anything
+        if (tempName == null && tempUsername == null && tempAnthemName == null && profileImage == null) {
+            console.log("SHIT IS NULL AHHHHHHHHHHHH")
+            creds = {
+                name: data.name,
+                username: data.username,
+                anthemId: data.anthem.id,
+                anthemTitle: data.anthem.title,
+                anthemArtist1: data.anthem.artist1,
+                anthemImage: data.anthem.image,
+                anthemUrl: data.anthem.url
+            }
+        }
+
+        //user changes everything
+        else if (tempName != null && tempUsername != null && tempAnthemName != null) {
+
+            console.log("SHIT IS NOTNULL AHHHHHHHHHHHH")
+            creds = {
+                name: tempName,
+                username: tempUsername,
+                anthemId: tempAnthemId,
+                anthemTitle: tempAnthemName,
+                anthemArtist1: tempAnthemArtist1,
+                anthemImage: tempAnthemImage,
+                anthemUrl: tempAnthemUrl
+            }
+
+        }
+
+        //user changes their name and anthem
+        else if (tempUsername == null && tempName != null && tempAnthemName != null) {
+            creds = {
+                name: tempName,
+                username: data.username,
+                anthemId: tempAnthemId,
+                anthemTitle: tempAnthemName,
+                anthemArtist1: tempAnthemArtist1,
+                anthemImage: tempAnthemImage,
+                anthemUrl: tempAnthemUrl
+            }
+        }
+
+        //user changes their username and anthem
+        else if (tempName == null && tempAnthemName != null && tempUsername != null) {
+            creds = {
+                name: data.name,
+                username: tempUsername,
+                anthemId: tempAnthemId,
+                anthemTitle: tempAnthemName,
+                anthemArtist1: tempAnthemArtist1,
+                anthemImage: tempAnthemImage,
+                anthemUrl: tempAnthemUrl
+            }
+        }
+
+        //user changes their name and username
+          else if (tempAnthemName == null && tempUsername != null && tempName != null) {
+            creds = {
+                name: tempName,
+                username: tempUsername,
+                anthemId: data.anthem.id,
+                anthemTitle: data.anthem.title,
+                anthemArtist1: data.anthem.artist1,
+                anthemImage: data.anthem.image,
+                anthemUrl: data.anthem.url
+            }
+        }
+
+        //user changes only their anthem
+        else if (tempName == null && tempUsername == null && tempAnthemName != null) {
+            creds = {
+                name: data.name,
+                username: data.username,
+                anthemId: tempAnthemId,
+                anthemTitle: tempAnthemName,
+                anthemArtist1: tempAnthemArtist1,
+                anthemImage: tempAnthemImage,
+                anthemUrl: tempAnthemUrl
+            }
+        }
+
+        //user changes only their name
+        else if (tempUsername == null && tempAnthemName == null && tempName != null) {
+            creds = {
+                name: tempName,
+                username: data.username,
+                anthemId: data.anthem.id,
+                anthemTitle: data.anthem.title,
+                anthemArtist1: data.anthem.artist1,
+                anthemImage: data.anthem.image,
+                anthemUrl: data.anthem.url
+            }
+        }
+
+
+        //user changes only their username
+        else if (tempName == null  && tempAnthemName == null && tempUsername != null) {
+            creds = {
+                name: data.name,
+                username: tempUsername,
+                anthemId: data.anthem.id,
+                anthemTitle: data.anthem.title,
+                anthemArtist1: data.anthem.artist1,
+                anthemImage: data.anthem.image,
+                anthemUrl: data.anthem.url
+            }
+        }
+
+        dispatch(updateUser(
+            creds))
+            .then( async (updateUserRes) => {
+                setUser(updateUserRes.payload)
+               console.log(updateUserRes.payload)
+                if(user)
+                {
+                    console.log(user.username)
+                    // setModalOpened(false);
+                    navigate(
+                        `/profile/${updateUserRes.payload.username}`)
+
+                        window.location.reload();
+                }
+
+                //if for some reason that fails, use the getUser API
+                else {
+                    const res = await fetch(`/api/users/${updateUserRes.payload.username}`, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' },
+                    })
+                    let loggedUser = await res.json();
+                    navigate(
+                        `/profile/${loggedUser.username}`)
+                }               
+            })          
+    }
+
+
+    return (
         <Modal
             overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
             overlayOpacity={0.55}
             overlayBlur={3}
             size='55%'
-            opened = {modalOpened}
-            onClose={() => {setModalOpened(false); searching=false;}}>
-            
+            opened={modalOpened}
+            onClose={() => { setModalOpened(false); searching = false; }}>
+
             {/* FILL PLACEHOLDERS WITH CURRENT NAME AND USERNAME*/}
-            {tempName && tempUsername ? 
-            (<form className='infoForm' onSubmit={handleSubmit}>
-                <h3>Update your info</h3>
-                <div>
-                    <input type="text" className="infoInput" name="Name" value={tempName} placeholder={tempName} />
-                    <input type="text" className="infoInput" name="Username" value={tempUsername} placeholder={tempUsername} />
-                </div>
+            {holdName && holdUsername ?
+                (<form className='infoForm' onSubmit={handleSubmit}>
+                    <h3>Update your info</h3>
+                    <div>
+                        <input type="text" className="infoInput" name="Name" placeholder={user.name} onChange={(e) => setTempName(e.target.value)} />
+                        <input type="text" className="infoInput" name="Username" placeholder={user.username} onChange={(e) => setTempUsername(e.target.value)} />
+                    </div>
 
-                {/* IF ANTHEM EXISTS/SELECTED ... SHOW ON FORM */}
-                {tempAnthemName ? <div className="currentAnthem">
-                    <SongCard name={tempAnthemName} artist1={tempAnthemArtist1} 
-                            image={tempAnthemImage} ></SongCard>
-                            </div> : <></>}
+                    {/* IF ANTHEM EXISTS/SELECTED ... SHOW ON FORM */}
+                    {user.anthem ? <div className="currentAnthem">
+                        <SongCard name={user.anthem.title} artist1={user.anthem.artist1}
+                            image={user.anthem.image} ></SongCard>
+                    </div> : <></>}
 
-                {/* SHOW RESULTS LIST WHEN SEARCHING */}
-                {searching ? (<div className="searchContainer">
-                    <input type="text" className="infoInput" value={searchTerm} name="Anthem" placeholder="Search for a song..." onChange={handleChange}/>
-                    <ResultsContainer style={{ display: searching ? "inline" : "none" }}>
-                    {songList.map((song, index) => {
-                        return (
-                            <div key={index}>
-                                <List>
-                                    <Results onClick={(e) => handleClick(e, song)}>
-                                        <SongCard 
-                                        name={song.name} 
-                                        artist1={song.artists[0].name} 
-                                        image={song.album.images[0].url} 
-                                        url={song.url}
-                                        ></SongCard>
-                                    </Results>
-                                </List>
-                            </div>
-                        )
-                        })}
-                    </ResultsContainer>
+                    {/* SHOW RESULTS LIST WHEN SEARCHING */}
+                    {searching ? (<div className="searchContainer">
+                        <input type="text" className="infoInput" value={searchTerm} name="Anthem" placeholder="Search for a song..." onChange={handleChange} />
+                        <ResultsContainer style={{ display: searching ? "inline" : "none" }}>
+                            {songList.map((song, index) => {
+                                return (
+                                    <div key={index}>
+                                        <List>
+                                            <Results onClick={(e) => handleClick(e, song)}>
+                                                <SongCard
+                                                    name={song.name}
+                                                    artist1={song.artists[0].name}
+                                                    image={song.album.images[0].url}
+                                                    url={song.url}
+                                                ></SongCard>
+                                            </Results>
+                                        </List>
+                                    </div>
+                                )
+                            })}
+                        </ResultsContainer>
                     </div>) : (<div className="ResultsContainer">
-                        <input type="text" className="infoInput" name="Anthem" placeholder={tempAnthemName} onChange={handleChange}/>
+                        {searchTerm != ''  ? (<input type="text" className="infoInput" name="Anthem" placeholder={data.anthem.title} onChange={handleChange} />) :
+                            (<input type="text" className="infoInput" name="Anthem" value={tempAnthemName} placeholder={tempAnthemName} onChange={handleChange} />)}
+
                     </div>)}
-                <div>
-                    Profile image 
-                    <input type="file" name='profileImg'/>
-                    Cover image 
-                    <input type="file" name='coverImg'/>
-                </div>
-                <button type='submit' className='button infoButton'>Update</button>
-            </form>) 
-            : // IF SOMETHING GOES WRONG
-            (<form className='infoForm'>
-                <h3>Your info</h3>
-                <div>
-                    <input type="text" className="infoInput" name="Name" placeholder="Name"/>
-                    <input type="text" className="infoInput" name="Username" placeholder="Username"/>
-                </div>
-                <div>
-                    <input type="text" className="infoInput" name="Anthem" placeholder="Your Anthem"/>
-                </div>
-                <div>
-                    Profile image 
-                    <input type="file" name='profileImg'/>
-                    Cover image 
-                    <input type="file" name='coverImg'/>
-                </div>
-                <button type='submit' className='button infoButton'>Update</button>
-            </form>) }
+                    <div>
+                        Profile image
+                        <input type="file" name='picture' onChange={onImageChange} />
+                        Cover image
+                        <input type="file" name='coverImg' onChange={onImageChange} />
+                    </div>
+                    <button type='submit' className='button infoButton'>Update</button>
+                </form>)
+                : // IF SOMETHING GOES WRONG
+                (<form className='infoForm'>
+                    <h3>Your info</h3>
+                    <div>
+                        <input type="text" className="infoInput" name="Name" placeholder="Name" />
+                        <input type="text" className="infoInput" name="Username" placeholder="Username" />
+                    </div>
+                    <div>
+                        <input type="text" className="infoInput" name="Anthem" placeholder="Your Anthem" />
+                    </div>
+                    <div>
+                        Profile image
+                        <input type="file" name='picture' />
+                        Cover image
+                        <input type="file" name='coverImg' />
+                    </div>
+                    <button type='submit' className='button infoButton'>Update</button>
+                </form>)}
         </Modal>
     );
 }

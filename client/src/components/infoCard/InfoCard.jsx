@@ -123,11 +123,13 @@ const InfoCard = () => {
                     {user.username === activeUser.username && topGenres ? (
                         <div>
                                 {topGenres.map((genres, index) => {
-                                    <div key ={index}>
+                                    
                                     return (
+                                        <div key ={index}>
                                         <><span>{genres}  </span></>
+                                        </div>
                                     )
-                                    </div>
+                                   
                                 })}
                         </div>
                     ) : (

@@ -8,6 +8,7 @@
 
 .navIcons>img {
     height: 42px;
+    /* width: 75px; */
 }
 
 .navIcons{
@@ -28,11 +29,6 @@
     margin-bottom: 0.5rem;
     justify-content: center;
 }
-
-/* .Home>hr {
-    width: 78%;
-    border: 1px solid var(--hrColor);
-} */
 
 .Bottom{
     position: relative;

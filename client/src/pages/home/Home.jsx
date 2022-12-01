@@ -19,18 +19,9 @@ import { connect } from '../../features/spotify/spotifySlice'
 
 const Home = () => {
     const { isConnected, isError, message } = useSelector((store) => store.spotify)
-    // const [showModal, setShowModal] = useState(false);
-
-    // const openModal = () => {
-    //   setShowModal(prev => !prev);
-    // };
-
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // if(localStorage.getItem('spotify_access_token')) {
-        //     dispatch(connect)
-        // }
         if(isError) {
             toast.error(message);
         }

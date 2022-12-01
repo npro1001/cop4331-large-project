@@ -50,7 +50,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-   
+
     const [user, setUser] = useState({})
     const [profileImage, setProfileImage] = useState(null)
     const [coverImage, setCoverImage] = useState(null)
@@ -88,6 +88,12 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     }, [user])
 
 
+    const picUpload = () => {
+        const prof = new FormData();
+        prof.append("picture", profileImage);
+        prof.append("id", user._id)
+        dispatch(uploadPFP(prof))
+    }
 
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -129,14 +135,8 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        const prof = new FormData();
-        if(profileImage)
-        {
-            
-            prof.append("picture", profileImage);
-            prof.append("id", user._id)
-            dispatch(uploadPFP(prof))
-        }
+
+
 
         //user didnt change anything
         if (tempName == null && tempUsername == null && tempAnthemName == null && profileImage == null) {
@@ -155,7 +155,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         //user changes everything
         else if (tempName != null && tempUsername != null && tempAnthemName != null) {
 
-            console.log("SHIT IS NOTNULL AHHHHHHHHHHHH")
             creds = {
                 name: tempName,
                 username: tempUsername,
@@ -195,7 +194,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
 
         //user changes their name and username
-          else if (tempAnthemName == null && tempUsername != null && tempName != null) {
+        else if (tempAnthemName == null && tempUsername != null && tempName != null) {
             creds = {
                 name: tempName,
                 username: tempUsername,
@@ -235,7 +234,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
 
         //user changes only their username
-        else if (tempName == null  && tempAnthemName == null && tempUsername != null) {
+        else if (tempName == null && tempAnthemName == null && tempUsername != null) {
             creds = {
                 name: data.name,
                 username: tempUsername,
@@ -249,30 +248,17 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
         dispatch(updateUser(
             creds))
-            .then( async (updateUserRes) => {
+            .then(async (updateUserRes) => {
+                picUpload();
                 setUser(updateUserRes.payload)
-               console.log(updateUserRes.payload)
-                if(user)
-                {
-                    console.log(user.username)
-                    // setModalOpened(false);
-                    navigate(
-                        `/profile/${updateUserRes.payload.username}`)
+                // setModalOpened(false);
+                navigate(
+                    `/profile/${updateUserRes.payload.username}`)
 
-                        window.location.reload();
-                }
+                window.location.reload();
 
-                //if for some reason that fails, use the getUser API
-                else {
-                    const res = await fetch(`/api/users/${updateUserRes.payload.username}`, {
-                        method: 'GET',
-                        headers: { 'Accept': 'application/json' },
-                    })
-                    let loggedUser = await res.json();
-                    navigate(
-                        `/profile/${loggedUser.username}`)
-                }               
-            })          
+
+            })
     }
 
 
@@ -322,7 +308,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                             })}
                         </ResultsContainer>
                     </div>) : (<div className="ResultsContainer">
-                        {searchTerm != ''  ? (<input type="text" className="infoInput" name="Anthem" placeholder={data.anthem.title} onChange={handleChange} />) :
+                        {searchTerm != '' ? (<input type="text" className="infoInput" name="Anthem" placeholder={data.anthem.title} onChange={handleChange} />) :
                             (<input type="text" className="infoInput" name="Anthem" value={tempAnthemName} placeholder={tempAnthemName} onChange={handleChange} />)}
 
                     </div>)}

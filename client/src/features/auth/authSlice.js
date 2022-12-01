@@ -54,18 +54,38 @@ export const userResetPassword = createAsyncThunk('auth/reset', async(passwordTo
 //! Update user info
 export const updateUser = createAsyncThunk('auth/update', async(name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl, thunkAPI) => {
     try {
-        console.log("USER UPDATE FUCNTIONS")
         const token = user.token
-        console.log(token)
         return await authService.update(name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl, token);
     } catch (error) {
-        console.log("fucks")
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
     }
 })
 
 
+export const getMe = createAsyncThunk('auth/getMe', async(thunkAPI) =>
+{
+    try {
+       
+        const token = user.token
+        return await authService.getMe(token);
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+        return thunkAPI.rejectWithValue(message)
+    }
+
+})
+
+export const uploadPFP = createAsyncThunk('auth/uploadPFP', async(picture, thunkAPI) =>
+{
+    try {
+        return await authService.uploadPFP(picture);
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+        return thunkAPI.rejectWithValue(message)
+    }
+
+})
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -133,6 +153,9 @@ export const authSlice = createSlice({
             state.isLoading = true
         })
         .addCase(updateUser.fulfilled, (state, action) => {
+            console.log(state.user)
+            state.user = action.payload
+            console.log(state.user)
             state.isLoading = false
         })
         .addCase(updateUser.rejected, (state, action) => {
@@ -141,6 +164,36 @@ export const authSlice = createSlice({
             console.log(action.payload)
             console.log(state)
             state.message = action.payload
+        })
+
+        // Update user state cases
+        .addCase(getMe.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(getMe.fulfilled, (state, action) => {
+            state.isLoading = false
+        })
+        .addCase(getMe.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+        })
+
+         // Login state cases
+         .addCase(uploadPFP.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(uploadPFP.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            console.log({action})
+        })
+        .addCase(uploadPFP.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            console.log(action.payload)
+            console.log(state)
         })
     }
 })

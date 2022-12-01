@@ -4,12 +4,13 @@ import styled from "styled-components";
 
 // id?
 const SongCard = ({name, artist1, image, url}) => {
+
     return (
         <div className="SongCard">
             <div className="song">
                 <div>
                 <img src={image} alt="" className='songImg'/>
-                        <div className="songname">
+                        <div className="songnameInfo">
                                 <span>{name}</span>
                                 <span>{artist1}</span>
                         </div>

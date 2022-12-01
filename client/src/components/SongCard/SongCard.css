@@ -35,8 +35,10 @@
 }
 
 .songImg{
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 75px;
+    height: 75px;
+    right:5px;
+    position: relative;
 }
 
 .songname{
@@ -46,8 +48,17 @@
     justify-content: center;
 }
 
-.songname>span:nth-of-type(1){
+.songnameInfo
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.songnameInfo>span:nth-of-type(1){
     font-weight: bold;
+    font-size:20px;
 }
 
 .sr-button{

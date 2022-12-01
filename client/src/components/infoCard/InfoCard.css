@@ -1,12 +1,14 @@
 .InfoCard {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
     background-color: white;
     padding: 1rem;
     border-radius: 1.3rem;
     width: 95%;
     align-self: center;
+}
+.InfoCard{
+    gap:15px;
 }
 
 .InfoHead {

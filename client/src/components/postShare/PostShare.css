@@ -70,11 +70,18 @@
 }
 
 .previewImage>img {
-    width: 100%;
-    max-height: 20rem;
+    width: 500px;
+    max-height: 500px;
     object-fit: cover;
     border-radius: 0.5rem;
+    justify-self: center;
+    align-self: center;
+    margin: auto;
+    padding: auto;
+    position: relative;
+    margin-left: 250px;
 }
+
 
 .status>input {
     background-color: var(--inputColor);
@@ -100,7 +107,7 @@
     align-self: center;
     text-shadow: 0 0 2px #999;
     font-family: 'Ubuntu', sans-serif;
-    width: 17%;
+    width: 100px;
     display: inline-block;
     position: relative;
     margin-left: 1em;

@@ -10,15 +10,15 @@
 }
 
 .Post>img{
-    width: 100%;
-    max-height: 20rem;
+    width: 600px;
     object-fit: cover;
     border-radius: 0.5rem;
+    align-self: center;
 }
 
-/* .Post>img:hover{
+.Post>img:hover{
     cursor:pointer;
-} */
+}
 
 .postReact{
     display: flex;

@@ -64,7 +64,8 @@ const registerUser = asyncHandler(async (req, res) => {
       about: user.about,
       followers: user.followers, 
       following: user.following,
-      token: generateToken(user._id)
+      token: generateToken(user._id),
+      anthem: {}
     })
   } else {
     res.status(400)
@@ -133,7 +134,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   // All possible updateable user fields from frontend currently
   const {name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl} = req.body;
-  
+
   if (!user) {
     res.status(400)
     throw new Error('User not found')
@@ -148,7 +149,6 @@ const updateUser = asyncHandler(async (req, res) => {
     image: anthemImage,
     url: anthemUrl
   })
-
 
  //! Remove password update for now
   // if(user.password != req.body.password){
@@ -169,43 +169,42 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route   POST /api/user/uploadProfilePic
 // @access  Public
 const uploadProfilePic = asyncHandler(async (req, res) => {
-    console.log("test")
-    if (!req.file)
-    {
-        res.status(400);
-        throw new Error('Please upload a file');
-    }
+  if (!req.file)
+  {
+      res.status(400);
+      throw new Error('Please upload a file');
+  }
 
-    //const {id} = req.body
-    var user = await User.findById(req.body.id)
-    var imgPath = __dirname + '/../middleware/temp/';
-    var img = fs.readFileSync(path.join(imgPath + req.file.filename));
-    
-    if (!user || !img)
-    {
-        res.status(400);
-        throw new Error('Image did not successfully upload');
-    }
+  const {id} = req.body
+  var user = await User.findById(id)
+  var imgPath = __dirname + '/../middleware/temp/';
+  var img = fs.readFileSync(path.join(imgPath + req.file.filename));
 
-    // var encode_img = img.toString('base64');
+  if (!user || !img)
+  {
+      res.status(400);
+      throw new Error('Image did not successfully upload');
+  }
 
-    var final_img = {
-        contentType:req.file.mimetype,
-        data: img
-    };
+  // var encode_img = img.toString('base64');
 
-    await user.updateOne({profilePicture: final_img});
+  var final_img = {
+      contentType:req.file.mimetype,
+      data: img
+  };
 
-    if (user.profilePicture) {
-        res.status(201).json({
-          _id: user.id,
-          profilePicture: user.profilePicture,
-        })
-        await unlinkAsync(imgPath + req.file.filename);
-    } else {
-        res.status(400)
-        throw new Error('Error uploading profile picture')
-    }
+  await user.updateOne({profilePicture: final_img});
+
+  if (user.profilePicture) {
+      res.status(201).json({
+        _id: user.id,
+        profilePicture: user.profilePicture,
+      })
+      await unlinkAsync(imgPath + req.file.filename);
+  } else {
+      res.status(400)
+      throw new Error('Error uploading profile picture')
+  }
 });
 
 
@@ -431,7 +430,7 @@ const searchUser = asyncHandler(async (req, res) => {
     let search = await User.find({username: {$regex: new RegExp(payload), $options:"i"}}).exec();
 
     // Limit search results to 7
-    search = search.slice(0, 7)
+    search = search.slice(0, 20)
     // search = search.
 
     res.send({payload: search})

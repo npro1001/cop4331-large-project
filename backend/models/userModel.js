@@ -34,8 +34,8 @@ const userSchema = mongoose.Schema(
       required: false,
     }, 
     anthem:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Anthem'
+      type: Object,
+      ref: Anthem
     }, 
     likes: [{
       type: mongoose.Schema.Types.ObjectId,

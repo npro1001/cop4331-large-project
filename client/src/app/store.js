@@ -10,5 +10,5 @@ export const store = configureStore({
     spotify: spotifyReducer,
     post: postReducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false,}),
 });

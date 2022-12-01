@@ -9,7 +9,7 @@ const SongRecsCard = () => {
 
             {SongRecs.map((songrec, id)=>{
                  return(
-                    <div className="songrec">
+                    <div className="songrec" key={id}>
                         <div>
                         <img src={songrec.img} alt="" className='songrecImg'/>
                             <div className="songname">

@@ -6,10 +6,8 @@ import React from 'react'
 import './ProfileCard.css'
 import defaultCover from '../../img/default-cover-4.jpg'
 import defaultPFP from '../../img/default-profile.png'
-import { useReducedMotion } from 'framer-motion'
 import styled from "styled-components";
-import { useWindowScroll } from "@mantine/hooks";
-
+import { getMe} from "../../features/auth/authSlice";
 const Container = styled.div`
     position: relative;
     align-self: center;
@@ -47,16 +45,22 @@ const FollowButton = styled.button`
 
 const ProfileCard = ({ location }) => {
 
-
-    let isOwnProfile = true;
     const posts = useSelector((state) => state.post)
-    const { user } = useSelector((state) => state.auth);
+    // const { user } = useSelector((state) => state.auth);
     const params = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [activeUser, setActiveUser] = useState({})
     const [following, setFollowing] = useState(false)
     const [followers, setFollowers] = useState()
+    const [user, setUser] = useState()
     const [isFollowing, setIsFollowing] = useState();
+    const [profileImage, setProfileImage] = useState();
+    const [isPFP, setIsPFP] = useState();
+    const [isCover, setIsCover] = useState();
+    const [cover, setCover] = useState();
+    const [name, setName] =useState();
+    const [username, setUsername] =useState();
     const profileUsername = params.username;
     let profileUser;
     let loggedUser
@@ -66,64 +70,85 @@ const ProfileCard = ({ location }) => {
         const fetchProfileUser = async () => {
 
             if (location === "homePage") {
-                const res = await fetch(`/api/users/${user.username}`, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' },
-                })
-                loggedUser = await res.json();
-                setActiveUser(loggedUser);
-                setFollowing(loggedUser.following.length);
-                setFollowers(loggedUser.followers.length);
-
+                dispatch(getMe())
+                    .then((response) => {
+                        setUser(response.payload);
+                        setName(response.payload.name)
+                        setUsername(response.payload.username)
+                        //noo one has a cover iamge rn
+                        setIsCover(false);
+                        if (user.profilePicture) {
+                            const base64String = btoa(String.fromCharCode(...new Uint8Array(response.payload.profilePicture.data.data)));
+                            setFollowing(response.payload.following.length);
+                            setFollowers(response.payload.followers.length);
+                            setProfileImage(base64String);
+                           
+                            setIsPFP(true);
+                        }
+                        else {
+                            setIsPFP(false)
+                        }
+                    })
             }
 
 
             //on a profile page
-            else if (location === "profilePage") {
+            else {
 
-                //check if its the logged in user's profile page
-                if (profileUsername === user.username) {
-                    const res = await fetch(`/api/users/${user.username}`, {
-                        method: 'GET',
-                        headers: { 'Accept': 'application/json' },
-                    })
-                    loggedUser = await res.json();
-                    setActiveUser(loggedUser);
-                    setFollowing(loggedUser.following.length);
-                    setFollowers(loggedUser.followers.length);
-                }
+                // get users info
+                dispatch(getMe())
+                    .then(async (response) => {
+                        setUser(response.payload)
+                        setIsCover(false);
 
-                //logged in user is viewing someone else's page
-                else {
-                    //get the persons profile and set them as the active user
-                    const res = await fetch(`/api/users/${profileUsername}`, {
-                        method: 'GET',
-                        headers: { 'Accept': 'application/json' },
-                    })
-                    profileUser = await res.json();
-                    setActiveUser(profileUser);
-                    setFollowing(profileUser.following.length);
-                    setFollowers(profileUser.followers.length);
+                        if (profileUsername === response.payload.username) {
 
-                    //get logged in user's info to check if the user is following them
-                    const loggedRes = await fetch(`/api/users/${user.username}`, {
-                        method: 'GET',
-                        headers: { 'Accept': 'application/json' },
-                    })
-                    loggedUser = await loggedRes.json()
-                    const followingList = loggedUser.following;
-
-                    //check list to see if user is following the profile they are viewing
-                    for (let i = 0; i < followingList.length; i++) {
-                        if (followingList[i] == profileUser._id) {
-                            setIsFollowing(true);
+                            setActiveUser(response.payload);
+                            setFollowing(response.payload.following.length);
+                            setFollowers(response.payload.followers.length);
+                            setName(response.payload.name)
+                            setUsername(response.payload.username)
+        
+                            if (user.profilePicture) {
+                                const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+                                setProfileImage(base64String);
+                                setIsPFP(true);
+                            }
+                            else {
+                                setIsPFP(false)
+                            }
+        
+                                           
                         }
-                    }
-                }
+        
+                        //logged in user is viewing someone else's page
+                        else {
+                            //get the persons profile and set them as the active user
+                            const res = await fetch(`/api/users/${profileUsername}`, {
+                                method: 'GET',
+                                headers: { 'Accept': 'application/json' },
+                            })
+                            profileUser = await res.json();
+                            setActiveUser(profileUser);
+                            setFollowing(profileUser.following.length);
+                            setFollowers(profileUser.followers.length);
+        
+                            const followingList = response.payload.following;
+        
+                            //check list to see if user is following the profile they are viewing
+                            for (let i = 0; i < followingList.length; i++) {
+                                if (followingList[i] == profileUser._id) {
+                                    setIsFollowing(true);
+                                }
+                            }
+                        }
+                    })
+
+                
             }
         }
         fetchProfileUser()
-    }, [user]);
+    }, [user], [profileImage], [cover], [activeUser], [isFollowing], [isPFP],[isCover]);
 
 
 
@@ -156,25 +181,23 @@ const ProfileCard = ({ location }) => {
 
         <div className="ProfileCard">
             <div className="ProfileImages">
-                <img src={
-                    user.coverPicture
-                        ? user.coverPicture
-                        : defaultCover
-                } alt="Cover image" />
-                <img src={user.PFP
-                    ? user.PFP
-                    : defaultPFP} alt="Profile picture" />
+                {location=="profilePage "? isCover ? <img src={`data:image/png;base64,${cover}`} alt="userCover" /> : <img src={defaultCover} alt="defaultCover" /> : isCover? <img src={`data:image/png;base64,${cover}`} alt="Profile picture" />: <img src={defaultCover} alt="defaultCover" />}
+                {location=="profilePage" ? isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userPFP" /> :  <img src={defaultPFP} alt="defaultPFP" /> : isPFP? <img src={`data:image/png;base64,${profileImage}`} alt="userPFP" />:  <img src={defaultPFP} alt="defaultPFP" />}
+   
             </div>
 
             <div className="ProfileName">
-                {location === "homePage" ? <><span>{user.name}</span> <span>@{user.username}</span></> : <><span>{activeUser.name}</span> <span>@{activeUser.username}</span></>}
+                {location === "homePage" ? <><span>{name}</span> <span>@{username}</span></> : <><span>{activeUser.name}</span> <span>@{activeUser.username}</span></>}
 
             </div>
-            {location === "profilePage" && isFollowing && (activeUser.username != user.username) ?
+            {location === "profilePage" && isFollowing
+             && (username !== activeUser.username) 
+             ?
                 <Container>
                     <FollowButton onClick={DoUnFollow}>Unfollow</FollowButton>
                 </Container> : ""}
-            {location === "profilePage" && !isFollowing && (activeUser.username != user.username) ? <Container>
+            {(username !== activeUser.username)  &&location === "profilePage" && !isFollowing
+            ? <Container>
                 <FollowButton onClick={DoFollow}>Follow</FollowButton>
             </Container> : ""}
 

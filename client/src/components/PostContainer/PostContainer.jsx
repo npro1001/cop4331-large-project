@@ -30,7 +30,8 @@ const Posts = () => {
     return (
         <div className="Posts">
             {PostData.map((post, id) => {
-                return <Post data={post} id={id} />
+                return <div>
+                    <Post data={post} id={id} /></div>
             })}
         </div>
     )

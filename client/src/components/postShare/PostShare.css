@@ -79,7 +79,6 @@
     margin: auto;
     padding: auto;
     position: relative;
-    margin-left: 250px;
 }
 
 
@@ -107,7 +106,7 @@
     align-self: center;
     text-shadow: 0 0 2px #999;
     font-family: 'Ubuntu', sans-serif;
-    width: 100px;
+    width: 85px;
     display: inline-block;
     position: relative;
     margin-left: 1em;

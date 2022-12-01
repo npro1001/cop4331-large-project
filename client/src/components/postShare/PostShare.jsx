@@ -7,7 +7,6 @@ import { UilMusic } from '@iconscout/react-unicons'
 import { UilListUl } from '@iconscout/react-unicons'
 import { UilTimes } from '@iconscout/react-unicons'
 import { createNewPost } from "../../features/post/postSlice";
-import { getUsersPlaylists } from "../../features/spotify/spotifySlice" ;
 
 const PostShare = () => {
     const dispatch = useDispatch();
@@ -43,16 +42,18 @@ const PostShare = () => {
             method: 'POST'
         }) */
 
+        
         dispatch(createNewPost(data)).then((response) => {
             console.log(response.payload)
         });
     };
 
+    /*
     const handlePlaylist = async (e) => {
         dispatch(getUsersPlaylists()).then(() => {
             console.log("Success")
         })
-    }
+    } */ 
 
     return (
         <div className="PostShare">
@@ -80,7 +81,7 @@ const PostShare = () => {
                         <UilMusic />
                         Song
                     </div>
-                    <div className="option" onClick={handlePlaylist}
+                    <div className="option"
                         style={{ color: "#B2675E" }}
                     >
                         <UilListUl />

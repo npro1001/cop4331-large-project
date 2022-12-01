@@ -467,25 +467,28 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Delete a comment on a post
-// @route   GET /api/post/getFollowingPost
+// @desc    Get all posts belonging to users user is following
+// @route   GET /api/users/getFollowingPost
 // @access  Public
 const getFollowingPosts = asyncHandler(async (req, res) => {
-  // Pass user ID and post ID
-  const {userId} = req.body;
 
-  const user = await User.findById(mongoose.Types.ObjectId(userId));
+  console.log('a');
+  // const userId = req.body;
 
-    if (!user)
-    {
-        res.status(400);
-		    throw new Error('Cannot Find User');
-    }
+  // const user = await User.findById(mongoose.Types.ObjectId(userId));
 
-    for (following in user.following)
-    {
-      print(following)
-    }
+  //   if (!user)
+  //   {
+  //       res.status(400);
+	// 	    throw new Error('Cannot Find User');
+  //   }
+
+  //   console.log(user._id.toString())
+  //   // for (following in user.following)
+  //   // {
+  //   //   console.log(following.toString());
+  //   // }
+  //   res.status(201).json("Yay!")
 });
 
 module.exports = {

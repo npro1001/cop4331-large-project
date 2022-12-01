@@ -15,7 +15,8 @@ const {
   mailForResetPassword,
   resetUserPassword,
   searchUser,
-  getUserProfile
+  getUserProfile,
+  getFollowingPosts
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 const upload = require('../middleware/uploadMiddleware');
@@ -28,11 +29,11 @@ router.put('/:id/follow', followUser)
 router.put('/:id/unfollow', unfollowUser)
 router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic);
 router.post('/confirm', mailForEmailVerification)
-router.get('/verify/:token', verifyUser)
-router.post('/resetEmail', mailForResetPassword)
-router.put('/reset/', resetUserPassword)
-router.post('/search', searchUser)
-router.get('/:username', getUserProfile)
-
+router.get('/verify/:token', verifyUser);
+router.post('/resetEmail', mailForResetPassword);
+router.put('/reset/', resetUserPassword);
+router.post('/search', searchUser);
+router.get('/:username', getUserProfile);
+router.get('/getFollowingPosts', getFollowingPosts);
 
 module.exports = router

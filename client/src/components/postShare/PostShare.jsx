@@ -6,6 +6,8 @@ import { UilScenery } from "@iconscout/react-unicons"
 import { UilMusic } from '@iconscout/react-unicons'
 import { UilListUl } from '@iconscout/react-unicons'
 import { UilTimes } from '@iconscout/react-unicons'
+import { createNewPost } from "../../features/post/postSlice";
+import { getUsersPlaylists } from "../../features/spotify/spotifySlice" ;
 
 const PostShare = () => {
     const dispatch = useDispatch();
@@ -24,32 +26,33 @@ const PostShare = () => {
     const handleUpload = async (e) => {
         e.preventDefault();
 
-        const newPost = {
-            author: user._id,
-            caption: desc.current.value,
-        };
+        const data = new FormData();
+        data.append('author', user._id);
+        data.append('caption', desc.current.value);
 
         
-
         if (image) {
-            const data = new FormData();
-            const fileName = Date.now() + image.name;
-            data.append("name", fileName);
-            data.append("file", image);
-            newPost.image = fileName;
-            console.log(newPost);
-            
+            data.append('picture', image);
         }
 
-        /*
-        await fetch(`/api/post`, {
-            method: 'POST',
+        /*await fetch(`/api/post/`, {
+            body: data,
             headers: {
-                "Content-Type": "application/x-www-for-urlencoded",
+                "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: newPost
-        }) */ 
+            method: 'POST'
+        }) */
+
+        dispatch(createNewPost(data)).then((response) => {
+            console.log(response.payload)
+        });
     };
+
+    const handlePlaylist = async (e) => {
+        dispatch(getUsersPlaylists()).then(() => {
+            console.log("Success")
+        })
+    }
 
     return (
         <div className="PostShare">
@@ -77,7 +80,7 @@ const PostShare = () => {
                         <UilMusic />
                         Song
                     </div>
-                    <div className="option"
+                    <div className="option" onClick={handlePlaylist}
                         style={{ color: "#B2675E" }}
                     >
                         <UilListUl />

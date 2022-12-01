@@ -16,9 +16,9 @@ const initialState = {
 
 }
 
-export const uploadImage = createAsyncThunk('post/uploadImage', async (imageData, thunkAPI) => {
+export const createNewPost = createAsyncThunk('post/createPost', async (post, thunkAPI) => {
     try {
-        return await postService.uploadImage(imageData)
+        return await postService.createPost(post)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -37,11 +37,11 @@ const postSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
-            // Connect
-            .addCase(uploadImage.pending, (state) => {
+            // creating new post
+            .addCase(createNewPost.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(uploadImage.fulfilled, (state, action) => {
+            .addCase(createNewPost.fulfilled, (state, action) => {
                 state.isLoading = false;
                 if (action.payload != null) {
                     state.PostData.concat(action.payload);
@@ -51,10 +51,10 @@ const postSlice = createSlice({
                 else {
                     state.post = null;
                     state.isError = true
-                    state.message = "Error uploading image"
+                    state.message = "Error uploading post"
                 }
             })
-            .addCase(uploadImage.rejected, (state, action) => {
+            .addCase(createNewPost.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true; //?
                 state.message = action.payload;

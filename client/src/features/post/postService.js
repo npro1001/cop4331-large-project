@@ -1,22 +1,19 @@
 import axios from 'axios';
 
-const API_URL = '/api/post/'
+const API_URL = '/api/post/';
 
-//upload image
-const uploadImage = async (imageData) => {
-    const response = await axios.post(API_URL, imageData)
+
+const createPost = async (post) => {
+    const response = await axios.post(API_URL, post)
     if(response.data) {
+        console.log('aaaaaaaaaaaa')
         return response.data;
     }
-
-    else{
-        return null;
-    }
-
+     return null
 }
 
 const postService = {
-    uploadImage
+    createPost
 } 
 
 export default postService

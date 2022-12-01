@@ -16,6 +16,7 @@ const Comment = require('../models/commentModel');
 // @access  Public
 const createPost = asyncHandler(async (req, res) => {
 
+    console.log('aaaaaa')
     if (!req.file)
     {
         res.status(400);
@@ -273,5 +274,5 @@ module.exports = {
     likePost,
     unlikePost,
     commentPost,
-    deleteComment
+    deleteComment,
 }

@@ -42,3 +42,8 @@
     background: rgba(93, 48, 149, 1);
     filter: brightness(1.2);
 }
+
+.topArtist{
+    position: relative;
+    right: 15px;
+}

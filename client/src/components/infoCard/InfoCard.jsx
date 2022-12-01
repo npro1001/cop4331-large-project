@@ -126,7 +126,7 @@ const InfoCard = () => {
                                     
                                     return (
                                         <div key ={index}>
-                                        <><span>{genres}  </span></>
+                                        <><span>{genres}</span></>
                                         </div>
                                     )
                                    
@@ -146,7 +146,7 @@ const InfoCard = () => {
                 <span>
                     { user.username === activeUser.username && topArtist ? (
                         <div className="songrec">
-                            <div>
+                            <div className ="topArtist">
                                 <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg' />
                                 <div className="songname">
                                     <span>{topArtist.name}</span>

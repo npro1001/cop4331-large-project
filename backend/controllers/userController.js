@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
+const Post = require('../models/postModel')
 const Anthem = require('../models/anthemModel')
 const sendMail = require('../utils/sendMail')
 const userModel = require('../models/userModel')
@@ -468,27 +469,52 @@ const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 // @desc    Get all posts belonging to users user is following
-// @route   GET /api/users/getFollowingPost
+// @route   GET /api/users/:id/getFollowingPosts
 // @access  Public
 const getFollowingPosts = asyncHandler(async (req, res) => {
 
-  console.log('a');
-  // const userId = req.body;
+  const id = req.params.id;
+  const user = await User.findById(mongoose.Types.ObjectId(id));
 
-  // const user = await User.findById(mongoose.Types.ObjectId(userId));
+    if (!user)
+    {
+        res.status(400);
+		    throw new Error('Cannot Find User');
+    }
 
-  //   if (!user)
-  //   {
-  //       res.status(400);
-	// 	    throw new Error('Cannot Find User');
-  //   }
+    let followingPosts = [];
+    for (let i = 0; i < user.following.length; i++)
+    {
+      let friend = await User.findById(user.following[i])
+      if (!friend)
+      {
+        console.log("Following no longer exists")
+        await user.updateOne({ $pull: { following: following[i] } });
+      }
+      else
+      {
+        for (let j = 0; j < friend.posts.length; j++)
+        { 
+          let post = await Post.findById(mongoose.Types.ObjectId(friend.posts[j]));
+          if (!post)
+          {
+            console.log("Post Could not be found")
+            await friend.updateOne({ $pull: { posts: friend.posts[j] } })
+          }
+          else{
+            followingPosts.push(post)
+            console.log(post.createdAt)
+          }
+        }
+      }
+    }
 
-  //   console.log(user._id.toString())
-  //   // for (following in user.following)
-  //   // {
-  //   //   console.log(following.toString());
-  //   // }
-  //   res.status(201).json("Yay!")
+    if (followingPosts.length == 0)
+    {
+      res.status(400);
+      throw new Error('User has no following posts');
+    }
+    res.status(201).json(followingPosts)
 });
 
 module.exports = {

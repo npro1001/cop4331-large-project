@@ -34,6 +34,6 @@ router.post('/resetEmail', mailForResetPassword);
 router.put('/reset/', resetUserPassword);
 router.post('/search', searchUser);
 router.get('/:username', getUserProfile);
-router.get('/getFollowingPosts', getFollowingPosts);
+router.get('/:id/getFollowingPosts', getFollowingPosts);
 
 module.exports = router

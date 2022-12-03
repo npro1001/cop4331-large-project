@@ -1,10 +1,12 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import authService from './authService'
+import { current } from '@reduxjs/toolkit'
+
 
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem('user'))
 
-const initialState = {
+let initialState = {
     user: user ? user : null, // check localStorage
     isError: false,
     isSuccess: false,
@@ -12,6 +14,7 @@ const initialState = {
     message: '',
     resetPassword: ''
 }
+
 
 // async thunk function - deals with async data
 // Register user
@@ -53,6 +56,7 @@ export const userResetPassword = createAsyncThunk('auth/reset', async(passwordTo
 
 //! Update user info
 export const updateUser = createAsyncThunk('auth/update', async(name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl, thunkAPI) => {
+    console.log("updating user")
     try {
         const token = user.token
         return await authService.update(name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl, token);
@@ -124,6 +128,7 @@ export const authSlice = createSlice({
         .addCase(login.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
+            console.log(action.payload)
             state.user = action.payload
         })
         .addCase(login.rejected, (state, action) => {
@@ -153,20 +158,19 @@ export const authSlice = createSlice({
             state.isLoading = true
         })
         .addCase(updateUser.fulfilled, (state, action) => {
-            console.log(state.user)
-            state.user = action.payload
-            console.log(state.user)
+ 
             state.isLoading = false
+            state.user = action.payload;
+            console.log(action.payload)
+            return state
         })
         .addCase(updateUser.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
-            console.log(action.payload)
-            console.log(state)
             state.message = action.payload
         })
 
-        // Update user state cases
+        // get user state cases
         .addCase(getMe.pending, (state) => {
             state.isLoading = true
         })
@@ -192,8 +196,6 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.isError = true
             state.message = action.payload
-            console.log(action.payload)
-            console.log(state)
         })
     }
 })

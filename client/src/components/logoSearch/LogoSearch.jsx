@@ -1,10 +1,10 @@
 import React from 'react'
-import Logo from '../../img/logo.png'
 import { UilSearch } from '@iconscout/react-unicons'
 import './LogoSearch.css'
 import { useState } from 'react'
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const SearchContainer = styled.div`
     position: absolute;
@@ -22,16 +22,6 @@ const SearchContainer = styled.div`
 
 `
 
-// const SearchBar = styled.input`
-//     position: absolute;
-//     width: 100%;
-//     padding: 0.5em;
-//     margin: 0.5em;
-//     /* color: ${props => props.inputColor || "palevioletred"}; */
-//     /* background: papayawhip; */
-//     border: none;
-//     border-radius: 3px;
-// `
 
 const List = styled.ul`
   list-style: none;
@@ -53,25 +43,28 @@ cursor: pointer;
 `
 
 const LogoSearch = () => {
-
     const navigate = useNavigate();
     let searching = false;
     let results = false;
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState("");
     let [users, setUsers] = useState([]);
-    const [search, setSearch] = useState(false);
+    useEffect(() =>
+    {
+        const fetchData = async({term}) =>
+        {
+            const res = await fetch('/api/users/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ payload: term.value })
+            })
+            const userArray = await res.json();
+            setUsers(userArray.payload);
+        }
 
-    const handleChange = async (e) => {
-        e.preventDefault();
-        const res = await fetch('/api/users/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ payload: e.value })
-        })
-        const userArray = await res.json();
-        setUsers(userArray.payload);
-        setTerm(e.target.value.replace(/[^a-z]/gi, ' '));
-    }
+        fetchData({term})
+    },[term])
+
+  
     if (term.length > 0) {
         searching = true;
         const lowerCase = term.toLowerCase();
@@ -87,13 +80,13 @@ const LogoSearch = () => {
     else {
         searching = false;
     }
+    
 
     if (!results) {
         return (
             <div className="LogoSearch">
-                {/* <img src={Logo} alt="Logo" /> */}
                 <div className="Search">
-                    <input type="text" placeholder="#Explore" onChange={handleChange} />
+                    <input type="text" placeholder="#Explore" onChange={e => setTerm(e.target.value.replace(/[^a-z]/gi, ' '))} />
                     <SearchContainer style={{ display: searching ? "inline" : "none" }}>
                         <List>
                             <Results>
@@ -111,9 +104,8 @@ const LogoSearch = () => {
 
     return (
         <div className="LogoSearch">
-            {/* <img src={Logo} alt="Logo" /> */}
             <div className="Search">
-                <input type="text" placeholder="#Explore" onChange={handleChange} />
+                <input type="text" placeholder="#Explore" onChange={e=> setTerm(e.target.value.replace(/[^a-z]/gi, ' '))} />
                 <SearchContainer style={{ display: searching ? "inline" : "none" }}>
                     {users.map((searchee, index) => {
                         return (

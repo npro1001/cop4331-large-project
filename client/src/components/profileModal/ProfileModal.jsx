@@ -61,11 +61,11 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     const [tempName, setTempName] = useState(null)
     const [tempUsername, setTempUsername] = useState(null)
 
-    const [tempAnthemId, setTempAnthemId] = useState(null)
-    const [tempAnthemName, setTempAnthemName] = useState(null)
-    const [tempAnthemImage, setTempAnthemImage] = useState(null)
-    const [tempAnthemArtist1, setTempAnthemArtist1] = useState(null)
-    const [tempAnthemUrl, setTempAnthemUrl] = useState(null)
+    const [tempAnthemId, setTempAnthemId] = useState("")
+    const [tempAnthemName, setTempAnthemName] = useState("")
+    const [tempAnthemImage, setTempAnthemImage] = useState("")
+    const [tempAnthemArtist1, setTempAnthemArtist1] = useState("")
+    const [tempAnthemUrl, setTempAnthemUrl] = useState("")
 
     const [holdName, setHoldName] = useState(null)
     const [holdUsername, setHoldUsername] = useState(null)

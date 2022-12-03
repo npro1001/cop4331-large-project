@@ -20,3 +20,8 @@
   transition:all 100ms ease-out;
   font-family: 'Ubuntu', sans-serif;
 }
+
+.container
+{
+  height: 100%;
+}

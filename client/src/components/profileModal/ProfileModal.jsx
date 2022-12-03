@@ -51,11 +51,12 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const userCall = useSelector((state) => state.auth.user)
     const [user, setUser] = useState({})
     const [profileImage, setProfileImage] = useState(null)
     const [coverImage, setCoverImage] = useState(null)
     const [songList, setSongList] = useState([])
-    const [searchTerm, setSearchTerm] = useState('')
+    const [searchTerm, setSearchTerm] = useState("")
 
     const [tempName, setTempName] = useState(null)
     const [tempUsername, setTempUsername] = useState(null)
@@ -75,12 +76,11 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     useEffect(() => {
 
         const fetchProfileUser = async () => {
-            dispatch(getMe())
-                .then((response) => {
-                    setUser(response.payload);
-                    setHoldName(data.name);
-                    setHoldUsername(data.username);
-                })
+
+            setUser(userCall);
+            setHoldName(data.name);
+            setHoldUsername(data.username);
+
             searching = false;
         }
         fetchProfileUser()
@@ -106,10 +106,14 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     const handleChange = async (e) => {
         e.preventDefault();
         setSearchTerm(e.target.value)
-        dispatch(searchTracks(e.target.value))
-            .then((response) => {
-                setSongList(response.payload.data.tracks.items)
-            })
+
+        if (e.target.value.length != 0) {
+            dispatch(searchTracks(e.target.value))
+                .then((response) => {
+                    setSongList(response.payload.data.tracks.items)
+                })
+        }
+
     }
 
     const handleClick = (e, song) => {
@@ -140,7 +144,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
         //user didnt change anything
         if (tempName == null && tempUsername == null && tempAnthemName == null && profileImage == null) {
-            console.log("SHIT IS NULL AHHHHHHHHHHHH")
             creds = {
                 name: data.name,
                 username: data.username,
@@ -249,13 +252,16 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         dispatch(updateUser(
             creds))
             .then(async (updateUserRes) => {
-                picUpload();
+                if (profileImage) {
+                    picUpload();
+                }
+
                 setUser(updateUserRes.payload)
                 // setModalOpened(false);
                 navigate(
                     `/profile/${updateUserRes.payload.username}`)
 
-                window.location.reload();
+                // window.location.reload();
 
 
             })

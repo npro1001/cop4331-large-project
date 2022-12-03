@@ -47,3 +47,12 @@
     position: relative;
     right: 15px;
 }
+
+.loadingCircle
+{
+    width:30px;
+    position: relative;
+    left:10px;
+    top:10px;
+    height:30px;
+}

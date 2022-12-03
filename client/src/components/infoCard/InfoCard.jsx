@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from "react"
 import SongCard from "../SongCard/SongCard.jsx"
-import { getTopArtist} from "../../features/spotify/spotifySlice"
+import { getTopArtist } from "../../features/spotify/spotifySlice"
+import loadingCir from '../../img/loading-gif.gif'
 
 
 
@@ -19,64 +20,53 @@ const InfoCard = () => {
     const navigate = useNavigate();
 
     const { isConnected } = useSelector((store) => store.spotify)
-    const [user, setUser] = useState({})
-    
+    const user = useSelector((state) => state.auth.user)
+
     const [modalOpened, setModalOpened] = useState(false)
     const [topArtist, setTopArtist] = useState(null);
     const [topGenres, setTopGenres] = useState(null);
     const [activeUser, setActiveUser] = useState({})
     const [anthem, setAnthem] = useState();
-    const [username, setUsername] =useState();
+    const [spotifyLoading, setSpotifyLoading] = useState(true)
 
     const profileUsername = params.username;
     let profileUser;
 
+    const fetchProfileUser = async () => {
+        if (profileUsername === user.username) {
+            setActiveUser(user);
+            setAnthem(user.anthem)
+        }
+
+        else {
+            const res = await fetch(`/api/users/${profileUsername}`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' },
+            })
+            profileUser = await res.json();
+            setActiveUser(profileUser);
+            setAnthem(profileUser.anthem)
+        }
+
+
+    }
+
     useEffect(() => {
 
-        dispatch(getMe())
-                .then((response) => {
-                    setUser(response.payload);
-                    setUsername(response.payload.username)
-                })
-//
         if (isConnected) {
             dispatch(getTopArtist())
                 .then(response => {
                     setTopGenres(response.payload.data.items[0].genres)
                     setTopArtist(response.payload.data.items[0]);
+                    setSpotifyLoading(false);
 
                 })
 
         }
-
-        const fetchProfileUser = async () => {
-            console.log("CHECKING USER SHIT")
-            console.log(user.username);
-            if (profileUsername === username) {
-                console.log("same name")
-                dispatch(getMe())
-                .then((response) => {
-                    setActiveUser(response.payload);
-                    setAnthem(response.payload.anthem)
-                })
-
-                console.log("CHECKING SHIT...")
-                console.log(activeUser)
-                console.log(anthem)
-            }
-
-            else {
-                const res = await fetch(`/api/users/${profileUsername}`, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' },
-                })
-                profileUser = await res.json();
-                setActiveUser(profileUser);
-                setAnthem(profileUser.anthem)
-            }
-        }
+   
         fetchProfileUser()
-    }, [isConnected], [activeUser],[user],[anthem], [username]); //! Important
+
+    }, [isConnected], [activeUser], [anthem],[topGenres], [topArtist]); //! Important
 
 
     const onLogout = () => {
@@ -100,7 +90,7 @@ const InfoCard = () => {
                 {user.username === activeUser.username ? (<div><UilPen width='2rem' height='1.2rem' onClick={() => setModalOpened(true)} />
                     <ProfileModal modalOpened={modalOpened}
                         setModalOpened={setModalOpened}
-                        data={activeUser} />
+                        data={user} />
                 </div>) : ("")
                 }
             </div>
@@ -108,35 +98,36 @@ const InfoCard = () => {
                 <span>
                     <b>Anthem</b>
                 </span>
-                <span> 
+                <span>
                     {anthem ?
-                    <SongCard name={anthem.title} artist1={anthem.artist1} image={anthem.image}></SongCard>
-                    : 
-                    " Anthem Not Selected"}</span>
+                        <SongCard name={anthem.title} artist1={anthem.artist1} image={anthem.image}></SongCard>
+                        :
+                        " Anthem Not Selected"}
+                </span>
             </div>
             <div className="info">
                 <span>
                     <b>Top Genres</b>
                 </span>
                 <span>
-                    
-                    {user.username === activeUser.username && topGenres ? (
-                        <div>
+                    {!spotifyLoading ?
+                        user.username === activeUser.username && topGenres ? (
+                            <div>
                                 {topGenres.map((genres, index) => {
-                                    
+
                                     return (
-                                        <div key ={index}>
-                                        <><span>{genres}</span></>
+                                        <div key={index}>
+                                            <><span>{genres}</span></>
                                         </div>
                                     )
-                                   
+
                                 })}
-                        </div>
-                    ) : (
-                        <div>
-                            <p> Top Genre Not Found </p>
-                        </div>
-                    )}
+                            </div>
+                        ) : (
+                            <div>
+                                <p> Top Genre Not Found </p>
+                            </div>
+                        ) : <img className="loadingCircle" src={loadingCir} alt="loading" />}
                 </span>
             </div>
             <div className="info">
@@ -144,9 +135,9 @@ const InfoCard = () => {
                     <b>Top Artist</b>
                 </span>
                 <span>
-                    { user.username === activeUser.username && topArtist ? (
+                    {!spotifyLoading ? user.username === activeUser.username && topArtist ? (
                         <div className="songrec">
-                            <div className ="topArtist">
+                            <div className="topArtist">
                                 <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg' />
                                 <div className="songname">
                                     <span>{topArtist.name}</span>
@@ -158,7 +149,7 @@ const InfoCard = () => {
                         <div>
                             <p> Top Artist Not Found </p>
                         </div>
-                    )}
+                    ) : <img className="loadingCircle" src={loadingCir} alt="loading" />}
                 </span>
             </div >
 

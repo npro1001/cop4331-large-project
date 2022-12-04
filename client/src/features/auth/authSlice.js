@@ -80,6 +80,19 @@ export const getMe = createAsyncThunk('auth/getMe', async(thunkAPI) =>
 
 })
 
+export const followUser = createAsyncThunk('auth/follow', async(targetUserId, thunkAPI) =>
+{
+    try {
+        console.log(user._id)
+        console.log("USER WE WANT TO FOLLOW: "+targetUserId)
+        return await authService.follow(targetUserId,user._id);
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+        return thunkAPI.rejectWithValue(message)
+    }
+
+})
+
 export const uploadPFP = createAsyncThunk('auth/uploadPFP', async(picture, thunkAPI) =>
 {
     try {
@@ -196,6 +209,24 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.isError = true
             state.message = action.payload
+        })
+        .addCase(followUser.pending, (state) => {
+            state.isLoading = true
+            console.log("pending")
+        })
+        .addCase(followUser.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.user = action.payload
+            console.log(action.payload)
+            // return state;
+            console.log("yay")
+        })
+        .addCase(followUser.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload // THIS GETS SENT CORRECTLY
+            console.log("fuck")
         })
     }
 })

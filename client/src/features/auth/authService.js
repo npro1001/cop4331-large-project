@@ -84,6 +84,17 @@ const uploadPFP = async (picture) => {
     return null;
 }
 
+
+//follow user
+const follow = async (targetUserId,user) => {
+
+    const response = await axios.put(API_URL +targetUserId+"/follow", {currentUserId: user})
+    if (response.data) {
+        return response.data
+    }
+    return null;
+}
+
 const authService = {
     register,
     login,
@@ -91,7 +102,8 @@ const authService = {
     reset,
     update,
     getMe,
-    uploadPFP
+    uploadPFP,
+    follow
 }
 
 export default authService

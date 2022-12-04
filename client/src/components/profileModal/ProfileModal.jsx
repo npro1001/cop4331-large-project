@@ -289,7 +289,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                     {/* IF ANTHEM EXISTS/SELECTED ... SHOW ON FORM */}
                     {user.anthem ? <div className="currentAnthem">
                         <SongCard name={user.anthem.title} artist1={user.anthem.artist1}
-                            image={user.anthem.image} ></SongCard>
+                            image={user.anthem.image}></SongCard>
                     </div> : <></>}
 
                     {/* SHOW RESULTS LIST WHEN SEARCHING */}

@@ -7,13 +7,44 @@ import { UilMusic } from '@iconscout/react-unicons'
 import { UilListUl } from '@iconscout/react-unicons'
 import { UilTimes } from '@iconscout/react-unicons'
 import { createNewPost } from "../../features/post/postSlice";
+import { searchTracks } from "../../features/spotify/spotifySlice"
+import styled from "styled-components";
+import SongCard from "../SongCard/SongCard";
+import SpotifyPopUp from "../spotifyModal/SpotifyPopUp";
+import { useEffect } from "react";
+
 
 const PostShare = () => {
+
     const dispatch = useDispatch();
     const [image, setImage] = useState(null);
+
+
+    const [modalOpened, setModalOpened] = useState(false)
+    const [profileImage, setProfileImage] = useState();
+    const [song, setSong] = useState(false)
+    const [selection, setSelection] = useState()
+    const [isPFP, setIsPFP] = useState();
     const desc = useRef();
     const imageRef = useRef();
     const { user } = useSelector((state) => state.auth);
+
+    const checkPFP = () => {
+        if (user.profilePicture) {
+            const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+            setProfileImage(base64String);
+            setIsPFP(true);
+        }
+        else {
+            setIsPFP(false)
+        }
+    }
+
+
+
+    useEffect(() => {
+        checkPFP()
+    }, [profileImage], [isPFP]);
 
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -29,9 +60,15 @@ const PostShare = () => {
         data.append('author', user._id);
         data.append('caption', desc.current.value);
 
-        
+
         if (image) {
             data.append('picture', image);
+        }
+
+        if (song) {
+
+
+
         }
 
         /*await fetch(`/api/post/`, {
@@ -42,27 +79,35 @@ const PostShare = () => {
             method: 'POST'
         }) */
 
-        
+
         dispatch(createNewPost(data)).then((response) => {
             console.log(response.payload)
         });
     };
+
+
+    const getInfo = payload => {
+
+        setSelection(payload)
+        console.log(payload.url)
+        setSong(true);
+    }
 
     /*
     const handlePlaylist = async (e) => {
         dispatch(getUsersPlaylists()).then(() => {
             console.log("Success")
         })
-    } */ 
+    } *///
 
     return (
         <div className="PostShare">
-            <img src={user.PFP
-                ? user.PFP
-                : defaultPFP} alt="Profile picture" />
+            {isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userPFP" /> : <img src={defaultPFP} alt="defaultPFP" />}
+
             <div>
                 <div className="status">
-                    <input type="text" placeholder="What's happening?" ref={desc} required/>
+                    <input type="text" placeholder="What's happening?" ref={desc} required />
+
                     <button className="status-button" onClick={handleUpload}>
                         Share
                     </button>
@@ -70,14 +115,17 @@ const PostShare = () => {
                 <div className="postOptions">
                     <div className="option"
                         style={{ color: "#CDBEE0" }}
-                        onClick={() => imageRef.current.click()}
-                    >
+                        onClick={() => imageRef.current.click()}>
                         <UilScenery />
                         Photo
                     </div>
                     <div className="option"
-                        style={{ color: "#62929E" }}
-                    >
+                        style={{ color: "#62929E" }} onClick={() =>
+                            setModalOpened(true)
+                        }>
+                        <SpotifyPopUp modalOpened={modalOpened}
+                            setModalOpened={setModalOpened}
+                            getInfo={getInfo} />
                         <UilMusic />
                         Song
                     </div>
@@ -98,6 +146,15 @@ const PostShare = () => {
                     </div>
                 )}
 
+                {song && (<div className="previewImage">
+                    <UilTimes onClick={() => setSong(null)} />
+                    <SongCard
+                        name={selection.name}
+                        artist1={selection.artist}
+                        image={selection.image}
+                        url = {selection.url}
+                    ></SongCard>
+                </div>)}
             </div>
         </div>
     )

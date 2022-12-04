@@ -37,6 +37,7 @@
     "express-async-handler": "^1.2.0",
     "formik": "^2.2.9",
     "framer-motion": "^7.6.7",
+    "howler": "^2.2.3",
     "jsonwebtoken": "^8.5.1",
     "keyframes": "^2.3.0",
     "mongoose": "^6.6.7",

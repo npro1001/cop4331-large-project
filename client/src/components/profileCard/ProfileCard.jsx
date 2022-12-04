@@ -7,6 +7,9 @@ import './ProfileCard.css'
 import defaultCover from '../../img/default-cover-4.jpg'
 import defaultPFP from '../../img/default-profile.png'
 import styled from "styled-components";
+import {reset, getMe } from '../../features/auth/authSlice'
+import { followUser } from "../../features/auth/authSlice";
+
 const Container = styled.div`
     position: relative;
     align-self: center;
@@ -48,8 +51,9 @@ const ProfileCard = ({ location }) => {
     const user = useSelector((state) => state.auth.user)
     const params = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [activeUser, setActiveUser] = useState({})
-    const [following, setFollowing] = useState(false)
+    const [following, setFollowing] = useState()
     const [followers, setFollowers] = useState()
     const [isFollowing, setIsFollowing] = useState();
     const [profileImage, setProfileImage] = useState();
@@ -61,13 +65,15 @@ const ProfileCard = ({ location }) => {
 
 
     const fetchProfileUser = async () => {
-
+       
         if (location === "homePage") {
 
             setIsCover(false);
 
             setFollowing(user.following.length);
             setFollowers(user.followers.length);
+            
+         
 
             if (user.profilePicture) {
 
@@ -87,7 +93,6 @@ const ProfileCard = ({ location }) => {
         else {
 
             //if users profile
-            console.log(user.username);
             if (profileUsername === user.username) {
 
                 setActiveUser(user);
@@ -117,18 +122,21 @@ const ProfileCard = ({ location }) => {
                 setFollowing(profileUser.following.length);
                 setFollowers(profileUser.followers.length);
 
-                const followingList = user.following;
+                
+                let length = profileUser.followers.length
+                console.log(length)
 
                 //check list to see if user is following the profile they are viewing
-                for (let i = 0; i < followingList.length; i++) {
-                    if (followingList[i] == profileUser._id) {
+                for (let i = 0; i < length; i++) {
+                    console.log(length)
+
+                    if (profileUser.followers[i] == user._id) {
                         setIsFollowing(true);
                     }
                 }
             }
         }
     }
-    // console.log({user})
     useEffect(() => {
         fetchProfileUser()
     }, [profileImage], [cover], [activeUser], [isFollowing], [isPFP], [isCover]);
@@ -136,14 +144,12 @@ const ProfileCard = ({ location }) => {
 
 
     const DoFollow = async () => {
-        await fetch(`/api/users/${activeUser._id}/follow`, {
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-                "Content-Length": "100"
-            },
-            body: JSON.stringify({ "currentUserId": user._id })
-        })
+        
+        dispatch(followUser(activeUser._id)).then((response) =>
+        {
+            console.log(response);
+        });
+    
         window.location.reload();
     }
 
@@ -156,6 +162,7 @@ const ProfileCard = ({ location }) => {
             },
             body: JSON.stringify({ "currentUserId": user._id })
         })
+
         window.location.reload();
     }
 

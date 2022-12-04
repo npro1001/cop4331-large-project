@@ -100,7 +100,7 @@ const InfoCard = () => {
                 </span>
                 <span>
                     {anthem ?
-                        <SongCard name={anthem.title} artist1={anthem.artist1} image={anthem.image}></SongCard>
+                        <SongCard name={anthem.title} artist1={anthem.artist1} image={anthem.image} url={anthem.url}></SongCard>
                         :
                         " Anthem Not Selected"}
                 </span>

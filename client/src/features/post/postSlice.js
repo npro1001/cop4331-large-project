@@ -55,7 +55,6 @@ const postSlice = createSlice({
                 if (action.payload != null) {
                     state.PostData.push(action.payload);
                     state.post = action.payload;
-                    console.log(state.postData);
                     return state
                 }
                 else {

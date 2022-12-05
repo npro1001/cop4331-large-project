@@ -30,6 +30,7 @@ const PostShare = () => {
     const { user } = useSelector((state) => state.auth);
 
     const checkPFP = () => {
+        /*
         if (user.profilePicture) {
             const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
             setProfileImage(base64String);
@@ -37,7 +38,9 @@ const PostShare = () => {
         }
         else {
             setIsPFP(false)
-        }
+        }*/
+
+        setIsPFP(false)
     }
 
 

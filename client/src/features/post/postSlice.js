@@ -25,6 +25,15 @@ export const createNewPost = createAsyncThunk('post/createPost', async (post, th
     }
 })
 
+export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI) => {
+    try {
+        return await postService.getPosts(user)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 const postSlice = createSlice({
     name: "post",
     initialState,
@@ -44,9 +53,10 @@ const postSlice = createSlice({
             .addCase(createNewPost.fulfilled, (state, action) => {
                 state.isLoading = false;
                 if (action.payload != null) {
-                    state.PostData.concat(action.payload);
+                    state.PostData.push(action.payload);
                     state.post = action.payload;
-
+                    console.log(state.postData);
+                    return state
                 }
                 else {
                     state.post = null;
@@ -55,6 +65,28 @@ const postSlice = createSlice({
                 }
             })
             .addCase(createNewPost.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true; //?
+                state.message = action.payload;
+            })
+            // Retrieving user posts
+            .addCase(getPosts.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getPosts.fulfilled, (state, action) => {
+                state.isLoading = false;
+                if (action.payload != null) {
+                    state.PostData.push(action.payload);
+                    state.post = action.payload;
+                    return state
+                }
+                else {
+                    state.post = null;
+                    state.isError = true
+                    state.message = "Error uploading post"
+                }
+            })
+            .addCase(getPosts.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true; //?
                 state.message = action.payload;

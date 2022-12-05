@@ -1,8 +1,10 @@
 import React from "react";
 import './PostContainer.css'
 import Post from "../Post/Post";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { getPosts } from "../../features/post/postSlice"
+import { useEffect, useState } from "react"
 
 const EmptyFeed = styled.h1`
     
@@ -20,6 +22,20 @@ const AddOn = styled.h3`
 
 const Posts = () => {
     const { PostData, id, author, post } = useSelector((state) => state.post)
+    const user  = useSelector((state) => state.auth.user)
+    const dispatch = useDispatch()
+    const [displayPosts, setDisplayPosts] = useState()
+    
+    useEffect(() => {
+        if (user.following.length != 0)
+        {
+            dispatch(getPosts(user._id))
+                .then(response => {
+                    console.log(response.payload)   
+                    setDisplayPosts(response.payload)  
+                })
+        }
+    }, []); //! Important   
 
     //if there are no posts to display
     if (PostData.length < 1) {
@@ -30,8 +46,8 @@ const Posts = () => {
     return (
         <div className="Posts">
             {PostData.map((post, id) => {
-                return <div>
-                    <Post data={post} id={id} /></div>
+                return <div key = {id}>
+                    <Post data={post}/></div>
             })}
         </div>
     )

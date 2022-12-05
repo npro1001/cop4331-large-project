@@ -3,6 +3,7 @@ const fs = require('fs');
 const multer = require('multer');
 const mongoose = require('mongoose');
 var path = require('path');
+const zlib = require('zlib'); 
 
 const { promisify } = require('util');
 const unlinkAsync = promisify(fs.unlink);
@@ -10,54 +11,57 @@ const unlinkAsync = promisify(fs.unlink);
 const User = require('../models/userModel');
 const Post = require('../models/postModel');
 const Comment = require('../models/commentModel');
+constgzip = zlib.createGzip();
   
 // @desc    Create a new post
 // @route   POST /api/post
 // @access  Public
 const createPost = asyncHandler(async (req, res) => {
 
-    console.log('aaaaaa')
-    if (!req.file)
+    var post = {};
+    if (req.file)
     {
-        res.status(400);
-        throw new Error('Please upload a file');
+        var imgPath = __dirname + '/../middleware/temp/';
+        var img = fs.readFileSync(path.join(imgPath + req.file.filename));
+        var final_img = {
+            contentType:req.file.mimetype,
+            data: img
+        };
+
+        post["picture"] = final_img;
     }
 
     // Author is the objectID of the user who created the post
-    var {author, caption} = req.body;
-    var imgPath = __dirname + '/../middleware/temp/';
-    var img = fs.readFileSync(path.join(imgPath + req.file.filename));
+    var {author, caption, song, playlist} = req.body;
     
-    if (!author || !caption || !img)
+    if (!author || !caption)
     {
         res.status(400);
         throw new Error('Please add all required elements of a post');
     }
 
-    // var encode_img = img.toString('base64');
+    post["author"] = author;
+    post["caption"] = caption;
 
-    var final_img = {
-        contentType:req.file.mimetype,
-        data: img
-    };
+    if (song) {post["song"] = song;}
+    if (playlist) {post["playlist"] = playlist;}
 
-    const post = await Post.create({
-        author: author,
-        caption: caption,
-        picture: final_img
-    }) 
+    console.log(post)
+    const postObj = await Post.create(post)
 
-    if (post) {
+    if (postObj) {
         await User.findByIdAndUpdate(author, { $push: { posts: post._id } });
 
         res.status(201).json({
-          _id: post.id,
-          author: post.author,
-          caption: post.username,
-          picture: post.picture,
-          comments: post.comments, 
-          likes: post.likes,
-          createdAt: post.createdAt 
+          _id: postObj.id,
+          author: postObj.author,
+          caption: postObj.caption,
+          picture: postObj.picture,
+          comments: postObj.comments, 
+          likes: postObj.likes,
+          createdAt: postObj.createdAt,
+          song: postObj.song,
+          playlist: postObj.playlist,
         })
         await unlinkAsync(imgPath + req.file.filename);
     } else {

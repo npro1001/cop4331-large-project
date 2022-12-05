@@ -7,39 +7,85 @@ import NotLike from '../../img/notlike.png'
 import { useSelector } from 'react-redux'
 import defaultPFP from '../../img/default-profile.png'
 import ImageModal from '../imageModal/ImageModal'
+import { useEffect } from "react";
+import SongCard from "../SongCard/SongCard";
 
-const Post = ({data}) => {
+const Post = ({ data }) => {
 
     const [modalOpened, setModalOpened] = useState(false)
-    
-    const {user} = useSelector((state) => state.auth);
+    const [isImage, setIsImage] = useState(false)
+    const [isSong, setIsSong] = useState(false);
+    const { user } = useSelector((state) => state.auth);
+    const [picture, setPicture] = useState()
+    const [profileImage, setProfileImage] = useState();
+    const [isPFP, setIsPFP] = useState();
+
+    useEffect(() => {
+        if (data.picture.data) {
+            setIsImage(true)
+            var base64String = btoa(new Uint8Array(data.picture.data.data).reduce(
+                function (data, byte) {
+                    return data + String.fromCharCode(byte);
+                },
+                ''
+            ));
+            setPicture(base64String)
+        }
+
+
+        if (user.profilePicture) {
+
+            var base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(
+                function (data, byte) {
+                    return data + String.fromCharCode(byte);
+                },
+                ''
+            ));
+
+            setProfileImage(base64String);
+
+            setIsPFP(true);
+        }
+        else {
+            setIsPFP(false)
+        }
+
+
+        if (data.song) {
+            setIsSong(true)
+        }
+    }, [])
+
     return (
         <div className="Post">
             <div className="postInfo">
-            <img src={user.PFP
-              ? user.PFP
-              : defaultPFP} alt="Profile picture" />
+                {isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userCover" /> : <img src={defaultPFP} alt="defaultCover" />}
                 <div className="content">
                     <div>
-                        <span><b>{user.name}</b></span>
-                        <span> @{user.username}</span>
+                        <span><b>{data.name}</b></span>
+                        <span> @{data.username}</span>
                     </div>
-                    
+
                     <span> {data.caption}</span>
                 </div>
             </div>
 
-            
-            <img src={data.img} alt="" onClick={() => setModalOpened(true)} />
-
+            {isSong ? <SongCard
+                name={data.song}
+                artist1={data.artist}
+                image={data.image}
+                url={data.url}
+            ></SongCard> : ""
+            }
+            {isImage ? <img src={`data:image/png;base64,${picture}`} alt="user image" onClick={() => setModalOpened(true)} /> : ""}
             <div className="postReact">
-                <img src={data.liked?Heart: NotLike} alt="" />
-                <img src={Comment} alt="" />
-                <img src={Share} alt="" />
+                <img src={data.liked ? Heart : NotLike} alt="" />
+                {/* <img src={Comment} alt="" />
+                <img src={Share} alt="" /> */}
             </div>
 
-            <span style={{color: "var(--gray)", fontSize: '13px'}}>{data.likes} likes</span>
-            
+            <span style={{ color: "var(--gray)", fontSize: '13px' }}>{data.likes.length} likes</span>
+
             {/* <ImageModal modalOpened={modalOpened}
                     setModalOpened={setModalOpened} /> */}
 

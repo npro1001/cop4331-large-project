@@ -24,13 +24,14 @@ const PostShare = () => {
     const [profileImage, setProfileImage] = useState();
     const [song, setSong] = useState(false)
     const [selection, setSelection] = useState()
+    const [isPosted, setIsPosted] = useState(true)
     const [isPFP, setIsPFP] = useState();
     const desc = useRef();
     const imageRef = useRef();
     const { user } = useSelector((state) => state.auth);
 
     const checkPFP = () => {
-        /*
+
         if (user.profilePicture) {
             const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
             setProfileImage(base64String);
@@ -38,11 +39,9 @@ const PostShare = () => {
         }
         else {
             setIsPFP(false)
-        }*/
+        }
 
-        setIsPFP(false)
     }
-
 
 
     useEffect(() => {
@@ -61,6 +60,8 @@ const PostShare = () => {
 
         const data = new FormData();
         data.append('author', user._id);
+        data.append('name', user.name)
+        data.append('username', user.username)
         data.append('caption', desc.current.value);
 
 
@@ -70,22 +71,17 @@ const PostShare = () => {
 
         if (song) {
 
-
-
+            data.append('song', selection.name);
+            data.append('artist', selection.artist);
+            data.append('image', selection.image);
+            data.append('url', selection.url);
         }
-
-        /*await fetch(`/api/post/`, {
-            body: data,
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            method: 'POST'
-        }) */
-
 
         dispatch(createNewPost(data)).then((response) => {
             console.log(response.payload)
         });
+
+        setIsPosted(false);
     };
 
 
@@ -144,18 +140,24 @@ const PostShare = () => {
                 </div>
                 {image && (
                     <div className="previewImage">
-                        <UilTimes onClick={() => setImage(null)} />
+                        <UilTimes onClick={() => {
+                            setImage(null)
+                            setIsPosted(null)
+                        }} />
                         <img src={URL.createObjectURL(image)} alt="preview" />
                     </div>
                 )}
 
                 {song && (<div className="previewImage">
-                    <UilTimes onClick={() => setSong(null)} />
+                    <UilTimes onClick={() => {
+                        setSong(null)
+                        setIsPosted(null)
+                    }} />
                     <SongCard
                         name={selection.name}
                         artist1={selection.artist}
                         image={selection.image}
-                        url = {selection.url}
+                        url={selection.url}
                     ></SongCard>
                 </div>)}
             </div>

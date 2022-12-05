@@ -503,8 +503,25 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
             await friend.updateOne({ $pull: { posts: friend.posts[j] } })
           }
           else{
-            followingPosts.push(post)
-            console.log(post.createdAt)
+            var postData = {}
+            postData['img'] = post.picture;
+            postData['name'] = friend.name;
+            postData['username'] = friend.username;
+            postData['caption'] = post.caption;
+            postData['likes'] = post.likes.length;
+            postData['comments'] = '';
+
+            if(post.likes.includes(id))
+            {
+              postData['liked'] = true;
+            }
+            else
+            {
+              postData['liked'] = false;
+            }
+
+            console.log(postData)
+            followingPosts.push(postData)
           }
         }
       }

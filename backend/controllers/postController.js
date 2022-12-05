@@ -3,7 +3,7 @@ const fs = require('fs');
 const multer = require('multer');
 const mongoose = require('mongoose');
 var path = require('path');
-const zlib = require('zlib'); 
+const zlib = require('zlib');
 
 const { promisify } = require('util');
 const unlinkAsync = promisify(fs.unlink);
@@ -12,19 +12,18 @@ const User = require('../models/userModel');
 const Post = require('../models/postModel');
 const Comment = require('../models/commentModel');
 constgzip = zlib.createGzip();
-  
+
 // @desc    Create a new post
 // @route   POST /api/post
 // @access  Public
 const createPost = asyncHandler(async (req, res) => {
 
     var post = {};
-    if (req.file)
-    {
+    if (req.file) {
         var imgPath = __dirname + '/../middleware/temp/';
         var img = fs.readFileSync(path.join(imgPath + req.file.filename));
         var final_img = {
-            contentType:req.file.mimetype,
+            contentType: req.file.mimetype,
             data: img
         };
 
@@ -32,38 +31,56 @@ const createPost = asyncHandler(async (req, res) => {
     }
 
     // Author is the objectID of the user who created the post
-    var {author, caption, song, playlist} = req.body;
-    
-    if (!author || !caption)
-    {
+    var { author, name,username,caption, song,image,artist,url, playlist } = req.body;
+    if (!author || !caption) {
         res.status(400);
         throw new Error('Please add all required elements of a post');
     }
 
     post["author"] = author;
     post["caption"] = caption;
+    post["name"] = name;
+    post["username"] = username;
 
-    if (song) {post["song"] = song;}
-    if (playlist) {post["playlist"] = playlist;}
+    if (song) {
+        post["song"] = song;
+        post["image"] = image;
+        post["url"] = url;
+        post["artist"] = artist;
+        
+    }
+    if (playlist) { post["playlist"] = playlist; }
 
-    console.log(post)
     const postObj = await Post.create(post)
 
     if (postObj) {
         await User.findByIdAndUpdate(author, { $push: { posts: post._id } });
 
         res.status(201).json({
-          _id: postObj.id,
-          author: postObj.author,
-          caption: postObj.caption,
-          picture: postObj.picture,
-          comments: postObj.comments, 
-          likes: postObj.likes,
-          createdAt: postObj.createdAt,
-          song: postObj.song,
-          playlist: postObj.playlist,
+            _id: postObj.id,
+            userID: postObj.author,
+            name: postObj.name,
+            username:postObj.username,
+            caption: postObj.caption,
+            picture: postObj.picture,
+            comments: postObj.comments,
+            likes: postObj.likes,
+            createdAt: postObj.createdAt,
+            song: postObj.song,
+            artist: postObj.artist,
+            url: postObj.url,
+            image: postObj.image,
+            playlist: postObj.playlist,
         })
         await unlinkAsync(imgPath + req.file.filename);
+
+        fs.writeFile('../../client/src/Data/PostsData.js', postObj, function (err) {
+            if (err) return console.log(err);
+            console.log('Hello World > helloworld.txt');
+        });
+
+
+
     } else {
         res.status(400);
         throw new Error('Invalid post data');
@@ -75,17 +92,15 @@ const createPost = asyncHandler(async (req, res) => {
 // @access  Public
 const deletePost = asyncHandler(async (req, res) => {
 
-    const {postId} = req.body;
+    const { postId } = req.body;
 
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
-    if (!post)
-    {
+    if (!post) {
         res.status(400);
         throw new error("Post does not exist");
     }
     const user = await User.findById(mongoose.Types.ObjectId(post.author));
-    if (!user)
-    {
+    if (!user) {
         res.status(400);
         throw new error("Cannot find author");
     }
@@ -93,7 +108,7 @@ const deletePost = asyncHandler(async (req, res) => {
     await user.updateOne({ $pull: { posts: postId } });
     await Post.findByIdAndDelete(mongoose.Types.ObjectId(postId));
 
-    res.status(200).json({User: user._id});
+    res.status(200).json({ User: user._id });
 
 });
 
@@ -102,25 +117,21 @@ const deletePost = asyncHandler(async (req, res) => {
 // @access  Public
 const likePost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId} = req.body;
+    const { postId, userId } = req.body;
 
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));
 
-    if (!user)
-    {
+    if (!user) {
         res.status(400);
-		throw new Error('Cannot Find User');
+        throw new Error('Cannot Find User');
     }
-    else if (!post)
-    {
+    else if (!post) {
         res.status(400);
-		throw new Error('Cannot Find Post');
+        throw new Error('Cannot Find Post');
     }
-    else
-    {
-        if (user.likes.includes(post._id) || post.likes.includes(user._id))
-        {
+    else {
+        if (user.likes.includes(post._id) || post.likes.includes(user._id)) {
             res.status(400);
             throw new Error('Post Has Already Been Liked');
         }
@@ -142,25 +153,21 @@ const likePost = asyncHandler(async (req, res) => {
 // @access Public
 const unlikePost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId} = req.body;
+    const { postId, userId } = req.body;
 
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));
 
-    if (!user)
-    {
+    if (!user) {
         res.status(400);
-		throw new Error('Cannot Find User');
+        throw new Error('Cannot Find User');
     }
-    else if (!post)
-    {
+    else if (!post) {
         res.status(400);
-		throw new Error('Cannot Find Post');
+        throw new Error('Cannot Find Post');
     }
-    else
-    {
-        if (!user.likes.includes(post._id) || !post.likes.includes(user._id))
-        {
+    else {
+        if (!user.likes.includes(post._id) || !post.likes.includes(user._id)) {
             res.status(400);
             throw new Error('Post Has Not Already Been Liked');
         }
@@ -182,36 +189,31 @@ const unlikePost = asyncHandler(async (req, res) => {
 // @access  Public
 const commentPost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId, content} = req.body;
+    const { postId, userId, content } = req.body;
 
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));
 
-    if (!user)
-    {
+    if (!user) {
         res.status(400);
-		throw new Error('Cannot Find User');
+        throw new Error('Cannot Find User');
     }
-    else if (!post)
-    {
+    else if (!post) {
         res.status(400);
-		throw new Error('Cannot Find Post');
+        throw new Error('Cannot Find Post');
     }
-    else if (!content)
-    {
+    else if (!content) {
         res.status(400);
         throw new Error('Please enter a comment')
     }
-    else
-    {
+    else {
         const comment = await Comment.create({
             author: userId,
             post: postId,
             content: content
         });
 
-        if (comment)
-        {         
+        if (comment) {
             await user.updateOne({ $push: { comments: comment } });
             await post.updateOne({ $push: { comments: comment } });
 
@@ -221,8 +223,7 @@ const commentPost = asyncHandler(async (req, res) => {
                 comment: content
             });
         }
-        else
-        {
+        else {
             res.status(400);
             throw new Error('Could not create comment');
         }
@@ -233,30 +234,26 @@ const commentPost = asyncHandler(async (req, res) => {
 // @route   DELETE /api/post/deleteComment
 // @access  Public
 const deleteComment = asyncHandler(async (req, res) => {
-    const {commentId} = req.body;
+    const { commentId } = req.body;
 
-    const comment = await Comment.findById(mongoose.Types.ObjectId(commentId)); 
-    if (!comment)
-    {
+    const comment = await Comment.findById(mongoose.Types.ObjectId(commentId));
+    if (!comment) {
         res.status(400);
         throw new error("Comment does not Exist")
     }
     const user = await User.findById(mongoose.Types.ObjectId(comment.author));
-    if (!user)
-    {
+    if (!user) {
         res.status(400);
         throw new error("Author could not be found");
     }
 
     const post = await Post.findById(mongoose.Types.ObjectId(comment.post))
-    if (!post)
-    {
+    if (!post) {
         res.status(400);
         throw new error("Post could not be found");
     }
 
-    if (!user.comments.includes(commentId) || !post.comments.includes(commentId))
-    {
+    if (!user.comments.includes(commentId) || !post.comments.includes(commentId)) {
         res.status(400);
         throw new error("Comment has not been added to post or user");
     }

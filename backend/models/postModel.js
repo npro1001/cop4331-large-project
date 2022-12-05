@@ -10,6 +10,8 @@ const postSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
+        name: String,
+        username: String,
         caption: String,
         picture: {
             data: Buffer,
@@ -22,7 +24,11 @@ const postSchema = mongoose.Schema(
         comments: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Comment'
-        }]
+        }],
+
+        song: String,
+        image: String,
+        url: String,
     }, {timestamps: true});
 
 module.exports = mongoose.model('Post', postSchema);

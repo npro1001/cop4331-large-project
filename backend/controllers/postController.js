@@ -4,7 +4,6 @@ const multer = require('multer');
 const mongoose = require('mongoose');
 var path = require('path');
 const sharp = require('sharp');
-
 const { promisify } = require('util');
 const unlinkAsync = promisify(fs.unlink);
 
@@ -35,8 +34,7 @@ const createPost = asyncHandler(async (req, res) => {
     }
 
     // Author is the objectID of the user who created the post
-    var {author, caption, song, playlist} = req.body;
-    
+    var { author, name, username, caption, song, image, artist, url, playlist } = req.body;    
     if (!author || !caption)
     {
         res.status(400);
@@ -45,8 +43,16 @@ const createPost = asyncHandler(async (req, res) => {
 
     post["author"] = author;
     post["caption"] = caption;
+    post["name"] = name;
+    post["username"] = username;
 
-    if (song) {post["song"] = song;}
+    if (song) {
+        post["song"] = song;
+        post["image"] = image;
+        post["url"] = url;
+        post["artist"] = artist;
+
+    }
     if (playlist) {post["playlist"] = playlist;}
 
     console.log(post)
@@ -54,20 +60,28 @@ const createPost = asyncHandler(async (req, res) => {
 
     if (postObj) {
         await User.findByIdAndUpdate(author, { $push: { posts: postObj._id } });
-
+        console.log("STARTING TO WRITE")
+        
         res.status(201).json({
-          _id: postObj.id,
-          author: postObj.author,
-          caption: postObj.caption,
-          picture: postObj.picture,
-          comments: postObj.comments, 
-          likes: postObj.likes,
-          createdAt: postObj.createdAt,
-          song: postObj.song,
-          playlist: postObj.playlist,
+            _id: postObj.id,
+            userID: postObj.author,
+            name: postObj.name,
+            username: postObj.username,
+            caption: postObj.caption,
+            picture: postObj.picture,
+            comments: postObj.comments,
+            likes: postObj.likes,
+            createdAt: postObj.createdAt,
+            song: postObj.song,
+            artist: postObj.artist,
+            url: postObj.url,
+            image: postObj.image,
+            playlist: postObj.playlist,
         })
         await unlinkAsync(imgPath + req.file.filename);
         await unlinkAsync(imgPath + req.file.filename + '-thumb');
+        
+        
     } else {
         res.status(400);
         throw new Error('Invalid post data');

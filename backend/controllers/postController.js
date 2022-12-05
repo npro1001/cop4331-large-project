@@ -53,7 +53,7 @@ const createPost = asyncHandler(async (req, res) => {
     const postObj = await Post.create(post)
 
     if (postObj) {
-        await User.findByIdAndUpdate(author, { $push: { posts: post._id } });
+        await User.findByIdAndUpdate(author, { $push: { posts: postObj._id } });
 
         res.status(201).json({
           _id: postObj.id,

@@ -26,16 +26,16 @@ const Posts = () => {
     const dispatch = useDispatch()
     const [displayPosts, setDisplayPosts] = useState()
     
-    useEffect(() => {
-        if (user.following.length != 0)
-        {
-            dispatch(getPosts(user._id))
-                .then(response => {
-                    console.log(response.payload)   
-                    setDisplayPosts(response.payload)  
-                })
-        }
-    }, []); //! Important   
+    // useEffect(() => {
+    //     if (user.following.length != 0)
+    //     {
+    //         dispatch(getPosts(user._id))
+    //             .then(response => {
+    //                 console.log(response.payload)   
+    //                 setDisplayPosts(response.payload)  
+    //             })
+    //     }
+    // }, []); //! Important   
 
     //if there are no posts to display
     if (PostData.length < 1) {

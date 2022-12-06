@@ -72,14 +72,13 @@ const InfoCard = ({location}) => {
                     setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
-
+                    console.log(user.anthem.title)
                 })
-
         }
-   
+        // localStorage.setItem('user', JSON.stringify(user)
         fetchProfileUser()
 
-    }, [isConnected], [activeUser], [anthem],[topGenres], [topArtist],[user]); //! Important
+    }, [isConnected, activeUser, anthem, topGenres, topArtist, user]); //! Important
 
 
     const onLogout = () => {

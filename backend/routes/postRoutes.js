@@ -14,7 +14,7 @@ const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
 router.post('/', upload.single('picture'), createPost);
-router.post('/delete', deletePost);
+router.put('/delete', deletePost);
 router.put('/like', likePost);
 router.put('/unlike', unlikePost);
 router.put('/comment', commentPost);

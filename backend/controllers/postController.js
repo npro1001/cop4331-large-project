@@ -88,8 +88,8 @@ const createPost = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc    Create a new post
-// @route   POST /api/post/delete
+// @desc    Delete a post
+// @route   PUT /api/post/delete
 // @access  Public
 const deletePost = asyncHandler(async (req, res) => {
 

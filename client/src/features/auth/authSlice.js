@@ -92,11 +92,11 @@ export const followUser = createAsyncThunk('auth/follow', async(targetUserId, th
 })
 
 //unfollow
-export const unFollowUser = createAsyncThunk('auth/unfollow', async(targetUserId, thunkAPI) =>
+export const unfollowUser = createAsyncThunk('auth/unfollow', async(targetUserId, thunkAPI) =>
 {
     try {
 
-        return await authService.unFollow(targetUserId,user._id);
+        return await authService.unfollow(targetUserId,user._id);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -236,17 +236,17 @@ export const authSlice = createSlice({
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY
         })
-        .addCase(unFollowUser.pending, (state) => {
+        .addCase(unfollowUser.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(unFollowUser.fulfilled, (state, action) => {
+        .addCase(unfollowUser.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
             state.user = action.payload
             console.log(action.payload)
             // return state;
         })
-        .addCase(unFollowUser.rejected, (state, action) => {
+        .addCase(unfollowUser.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY

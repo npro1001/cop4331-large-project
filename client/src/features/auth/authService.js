@@ -96,7 +96,7 @@ const follow = async (targetUserId,user) => {
 }
 
 //unfollow user
-const unFollow = async (targetUserId,user) => {
+const unfollow = async (targetUserId,user) => {
 
     const response = await axios.put(API_URL +targetUserId+"/unfollow", {currentUserId: user})
     if (response.data) {
@@ -114,7 +114,7 @@ const authService = {
     getMe,
     uploadPFP,
     follow,
-    unFollow
+    unfollow
 }
 
 export default authService

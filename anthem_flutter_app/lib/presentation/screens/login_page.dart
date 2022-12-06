@@ -7,6 +7,7 @@ import 'package:anthem_flutter_app/presentation/widgets/login_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
 
 class LoginPage extends StatefulWidget {
   final UserRepository userRepo;
@@ -22,6 +23,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late LoginBloc _loginBloc;
   late UserAuthBloc _userAuthBloc; // late?
+  late AudioPlayer player = AudioPlayer(); //Audio
 
   UserRepository get _userRepo => widget.userRepo;
 
@@ -78,7 +80,10 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await player.setAsset('assets/lib/bruh.mp3');
+                          player.play();
+                        },
                         child: Text(
                           "Forgot Passw0rd",
                           style: TextStyle(

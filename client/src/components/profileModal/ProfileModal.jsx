@@ -258,8 +258,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                     `/profile/${updateUserRes.payload.username}`)
 
                 // window.location.reload();
-
-
             })
     }
 

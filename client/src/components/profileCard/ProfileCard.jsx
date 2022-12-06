@@ -7,7 +7,7 @@ import './ProfileCard.css'
 import defaultCover from '../../img/default-cover-4.jpg'
 import defaultPFP from '../../img/default-profile.png'
 import styled from "styled-components";
-import { followUser, unFollowUser} from "../../features/auth/authSlice";
+import { followUser, unfollowUser} from "../../features/auth/authSlice";
 
 const Container = styled.div`
     position: relative;
@@ -46,7 +46,6 @@ const FollowButton = styled.button`
 
 const ProfileCard = ({ location }) => {
 
-    const posts = useSelector((state) => state.post)
     const user = useSelector((state) => state.auth.user)
     const params = useParams();
     const navigate = useNavigate();
@@ -193,11 +192,11 @@ const ProfileCard = ({ location }) => {
 
     const DoUnFollow = async () => {
 
-        dispatch(unFollowUser(activeUser._id)).then((response) => {
+        dispatch(unfollowUser(activeUser._id)).then((response) => {
             console.log(response);
         }) 
 
-        window.location.reload();
+        // window.location.reload();
     }
 
     return (

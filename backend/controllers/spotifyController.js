@@ -82,17 +82,17 @@ const spotifyAuthCallback = asyncHandler(async (req, res) => {
                 refresh_token,
                 expires_in,
             })
-            res.redirect(`${FRONTEND_URL}home?${params}`)            
+            res.redirect(302, `${FRONTEND_URL}home?${params}`)            
         
         } else {
-            res.redirect(`/?${querystring.stringify({error: "invalid_token"})}`)
+            res.redirect(303, `/?${querystring.stringify({error: "invalid_token"})}`)
         }
     })
     .catch(error => {
-        res.send(error)
+        res.status(400).send(error)
     })
     .catch(error => {
-        res.send(error)
+        res.status(400).send(error)
     })
 })
 
@@ -116,10 +116,10 @@ const getRefreshToken = asyncHandler(async (req, res) => {
         },
     })
     .then(response => {
-        res.send(response.data)
+        res.status(200).send(response.data)
     })
     .catch(error => {
-        res.send(error);
+        res.status(400).send(error);
     })
 })
 

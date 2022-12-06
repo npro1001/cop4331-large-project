@@ -44,19 +44,20 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
-            SizedBox(height: 80),
+            SizedBox(height: 60),
             FloatingActionButton.extended(
+              heroTag: "Login",
               label: Text('Login'),
               onPressed: () {
                 userAuthBloc.add(LoggedOutEvent()); // add = dispatch
                 Navigator.of(context).pushNamed('/login');
               },
             ),
-            SizedBox(height: 20),
             FloatingActionButton.extended(
+              heroTag: "Register",
               label: Text('Register'),
               onPressed: () {
-                Navigator.of(context).pushNamed('/register');
+                Navigator.of(context).pushNamed("/register");
               },
             ),
           ],

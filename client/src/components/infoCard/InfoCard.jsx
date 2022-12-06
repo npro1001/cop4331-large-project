@@ -10,10 +10,22 @@ import { useEffect } from "react"
 import SongCard from "../SongCard/SongCard.jsx"
 import { getTopArtist } from "../../features/spotify/spotifySlice"
 import loadingCir from '../../img/loading-gif.gif'
+import styled from "styled-components";
+
+const Container = styled.div`
+    position: relative;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 40px;
+    padding:auto;
+    display:flex;
+`
 
 
 
-const InfoCard = () => {
+const InfoCard = ({location}) => {
 
     const params = useParams();
     const dispatch = useDispatch();
@@ -156,7 +168,11 @@ const InfoCard = () => {
                 </span>
             </div >
 
-            <button className='button logout-button' onClick={onLogout}>Logout</button>
+            {(user.username === activeUser.username)
+                ?
+                    <button className='button logout-button' onClick={onLogout}>Logout</button>
+                 : ""}
+           
 
         </div >
     )

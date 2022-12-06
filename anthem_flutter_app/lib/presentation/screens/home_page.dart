@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
-            SizedBox(height: 60),
+            SizedBox(height: 80),
             FloatingActionButton.extended(
               heroTag: "Login",
               label: Text('Login'),
@@ -53,6 +53,7 @@ class HomePage extends StatelessWidget {
                 Navigator.of(context).pushNamed('/login');
               },
             ),
+            SizedBox(height: 20),
             FloatingActionButton.extended(
               heroTag: "Register",
               label: Text('Register'),

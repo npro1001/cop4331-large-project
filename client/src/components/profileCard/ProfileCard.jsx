@@ -76,20 +76,19 @@ const ProfileCard = ({ location }) => {
 
             if (user.profilePicture) {
 
-                if(user.profilePicture.data)
-                {
+                if (user.profilePicture.data) {
                     const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
                         return data + String.fromCharCode(byte);
                     }, ''));
-                    
+
                     setProfileImage(base64String);
                     setIsPFP(true);
                 }
 
-                else{
-                setIsPFP(false);
+                else {
+                    setIsPFP(false);
                 }
-               
+
             }
             else {
                 setIsPFP(false)
@@ -110,20 +109,19 @@ const ProfileCard = ({ location }) => {
 
                 if (user.profilePicture) {
 
-                    if(user.profilePicture.data)
-                    {
+                    if (user.profilePicture.data) {
                         const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
                             return data + String.fromCharCode(byte);
                         }, ''));
-                        
+
                         setProfileImage(base64String);
                         setIsPFP(true);
                     }
 
-                    else{
-                    setIsPFP(false);
+                    else {
+                        setIsPFP(false);
                     }
-                   
+
                 }
                 else {
                     setIsPFP(false)
@@ -146,6 +144,26 @@ const ProfileCard = ({ location }) => {
                     setNumPosts(profileUser.posts.length)
                 }
 
+                if (profileUser.profilePicture) {
+
+                    if (profileUser.profilePicture.data) {
+                        const base64String = btoa(new Uint8Array(profileUser.profilePicture.data.data).reduce(function (data, byte) {
+                            return data + String.fromCharCode(byte);
+                        }, ''));
+
+                        setProfileImage(base64String);
+                        setIsPFP(true);
+                    }
+
+                    else {
+                        setIsPFP(false);
+                    }
+
+                }
+                else {
+                    setIsPFP(false)
+                }
+
 
                 let length = profileUser.followers.length
 
@@ -161,7 +179,7 @@ const ProfileCard = ({ location }) => {
     }
     useEffect(() => {
         fetchProfileUser()
-    }, [profileImage], [cover], [activeUser], [isFollowing], [isPFP], [isCover],[user]);
+    }, [profileImage], [cover], [activeUser], [isFollowing], [isPFP], [isCover], [user]);
 
 
 

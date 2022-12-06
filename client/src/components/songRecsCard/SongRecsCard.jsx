@@ -58,7 +58,6 @@ const SongRecsCard = () => {
         }
     }, [], [], [user]); //! Important
 
-
     if (list && !spotifyLoading) {
         return (
             <div className="SongRecsCard">

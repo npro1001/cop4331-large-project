@@ -274,8 +274,9 @@ export const getTopArtist = async () => {
         target = response.data.items[0].id
         IDresult = target.concat(",", response.data.items[2].id)
 
-        target= response.data.items[0].genres.toString();
-        genreResult = target.concat(",", response.data.items[1].genres.toString())
+        target= response.data.items[0].genres[0].toString();
+        if(allGenres.contains(target)) genreResult = target
+        // genreResult = target //.concat(",", response.data.items[1].genres[1].toString())
 
         if (response) return response;
     } catch (error) {

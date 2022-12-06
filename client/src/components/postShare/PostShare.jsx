@@ -33,7 +33,7 @@ const PostShare = () => {
     const checkPFP = () => {
 
         if (user.profilePicture) {
-            const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+            const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data)));
             setProfileImage(base64String);
             setIsPFP(true);
         }

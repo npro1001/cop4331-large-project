@@ -15,11 +15,13 @@ import styled from "styled-components";
 import { Modal } from '../../components/spotifyConnectModal/SpotifyModal' 
 import  {toast} from 'react-toastify'
 import { connect } from '../../features/spotify/spotifySlice'
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
     const { isConnected, isError, message } = useSelector((store) => store.spotify)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(isError) {
@@ -53,8 +55,10 @@ const Home = () => {
                 <div></div> 
                 <div className='Top'>
                     <div className="navIcons">
-                        <Link to='../Home'>
-                            <UilHome className="home"></UilHome>
+                        <Link to='/home'>
+                            {/* <span onClick={() => {navigate(`/home`); window.location.reload();}}> */}
+                                <UilHome className="home"></UilHome>
+                            {/* </span> */}
                         </Link>
                         <UilSetting className="setting" />
                         <img src={Logo} alt="Logo" />

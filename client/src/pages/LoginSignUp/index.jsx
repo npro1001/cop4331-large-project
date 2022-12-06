@@ -298,7 +298,7 @@ export function LoginSignUp(props) {
                     <WebName>
                         Welcome to Anthem
                     </WebName>
-                    <Motto>Bing Bong</Motto>
+                    <Motto>Find your ensemble</Motto>
                 </Aleft>
 
                 <BoxContainer>

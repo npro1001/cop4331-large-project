@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getPosts } from "../../features/post/postSlice"
 import { useEffect, useState } from "react"
-const asyncHandler = require('express-async-handler')
 
 const EmptyFeed = styled.h1`
     

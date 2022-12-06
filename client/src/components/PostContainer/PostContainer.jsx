@@ -3,8 +3,7 @@ import './PostContainer.css'
 import Post from "../Post/Post";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getPosts } from "../../features/post/postSlice"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 
 const EmptyFeed = styled.h1`
     

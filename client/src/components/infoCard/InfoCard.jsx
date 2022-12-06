@@ -10,10 +10,22 @@ import { useEffect } from "react"
 import SongCard from "../SongCard/SongCard.jsx"
 import { getTopArtist } from "../../features/spotify/spotifySlice"
 import loadingCir from '../../img/loading-gif.gif'
+import styled from "styled-components";
+
+const Container = styled.div`
+    position: relative;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 40px;
+    padding:auto;
+    display:flex;
+`
 
 
 
-const InfoCard = () => {
+const InfoCard = ({location}) => {
 
     const params = useParams();
     const dispatch = useDispatch();
@@ -56,7 +68,7 @@ const InfoCard = () => {
         if (isConnected) {
             dispatch(getTopArtist())
                 .then(response => {
-                    let genres = [response.payload.data.items[0].genres+" ", response.payload.data.items[1].genres+""]
+                    let genres = [response.payload.data.items[0].genres[1]+" "]
                     setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
@@ -115,7 +127,7 @@ const InfoCard = () => {
                         user.username === activeUser.username && topGenres ? (
                             <div>
                                 {topGenres.map((genres, index) => {
-
+                                    
                                     return (
                                         <div key={index}>
                                             <><span>{genres}</span></>
@@ -124,6 +136,7 @@ const InfoCard = () => {
                                     )
 
                                 })}
+                                
                             </div>
                         ) : (
                             <div>
@@ -155,7 +168,11 @@ const InfoCard = () => {
                 </span>
             </div >
 
-            <button className='button logout-button' onClick={onLogout}>Logout</button>
+            {(user.username === activeUser.username)
+                ?
+                    <button className='button logout-button' onClick={onLogout}>Logout</button>
+                 : ""}
+           
 
         </div >
     )

@@ -22,9 +22,9 @@ const Container = styled.div`
 
 
 const FollowButton = styled.button`
-    width: 50%;
+    width: 40%;
     height: 100%;
-    font-size: 20px;
+    font-size: 15px;
     position: relative;
     color: white;
     border: none;
@@ -74,14 +74,22 @@ const ProfileCard = ({ location }) => {
             setFollowers(user.followers.length);
 
 
-
             if (user.profilePicture) {
 
-                const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+                if(user.profilePicture.data)
+                {
+                    const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
+                        return data + String.fromCharCode(byte);
+                    }, ''));
+                    
+                    setProfileImage(base64String);
+                    setIsPFP(true);
+                }
 
-                setProfileImage(base64String);
-
-                setIsPFP(true);
+                else{
+                setIsPFP(false);
+                }
+               
             }
             else {
                 setIsPFP(false)
@@ -101,9 +109,21 @@ const ProfileCard = ({ location }) => {
                 setNumPosts(user.posts.length)
 
                 if (user.profilePicture) {
-                    const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
-                    setProfileImage(base64String);
-                    setIsPFP(true);
+
+                    if(user.profilePicture.data)
+                    {
+                        const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
+                            return data + String.fromCharCode(byte);
+                        }, ''));
+                        
+                        setProfileImage(base64String);
+                        setIsPFP(true);
+                    }
+
+                    else{
+                    setIsPFP(false);
+                    }
+                   
                 }
                 else {
                     setIsPFP(false)
@@ -170,7 +190,7 @@ const ProfileCard = ({ location }) => {
         <div className="ProfileCard">
             <div className="ProfileImages">
                 {location == "profilePage " ? isCover ? <img src={`data:image/png;base64,${cover}`} alt="userCover" /> : <img src={defaultCover} alt="defaultCover" /> : isCover ? <img src={`data:image/png;base64,${cover}`} alt="Profile picture" /> : <img src={defaultCover} alt="defaultCover" />}
-                {location == "profilePage" ? isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userPFP" /> : <img src={defaultPFP} alt="defaultPFP" /> : isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userPFP" /> : <img src={defaultPFP} alt="defaultPFP" />}
+                {location == "profilePage" ? isPFP ? <img src={`data:image/;base64,${profileImage}`} alt="userPFP" /> : <img src={defaultPFP} alt="defaultPFP" /> : isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userPFP" /> : <img src={defaultPFP} alt="defaultPFP" />}
 
             </div>
 

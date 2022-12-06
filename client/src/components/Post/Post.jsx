@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import './Post.css'
 import Comment from '../../img/comment.png'
@@ -25,7 +26,9 @@ const Post = ({ data }) => {
             console.log(data.caption+" does have a photo attatched")
             console.log(data.img)
             setIsImage(true)
-            const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+            const base64String  = btoa(new Uint8Array(data.img.data.data).reduce(function (data, byte) {
+                return data + String.fromCharCode(byte);
+            }, ''));
             
             setPicture(base64String)
         }
@@ -39,21 +42,33 @@ const Post = ({ data }) => {
 
 
         if (user.profilePicture) {
+          
+            if(user.profilePicture.data)
+            {
+                var base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(
+                    function (data, byte) {
+                        return data + String.fromCharCode(byte);
+                    },
+                    ''
+                ));
+    
+                setProfileImage(base64String);
+    
+                setIsPFP(true);
+            }
 
-            var base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(
-                function (data, byte) {
-                    return data + String.fromCharCode(byte);
-                },
-                ''
-            ));
-
-            setProfileImage(base64String);
-
-            setIsPFP(true);
+            else{
+                setIsPFP(false)
+            }
+            
         }
         else {
             setIsPFP(false)
         }
+
+
+        //until post has a picture picture key
+        setIsPFP(false)
 
 
         if (data.song) {
@@ -64,7 +79,7 @@ const Post = ({ data }) => {
     return (
         <div className="Post">
             <div className="postInfo">
-                {isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userCover" /> : <img src={defaultPFP} alt="defaultCover" />}
+                {isPFP ? <img src={`data:image/png;base64,${profileImage}`} alt="userCover" /> : <img src={defaultPFP} alt="defaultPFP" />}
                 <div className="content">
                     <div>
                         <span><b>{data.name}</b></span>

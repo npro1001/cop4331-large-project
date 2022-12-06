@@ -527,6 +527,37 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
       }
     }
 
+    for (let i = 0; i < user.posts.length; i++)
+    {
+      let post = await Post.findById(mongoose.Types.ObjectId(user.posts[i]));
+          if (!post)
+          {
+            console.log("Post Could not be found")
+            await friend.updateOne({ $pull: { posts: user.posts[i] } })
+          }
+          else{
+            var postData = {}
+            postData['img'] = post.picture;
+            postData['name'] = user.name;
+            postData['username'] = user.username;
+            postData['caption'] = post.caption;
+            postData['likes'] = post.likes.length;
+            postData['comments'] = '';
+
+            if(post.likes.includes(id))
+            {
+              postData['liked'] = true;
+            }
+            else
+            {
+              postData['liked'] = false;
+            }
+
+            console.log(postData)
+            followingPosts.push(postData)
+          }
+    }
+
     if (followingPosts.length == 0)
     {
       res.status(400);

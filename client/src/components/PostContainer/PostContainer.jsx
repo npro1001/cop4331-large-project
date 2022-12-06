@@ -3,7 +3,8 @@ import './PostContainer.css'
 import Post from "../Post/Post";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import {  useState } from "react"
+import { getPosts } from "../../features/post/postSlice"
+import {  useEffect, useState } from "react"
 
 const EmptyFeed = styled.h1`
     
@@ -25,16 +26,16 @@ const Posts = () => {
     const dispatch = useDispatch()
     const [displayPosts, setDisplayPosts] = useState()
     
-    // useEffect(() => {
-    //     if (user.following.length != 0)
-    //     {
-    //         dispatch(getPosts(user._id))
-    //             .then(response => {
-    //                 console.log(response.payload)   
-    //                 setDisplayPosts(response.payload)  
-    //             })
-    //     }
-    // }, []); //! Important   
+    useEffect(() => {
+        if (user.following.length != 0)
+        {
+            dispatch(getPosts(user._id))
+                .then(response => {
+                    console.log(response.payload)   
+                    setDisplayPosts(response.payload)  
+                })
+        }
+    }, []); //! Important
 
     //if there are no posts to display
     if (PostData.length < 1) {

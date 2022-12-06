@@ -118,6 +118,27 @@ class Feed extends StatelessWidget {
                             ),
                           ),
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                IconButton(
+                                  icon: Icon(Icons.favorite_border),
+                                  iconSize: 30.0,
+                                  onPressed: () => print("Like Post"),
+                                ),
+                                Text(
+                                  '69,696,969',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),

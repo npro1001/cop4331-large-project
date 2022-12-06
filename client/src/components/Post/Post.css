@@ -1,3 +1,6 @@
+/* import Heart from '../../img/like.png' */
+
+
 .Post{
     display: flex;
     flex-direction: column;
@@ -27,6 +30,10 @@
     gap: 1.5rem;
 }
 
+.postReact>img:hover{
+    background-image: url('../../img/like.png');
+    cursor: pointer;
+}
 .postInfo{
     display: flex;
     flex-direction: row;

@@ -65,14 +65,7 @@ const Posts = () => {
                 </div>
             )
         }
-
-
     }
-
-    else {
-
-    }
-
 }
 
 export default Posts

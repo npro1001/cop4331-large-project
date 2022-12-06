@@ -21,6 +21,7 @@ const Post = ({ data }) => {
     const [isPFP, setIsPFP] = useState();
 
     useEffect(() => {
+        console.log(data)
         if (data.img.data) {
 
             setIsImage(true)

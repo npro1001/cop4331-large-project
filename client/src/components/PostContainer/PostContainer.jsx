@@ -31,10 +31,8 @@ const Posts = () => {
         if (user.following.length != 0) {
             await dispatch(getPosts(user._id))
                 .then(response => {
-                    console.log(response.payload)
                     setDisplayPosts(response.payload)
                     setIsLoading(false)
-
                 })
         }
 
@@ -43,30 +41,31 @@ const Posts = () => {
     useEffect(() => {
 
         fetchData();
-        if (!isLoading) {
-            console.log("done loading")
-        }
-
 
     }, [], [displayPosts]); //! Important
 
     if (!isLoading) {
+
+
         //if there are no posts to display
-        if (displayPosts.length < 1) {
+        if (displayPosts.length == 0) {
             return (
                 <><EmptyFeed> No posts to display...</EmptyFeed><AddOn>Try posting something!</AddOn></>
             )
         }
 
-        return (
-            <div className="Posts">
-                {displayPosts.map((post, id) => {
-                    return <div key={id}>
-                        {post.img ? <Post data={post} img={post.img} /> : <Post data={post} />}
-                    </div>
-                })}
-            </div>
-        )
+        else {
+            return (
+                <div className="Posts">
+                    {displayPosts.map((post, id) => {
+                        return <div key={id}>
+                            {post.img ? <Post data={post} img={post.img} /> : <Post data={post} />}
+                        </div>
+                    })}
+                </div>
+            )
+        }
+
 
     }
 

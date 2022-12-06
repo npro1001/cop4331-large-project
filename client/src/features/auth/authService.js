@@ -95,7 +95,7 @@ const follow = async (targetUserId,user) => {
     return null;
 }
 
-//follow user
+//unfollow user
 const unFollow = async (targetUserId,user) => {
 
     const response = await axios.put(API_URL +targetUserId+"/unfollow", {currentUserId: user})

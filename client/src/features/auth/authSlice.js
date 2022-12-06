@@ -91,6 +91,7 @@ export const followUser = createAsyncThunk('auth/follow', async(targetUserId, th
 
 })
 
+//unfollow
 export const unFollowUser = createAsyncThunk('auth/unfollow', async(targetUserId, thunkAPI) =>
 {
     try {

@@ -57,28 +57,30 @@ const InfoCard = ({location}) => {
             })
             profileUser = await res.json();
             setActiveUser(profileUser);
-            setAnthem(profileUser.anthem)
+            if(profileUser.anthem)
+            {
+                setAnthem(profileUser.anthem)
+            }
         }
-
-
     }
 
     useEffect(() => {
 
         if (isConnected) {
-            dispatch(getTopArtist())
-                .then(response => {
-                    let genres = [response.payload.data.items[0].genres[1]+" "]
-                    setTopGenres(genres)
-                    setTopArtist(response.payload.data.items[0]);
-                    setSpotifyLoading(false);
-                    console.log(user.anthem.title)
-                })
-        }
-        // localStorage.setItem('user', JSON.stringify(user)
+            // dispatch(getTopArtist())
+            //     .then(response => {
+            //         console.log(response) // payload is returning false????
+            //         let genres = [response.payload.data.items[0].genres[1]+" "]
+            //         setTopGenres(genres)
+            //         setTopArtist(response.payload.data.items[0]);
+            //         setSpotifyLoading(false);
+            //         // console.log(user.anthem.title)
+            //     })
+            //     .then(localStorage.setItem('user', JSON.stringify(user)))
+            }
         fetchProfileUser()
 
-    }, [isConnected, activeUser, anthem, topGenres, topArtist, user]); //! Important
+    }, [isConnected, activeUser, anthem, topGenres, topArtist, user],[]); //! Important 
 
 
     const onLogout = () => {

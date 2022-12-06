@@ -56,7 +56,7 @@ const InfoCard = () => {
         if (isConnected) {
             dispatch(getTopArtist())
                 .then(response => {
-                    let genres = [response.payload.data.items[0].genres+" ", response.payload.data.items[1].genres+""]
+                    let genres = [response.payload.data.items[0].genres[1]+" "]
                     setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
@@ -115,7 +115,7 @@ const InfoCard = () => {
                         user.username === activeUser.username && topGenres ? (
                             <div>
                                 {topGenres.map((genres, index) => {
-
+                                    
                                     return (
                                         <div key={index}>
                                             <><span>{genres}</span></>
@@ -124,6 +124,7 @@ const InfoCard = () => {
                                     )
 
                                 })}
+                                
                             </div>
                         ) : (
                             <div>

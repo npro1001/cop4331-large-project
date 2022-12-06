@@ -105,8 +105,8 @@ const loginUser = asyncHandler(async (req, res) => {
         followers: user.followers, 
         following: user.following,
         anthem: user.anthem,
-        profilePicture: user.profilePicture
-        // posts = user.post
+        profilePicture: user.profilePicture,
+        posts: user.posts
       })
     }
 

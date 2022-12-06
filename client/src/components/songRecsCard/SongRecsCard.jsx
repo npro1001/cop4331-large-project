@@ -11,6 +11,7 @@ import loadingCir from '../../img/loading-gif.gif'
 
 const SongRecsCard = () => {
     const { isConnected } = useSelector((store) => store.spotify)
+    const user = useSelector((store) => store.auth.user)
 
     const dispatch = useDispatch()
     const [list, setList] = useState();
@@ -27,23 +28,19 @@ const SongRecsCard = () => {
             {
                 dispatch(getRecommended())
                 .then(response => {
-                    console.log(response)
 
                     //randomly choice 3 numbers 
                     let choices = Array.from(Array(20),(x,i)=>i)
                     var num = Math.floor(Math.random() * choices.length);
                     
-                    var pick = choices.splice(num,1)
+                    var pick = choices.splice(num,1) // remove number from array
                     let one = pick;
-                    console.log(one)
 
                     num = Math.floor(Math.random() * choices.length);
                     let two = choices.splice(num,1)
-                    console.log(two)
 
                     num = Math.floor(Math.random() * choices.length);
                     let three = choices.splice(num,1)
-                    console.log(three)
 
 
                     tracks = [
@@ -59,7 +56,7 @@ const SongRecsCard = () => {
             loaded = true;
 
         }
-    }, [], [], []); //! Important
+    }, [], [], [user]); //! Important
 
 
     if (list && !spotifyLoading) {

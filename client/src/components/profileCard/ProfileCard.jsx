@@ -186,7 +186,7 @@ const ProfileCard = ({ location }) => {
     const DoFollow = async () => {
         dispatch(followUser(activeUser._id)).then((response) => {
             console.log(response);
-        });
+        })
         window.location.reload();
     }
 

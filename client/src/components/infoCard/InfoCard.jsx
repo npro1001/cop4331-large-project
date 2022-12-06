@@ -57,7 +57,9 @@ const InfoCard = ({location}) => {
             })
             profileUser = await res.json();
             setActiveUser(profileUser);
-            setAnthem(profileUser.anthem)
+            if(profileUser.anthem){
+                setAnthem(profileUser.anthem)
+            } 
         }
 
 
@@ -72,10 +74,10 @@ const InfoCard = ({location}) => {
                     setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
-                    console.log(user.anthem.title)
+                    // console.log(user.anthem.title)
                 })
-        }
-        // localStorage.setItem('user', JSON.stringify(user)
+                // .then(localStorage.setItem('user', JSON.stringify(user)))
+            }
         fetchProfileUser()
 
     }, [isConnected, activeUser, anthem, topGenres, topArtist, user]); //! Important

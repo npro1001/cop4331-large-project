@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +62,34 @@ class Feed extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Column(
-                      children: <Widget>[],
+                      children: <Widget>[
+                        ListTile(
+                          leading: Container(
+                            margin: EdgeInsets.all(10),
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black45,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 6.0,
+                                ),
+                              ],
+                            ),
+                            child: CircleAvatar(
+                              child: ClipOval(
+                                  child: Image(
+                                height: 60,
+                                width: 60,
+                                image: AssetImage(
+                                    "assets/lib/dogpfp.png"), //USER PFP
+                              )),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],

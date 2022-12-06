@@ -72,6 +72,7 @@ flutter:
     - assets/lib/background0.png
     - assets/lib/logo.png
     - assets/lib/bruh.mp3
+    - assets/lib/dogpfp.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

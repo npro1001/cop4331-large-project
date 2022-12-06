@@ -526,7 +526,6 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
               postData['liked'] = false;
             }
 
-            console.log(postData)
             followingPosts.push(postData)
           }
         }

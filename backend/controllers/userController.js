@@ -143,15 +143,25 @@ const updateUser = asyncHandler(async (req, res) => {
     throw new Error('User not found')
   }
 
-  // Create anthem
-  const newAnthem = await Anthem.create({
-    user: user,
-    id: anthemId,
-    title: anthemTitle,
-    artist1: anthemArtist1,
-    image: anthemImage,
-    url: anthemUrl
-  })
+  if (anthemId) {
+    // Create anthem
+    const newAnthem = await Anthem.create({
+      user: user,
+      id: anthemId,
+      title: anthemTitle,
+      artist1: anthemArtist1,
+      image: anthemImage,
+      url: anthemUrl
+    })
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, {name: name, username: username, anthem: newAnthem}, {
+      new: true,
+    })
+  } else {
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, {name: name, username: username}, {
+      new: true,
+    })
+  }
+
 
  //! Remove password update for now
   // if(user.password != req.body.password){

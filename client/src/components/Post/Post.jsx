@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import './Post.css'
 import Comment from '../../img/comment.png'
@@ -22,9 +21,9 @@ const Post = ({ data }) => {
     const [isPFP, setIsPFP] = useState();
 
     useEffect(() => {
+        console.log(data)
         if (data.img.data) {
-            console.log(data.caption+" does have a photo attatched")
-            console.log(data.img)
+
             setIsImage(true)
             const base64String  = btoa(new Uint8Array(data.img.data.data).reduce(function (data, byte) {
                 return data + String.fromCharCode(byte);
@@ -35,8 +34,7 @@ const Post = ({ data }) => {
 
         else
         {
-            console.log(data.caption+" does not have a photo attatched")
-
+       
             setIsImage(false)
         }
 

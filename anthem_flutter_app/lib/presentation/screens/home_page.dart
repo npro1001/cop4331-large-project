@@ -61,6 +61,25 @@ class HomePage extends StatelessWidget {
                 Navigator.of(context).pushNamed("/register");
               },
             ),
+            SizedBox(height: 80),
+            FloatingActionButton.extended(
+              //................................................DEV ACCESS TO FEED  MUST DELETE
+              heroTag: "DEV_ACCESS_TO_FEED",
+              label: Text('Dev access to feed'),
+              onPressed: () {
+                userAuthBloc.add(LoggedOutEvent()); // add = dispatch
+                Navigator.of(context).pushNamed('/feed');
+              },
+            ),
+            FloatingActionButton.extended(
+              //................................................DEV ACCESS TO FEED  MUST DELETE
+              heroTag: "DEV_ACCESS_TO_PROFILE",
+              label: Text('Dev access to profile'),
+              onPressed: () {
+                // userAuthBloc.add(LoggedOutEvent()); // add = dispatch
+                Navigator.of(context).pushNamed('/profile');
+              },
+            ),
           ],
         )),
       ),

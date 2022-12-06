@@ -568,8 +568,9 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
 
     if (followingPosts.length == 0)
     {
-      res.status(400);
-      throw new Error('User has no following posts');
+      res.status(201).json(followingPosts)
+      // res.status(400);
+      // throw new Error('User has no following posts');
     }
     res.status(201).json(followingPosts)
 });

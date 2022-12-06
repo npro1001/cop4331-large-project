@@ -57,12 +57,11 @@ const InfoCard = ({location}) => {
             })
             profileUser = await res.json();
             setActiveUser(profileUser);
-            if(profileUser.anthem){
+            if(profileUser.anthem)
+            {
                 setAnthem(profileUser.anthem)
-            } 
+            }
         }
-
-
     }
 
     useEffect(() => {
@@ -80,7 +79,7 @@ const InfoCard = ({location}) => {
             }
         fetchProfileUser()
 
-    }, [isConnected, activeUser, anthem, topGenres, topArtist, user]); //! Important
+    }, [isConnected, activeUser, anthem, topGenres, topArtist, user],[]); //! Important 
 
 
     const onLogout = () => {

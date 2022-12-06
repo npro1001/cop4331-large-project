@@ -83,8 +83,6 @@ export const getMe = createAsyncThunk('auth/getMe', async(thunkAPI) =>
 export const followUser = createAsyncThunk('auth/follow', async(targetUserId, thunkAPI) =>
 {
     try {
-        console.log(user._id)
-        console.log("USER WE WANT TO FOLLOW: "+targetUserId)
         return await authService.follow(targetUserId,user._id);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
@@ -93,6 +91,7 @@ export const followUser = createAsyncThunk('auth/follow', async(targetUserId, th
 
 })
 
+//unfollow
 export const unfollowUser = createAsyncThunk('auth/unfollow', async(targetUserId, thunkAPI) =>
 {
     try {
@@ -103,7 +102,7 @@ export const unfollowUser = createAsyncThunk('auth/unfollow', async(targetUserId
         return thunkAPI.rejectWithValue(message)
     }
 
-}) 
+})
 
 export const uploadPFP = createAsyncThunk('auth/uploadPFP', async(picture, thunkAPI) =>
 {
@@ -224,7 +223,6 @@ export const authSlice = createSlice({
         })
         .addCase(followUser.pending, (state) => {
             state.isLoading = true
-            console.log("pending")
         })
         .addCase(followUser.fulfilled, (state, action) => {
             state.isLoading = false
@@ -232,7 +230,6 @@ export const authSlice = createSlice({
             // state.user = action.payload
             console.log(action.payload)
             // return state;
-            console.log("yay")
         })
         .addCase(followUser.rejected, (state, action) => {
             state.isLoading = false

@@ -3,6 +3,9 @@
 import axios from 'axios'
 
 const API_URL = '/api/spotify/'
+let IDresult = ""
+let genreResult = ""
+let target = ""
 
 // Map for localStorage keys
 const LOCALSTORAGE_KEYS = {
@@ -15,16 +18,16 @@ const LOCALSTORAGE_KEYS = {
 // Map to retrieve localStorage values
 const LOCALSTORAGE_VALUES = {
     accessToken: window.localStorage.getItem(LOCALSTORAGE_KEYS.accessToken),
-    refreshToken:  window.localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken),
-    expireTime:  window.localStorage.getItem(LOCALSTORAGE_KEYS.expireTime),
-    timestamp:  window.localStorage.getItem(LOCALSTORAGE_KEYS.timestamp),
+    refreshToken: window.localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken),
+    expireTime: window.localStorage.getItem(LOCALSTORAGE_KEYS.expireTime),
+    timestamp: window.localStorage.getItem(LOCALSTORAGE_KEYS.timestamp),
 }
 
 // Generate random string
 const getRandomString = length => {
     let text = ''
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    for(let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length))
     }
     return text;
@@ -36,7 +39,7 @@ const stateKey = 'spotify_auth_state'
  * or URL query params
  * @returns {string} A spotify access token
  */
-const connect = async () => { 
+const connect = async () => {
 
     // console.log("ASDASDASDASD")
     // console.log(window.location.search)
@@ -51,21 +54,21 @@ const connect = async () => {
 
     const hasError = urlParams.get('error')
     console.log("hadError: " + hasError)
-    
+
     // If theres an error OR the token has expired => refresh token
-    if(hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+    if (hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
         console.log("refreshToken called")
         refreshToken()
     }
-    
+
     // If theres a valid access token, use that
-    if(LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
+    if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
         return LOCALSTORAGE_VALUES.accessToken
     }
-    
+
     // If there is a token in the URL query params, user is logging in for the first time
-    if(queryParams[LOCALSTORAGE_KEYS.accessToken]) {
-        
+    if (queryParams[LOCALSTORAGE_KEYS.accessToken]) {
+
         // Store the query params in localStorage
         for (const property in queryParams) {
             window.localStorage.setItem(property, queryParams[property])
@@ -86,12 +89,12 @@ const connect = async () => {
  * and now is greater than the expiration time of 3600 seconds (1 hour).
  * @returns {boolean} Whether or not the access token in localStorage has expired
  */
- const hasTokenExpired = () => {
+const hasTokenExpired = () => {
     console.log('inside hasTokenExpired');
     const { accessToken, timestamp, expireTime } = LOCALSTORAGE_VALUES
 
     if (!accessToken || !timestamp) {
-      return false
+        return false
     }
     const millisecondsElapsed = Date.now() - Number(timestamp)
     return (millisecondsElapsed / 1000) > Number(expireTime)
@@ -102,33 +105,33 @@ const connect = async () => {
  * in our Node app, then update values in localStorage with data from response.
  * @returns {void}
  */
- const refreshToken = async () => {
+const refreshToken = async () => {
     try {
 
-      // Logout if there's no refresh token stored or we've managed to get into a reload infinite loop
-      if (!LOCALSTORAGE_VALUES.refreshToken ||
-        LOCALSTORAGE_VALUES.refreshToken === 'undefined' ||
-        (Date.now() - Number(LOCALSTORAGE_VALUES.timestamp) / 1000) < 1000
-      ) {
+        // Logout if there's no refresh token stored or we've managed to get into a reload infinite loop
+        if (!LOCALSTORAGE_VALUES.refreshToken ||
+            LOCALSTORAGE_VALUES.refreshToken === 'undefined' ||
+            (Date.now() - Number(LOCALSTORAGE_VALUES.timestamp) / 1000) < 1000
+        ) {
 
-        console.error('No refresh token available')
-        logout()
-      }
-  
-      // Use `/refresh_token` endpoint from our Node app
-      const { data } = await axios.get(`/api/spotify/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
-  
-      // Update localStorage values
-      window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token)
-      window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now())
-  
-      // Reload the page for localStorage updates to be reflected
-      window.location.reload()
+            console.error('No refresh token available')
+            logout()
+        }
 
-      console.log("TOKEN WAS REFRESHED")
-  
+        // Use `/refresh_token` endpoint from our Node app
+        const { data } = await axios.get(`/api/spotify/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
+
+        // Update localStorage values
+        window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token)
+        window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now())
+
+        // Reload the page for localStorage updates to be reflected
+        window.location.reload()
+
+        console.log("TOKEN WAS REFRESHED")
+
     } catch (e) {
-      console.error(e)
+        console.error(e)
     }
 }
 
@@ -159,25 +162,29 @@ export const accessToken = connect()
 export const getTopArtist = async () => {
 
     //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
-    try{
-        console.log("getTopArtist was called")
-        console.log(localStorage.getItem(LOCALSTORAGE_KEYS.accessToken));
+    try {
         const response = await axios({
             method: 'get',
-            url: `https://api.spotify.com/v1/me/top/artists?limit=1`,
+            url: `https://api.spotify.com/v1/me/top/artists?limit=2`,
             headers: {
-                'Content-Type':'application/json',
-                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
             }
         })
-        // console.log(response);
-        // console.log(response.items[0]);
-        if(response) return response;
+
+        target = response.data.items[0].id
+        IDresult = target.concat(",", response.data.items[1].id)
+
+        target = response.data.items[0].genres.toString()
+        genreResult = target.concat(",", response.data.items[1].genres.toString())
+
+        if (response) return response;
     } catch (error) {
         console.error(error)
         return false
     }
 }
+
 
 // @desc    Get user's top artist
 // @route   GET /api/spotify/top_genre
@@ -185,20 +192,20 @@ export const getTopArtist = async () => {
 export const getTopGenre = async () => {
 
     //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
-    try{
+    try {
         console.log("getTopGenre was called")
         console.log(localStorage.getItem(LOCALSTORAGE_KEYS.accessToken));
         const response = await axios({
             method: 'get',
-            url: `https://api.spotify.com/v1/me/top/genre?limit=1`,
+            url: `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
             headers: {
-                'Content-Type':'application/json',
-                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
             }
         })
         console.log(response);
         console.log(response.items[0]);
-        if(response) return response;
+        if (response) return response;
     } catch (error) {
         console.error(error)
         return false
@@ -209,17 +216,17 @@ export const getTopGenre = async () => {
 // @route   GET /api/spotify/recommendSongs
 // @access  Private
 export const recommendSongs = async (token, user) => {
+
+    console.log("doing request")
     const response = await axios({
         method: 'get',
-        url: `${API_URL}/user/${user._id}/recommendations`,//might be wrong
-        //url: `https://api.spotify.com/v1/recommendations`,//might be wrong
+        url: `https://api.spotify.com/v1/recommendations?seed_artist=${IDresult}&seed_genres=${genreResult}`,
         headers: {
             'Accept': "application/json",
             'Content-Type': "application/json",
             'Authorization': `Bearer ${LOCALSTORAGE_VALUES.accessToken}`
         }
     });
-    console.log(response);
     return response;
 };
 
@@ -228,20 +235,20 @@ export const recommendSongs = async (token, user) => {
 // @access  Private
 // API documentation: https://developer.spotify.com/documentation/web-api/reference/#/operations/search
 export const searchTracks = async (param) => {
-    try{
+    try {
 
         const token = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken);
         const response = await axios({
             method: 'get',
             url: `https://api.spotify.com/v1/search?q=${param}&type=track&include_external=audio&limit=7`,
             headers: {
-                'Content-Type':'application/json',
-                'Authorization':`Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
             }
         })
         // console.log(response);
         // console.log(response.items);
-        if(response) return response;
+        if (response) return response;
     } catch (error) {
         console.error(error)
         return false
@@ -258,6 +265,6 @@ const spotifyService = {
     getTopGenre,
     recommendSongs,
     searchTracks,
-} 
+}
 
 export default spotifyService

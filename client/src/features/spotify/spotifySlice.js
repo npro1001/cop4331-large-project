@@ -43,6 +43,10 @@ export const getTopArtist = createAsyncThunk('spotify/getTopArtist', async() => 
     return await spotifyService.getTopArtist();
 })
 
+// Get user's recommened songs
+export const getRecommended = createAsyncThunk('spotify/recommendSongs', async() => {
+    return await spotifyService.recommendSongs();
+})
 //get a user's top genre
 export const getTopGenre = createAsyncThunk('spotify/getTopGenre', async() => {
     return await spotifyService.getTopGenre();
@@ -150,8 +154,6 @@ export const spotifySlice = createSlice({
         })
         .addCase(getTopArtist.fulfilled, (state, action) => {
             state.isLoading = false;
-            console.log("Action Payload:  " + action.payload.data.items[0])
-            // state.topArtist = action.payload;
         })
         .addCase(getTopArtist.rejected, (state) => {
             state.isLoading = false;
@@ -174,21 +176,19 @@ export const spotifySlice = createSlice({
             // console.log("Action Payload:  " + action.payload)
             // state.message = action.payload.statusText;
         })
-        // Get recommended songs
-        // .addCase(recommendSongs.pending, (state) => {
-        //     state.isLoading = true
-        // })
-        // .addCase(recommendSongs.fulfilled, (state, action) => {
-        //     state.isLoading = false;
-        //     console.log("Action Payload:  " + action.payload.data.items[0])
-        //     // state.topArtist = action.payload;
-        // })
-        // .addCase(recommendSongs.rejected, (state) => {
-        //     state.isLoading = false;
-        //     state.isError = true; //?
-        //     // console.log("Action Payload:  " + action.payload)
-        //     // state.message = action.payload.statusText;
-        // })
+        //Get recommended songs
+        .addCase(getRecommended.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(getRecommended.fulfilled, (state, action) => {
+            state.isLoading = false;
+            // state.topArtist = action.payload;
+        })
+        .addCase(getRecommended.rejected, (state,action) => {
+            state.isLoading = false;
+            state.isError = true; //?
+            state.message = action.payload;
+        })
 
         // // Search tracks
         // .addCase(searchTracks.pending, (state) => {

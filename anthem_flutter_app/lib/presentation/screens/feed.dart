@@ -46,7 +46,7 @@ class Feed extends StatelessWidget {
           Container(
             width: double.infinity,
             height: 100,
-            color: Colors.red,
+            color: Colors.grey,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
@@ -54,7 +54,7 @@ class Feed extends StatelessWidget {
               width: double.infinity,
               height: 560.0,
               decoration: BoxDecoration(
-                color: Colors.purple,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(25.0),
               ),
               child: Column(
@@ -88,7 +88,17 @@ class Feed extends StatelessWidget {
                               )),
                             ),
                           ),
-                        )
+                          title: Text(
+                            "KINGSLAYER69",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text("At Your Mom's House"),
+                          trailing: IconButton(
+                            icon: Icon(Icons.more_horiz),
+                            color: Colors.black,
+                            onPressed: () => print("More Options"),
+                          ),
+                        ),
                       ],
                     ),
                   ),

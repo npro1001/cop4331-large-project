@@ -99,6 +99,46 @@ class Feed extends StatelessWidget {
                             onPressed: () => print("More Options"),
                           ),
                         ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          width: double.infinity,
+                          height: 400,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black45,
+                                offset: Offset(0, 5),
+                                blurRadius: 8.0,
+                              ),
+                            ],
+                            image: DecorationImage(
+                              image: AssetImage("lib/inevitable_shitpost.png"),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                IconButton(
+                                  icon: Icon(Icons.favorite_border),
+                                  iconSize: 30.0,
+                                  onPressed: () => print("Like Post"),
+                                ),
+                                Text(
+                                  '69,696,969',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),

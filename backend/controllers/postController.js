@@ -89,7 +89,7 @@ const createPost = asyncHandler(async (req, res) => {
 });
 
 // @desc    Create a new post
-// @route   DELETE /api/post/delete
+// @route   POST /api/post/delete
 // @access  Public
 const deletePost = asyncHandler(async (req, res) => {
 

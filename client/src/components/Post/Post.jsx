@@ -85,10 +85,6 @@ const Post = ({ data }) => {
             </div>
 
             <span style={{ color: "var(--gray)", fontSize: '13px' }}>{data.likes.length} likes</span>
-
-            {/* <ImageModal modalOpened={modalOpened}
-                    setModalOpened={setModalOpened} /> */}
-
         </div>
     )
 }

@@ -56,7 +56,8 @@ const InfoCard = () => {
         if (isConnected) {
             dispatch(getTopArtist())
                 .then(response => {
-                    setTopGenres(response.payload.data.items[0].genres)
+                    let genres = [response.payload.data.items[0].genres+" ", response.payload.data.items[1].genres+""]
+                    setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
 
@@ -66,7 +67,7 @@ const InfoCard = () => {
    
         fetchProfileUser()
 
-    }, [isConnected], [activeUser], [anthem],[topGenres], [topArtist]); //! Important
+    }, [isConnected], [activeUser], [anthem],[topGenres], [topArtist],[user]); //! Important
 
 
     const onLogout = () => {
@@ -118,6 +119,7 @@ const InfoCard = () => {
                                     return (
                                         <div key={index}>
                                             <><span>{genres}</span></>
+                                            
                                         </div>
                                     )
 

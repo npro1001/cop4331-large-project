@@ -39,13 +39,13 @@ const Post = ({ data }) => {
         }
 
 
-        if (user.profilePicture) {
-          
-            if(user.profilePicture.data)
+        if (data.profileImage) {
+
+            if(data.profileImage.data)
             {
-                var base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(
-                    function (data, byte) {
-                        return data + String.fromCharCode(byte);
+                var base64String = btoa(new Uint8Array(data.profileImage.data.data).reduce(
+                    function (imgData, byte) {
+                        return imgData + String.fromCharCode(byte);
                     },
                     ''
                 ));
@@ -63,10 +63,6 @@ const Post = ({ data }) => {
         else {
             setIsPFP(false)
         }
-
-
-        //until post has a picture picture key
-        setIsPFP(false)
 
 
         if (data.song) {

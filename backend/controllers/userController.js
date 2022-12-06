@@ -14,6 +14,7 @@ const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink);
 var path = require('path');
 const dotenv = require('dotenv').config();
+const sharp = require('sharp');
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -179,7 +180,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
 
 // @desc    Upload a Profile Picture
-// @route   POST /api/user/uploadProfilePic
+// @route   POST /api/users/uploadProfilePic
 // @access  Public
 const uploadProfilePic = asyncHandler(async (req, res) => {
   if (!req.file)
@@ -191,7 +192,11 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
   const {id} = req.body
   var user = await User.findById(id)
   var imgPath = __dirname + '/../middleware/temp/';
-  var img = fs.readFileSync(path.join(imgPath + req.file.filename));
+  await sharp(imgPath + req.file.filename).resize(150, 150)
+            .rotate()
+            .png({ quality: 100 }).toFile(imgPath + req.file.filename + '-thumb');
+        
+  var img = fs.readFileSync(path.join(imgPath + req.file.filename + '-thumb'));
 
   if (!user || !img)
   {
@@ -214,9 +219,10 @@ const uploadProfilePic = asyncHandler(async (req, res) => {
         profilePicture: user.profilePicture,
       })
       await unlinkAsync(imgPath + req.file.filename);
+      await unlinkAsync(imgPath + req.file.filename + '-thumb');
   } else {
-      res.status(400)
-      throw new Error('Error uploading profile picture')
+      res.status(400);
+      throw new Error('Error uploading profile picture');
   }
 });
 
@@ -521,6 +527,7 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
             postData['caption'] = post.caption;
             postData['likes'] = post.likes.length;
             postData['comments'] = '';
+            if (friend["profilePicture"]) {postData["profileImage"] = friend.profilePicture;}
             if (post.song) {postData['song'] = post.song;}
             if (post.image) {postData['image'] = post.image;}
             if (post.url) {postData['url'] = post.url;}
@@ -558,6 +565,7 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
             postData['caption'] = post.caption;
             postData['likes'] = post.likes.length;
             postData['comments'] = '';
+            if (user["profilePicture"]) {postData["profileImage"] = user.profilePicture;}
             if (post.song) {postData['song'] = post.song;}
             if (post.image) {postData['image'] = post.image;}
             if (post.url) {postData['url'] = post.url;}

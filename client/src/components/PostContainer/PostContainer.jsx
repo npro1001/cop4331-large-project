@@ -25,7 +25,6 @@ const Posts = () => {
     const dispatch = useDispatch()
     var [displayPosts, setDisplayPosts] = useState()
     const [isLoading, setIsLoading] = useState(true)
-    var posts = []
 
     async function fetchData() {
         if (user.following.length != 0) {
@@ -35,7 +34,6 @@ const Posts = () => {
                     setIsLoading(false)
                 })
         }
-
     }
 
     useEffect(() => {
@@ -45,10 +43,8 @@ const Posts = () => {
     }, [], [displayPosts]); //! Important
 
     if (!isLoading) {
-
-
         //if there are no posts to display
-        if (displayPosts.length == 0) {
+        if (displayPosts.length == 0 || displayPosts == null) {
             return (
                 <><EmptyFeed> No posts to display...</EmptyFeed><AddOn>Try posting something!</AddOn></>
             )

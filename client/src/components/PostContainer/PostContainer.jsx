@@ -28,20 +28,17 @@ const Posts = () => {
     var [displayPosts, setDisplayPosts] = useState()
     var posts = []
 
-    useEffect( () => {
+    useEffect(async () => {
         if (user.following.length != 0)
         {
-            const fetchData = async() => {
-                await dispatch(getPosts(user._id))
+            await dispatch(getPosts(user._id))
                 .then(response => {
-                    console.log(response.payload)   
-                    posts = response.payload
-                })
-            }
-            fetchData()      
+                console.log(response.payload)   
+                posts = response.payload
+            })    
         }
         console.log(posts)
-    }, [displayPosts], []); //! Important
+    }, []); //! Important
 
     //if there are no posts to display
     if (PostData.length < 1) {

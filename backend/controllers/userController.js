@@ -510,6 +510,11 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
             postData['caption'] = post.caption;
             postData['likes'] = post.likes.length;
             postData['comments'] = '';
+            if (post.song) {postData['song'] = post.song;}
+            if (post.image) {postData['image'] = post.image;}
+            if (post.url) {postData['url'] = post.url;}
+            if (post.artist) {postData['artist'] = post.artist;}
+            if (post.playlist) {postData['palylist'] = post.playlist;}
 
             if(post.likes.includes(id))
             {
@@ -543,6 +548,11 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
             postData['caption'] = post.caption;
             postData['likes'] = post.likes.length;
             postData['comments'] = '';
+            if (post.song) {postData['song'] = post.song;}
+            if (post.image) {postData['image'] = post.image;}
+            if (post.url) {postData['url'] = post.url;}
+            if (post.artist) {postData['artist'] = post.artist;}
+            if (post.playlist) {postData['palylist'] = post.playlist;}
 
             if(post.likes.includes(id))
             {

@@ -33,11 +33,19 @@ const PostShare = () => {
     const checkPFP = () => {
 
         if (user.profilePicture) {
-            const base64String = btoa(new Uint8Array(user.profilePicture.data).reduce(function (data, byte) {
-                return data + String.fromCharCode(byte);
-            }, '')); 
-            setProfileImage(base64String);
-            setIsPFP(true);
+
+            if(user.profilePicture.data)
+            {
+                const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
+                    return data + String.fromCharCode(byte);
+                }, ''));
+                setProfileImage(base64String);
+                setIsPFP(true);
+            }
+           
+          else{
+            setIsPFP(false);
+          }
         }
         else {
             setIsPFP(false)

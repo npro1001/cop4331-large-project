@@ -67,16 +67,15 @@ const InfoCard = ({location}) => {
     useEffect(() => {
 
         if (isConnected) {
-            // dispatch(getTopArtist())
-            //     .then(response => {
-            //         console.log(response) // payload is returning false????
-            //         let genres = [response.payload.data.items[0].genres[1]+" "]
-            //         setTopGenres(genres)
-            //         setTopArtist(response.payload.data.items[0]);
-            //         setSpotifyLoading(false);
-            //         // console.log(user.anthem.title)
-            //     })
-            //     .then(localStorage.setItem('user', JSON.stringify(user)))
+            dispatch(getTopArtist())
+                .then(response => {
+                    let genres = [response.payload.data.items[0].genres[1]+" "]
+                    setTopGenres(genres)
+                    setTopArtist(response.payload.data.items[0]);
+                    setSpotifyLoading(false);
+                    // console.log(user.anthem.title)
+                })
+                // .then(localStorage.setItem('user', JSON.stringify(user)))
             }
         fetchProfileUser()
 

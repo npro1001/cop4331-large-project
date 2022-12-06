@@ -15,6 +15,7 @@ const unlinkAsync = promisify(fs.unlink);
 var path = require('path');
 const dotenv = require('dotenv').config();
 const sharp = require('sharp');
+const e = require('express')
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -527,6 +528,7 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
             postData['caption'] = post.caption;
             postData['likes'] = post.likes.length;
             postData['comments'] = '';
+            postData['createdAt'] = post.createdAt;
             if (friend["profilePicture"]) {postData["profileImage"] = friend.profilePicture;}
             if (post.song) {postData['song'] = post.song;}
             if (post.image) {postData['image'] = post.image;}
@@ -565,6 +567,7 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
             postData['caption'] = post.caption;
             postData['likes'] = post.likes.length;
             postData['comments'] = '';
+            postData['createdAt'] = post.createdAt;
             if (user["profilePicture"]) {postData["profileImage"] = user.profilePicture;}
             if (post.song) {postData['song'] = post.song;}
             if (post.image) {postData['image'] = post.image;}
@@ -584,8 +587,30 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
           }
     }
 
+    for (var i = 0; i < followingPosts.length; i++)
+    {
+      console.log(followingPosts[i].createdAt)
+    }
+    function compareDates(a, b){
+      if (a.createdAt > b.createdAt)
+      { 
+        return -1;
+      }
+      else if (a.createdAt < b.createdAt) 
+      {
+        return 1;
+      }
+      else 
+      {
+        return 0; 
+      }
+    }
+
+    followingPosts.sort(compareDates);
+
     if (followingPosts.length == 0)
     {
+
       res.status(201).json(followingPosts)
       // res.status(400);
       // throw new Error('User has no following posts');

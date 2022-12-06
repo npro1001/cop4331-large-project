@@ -72,7 +72,7 @@ class Feed extends StatelessWidget {
                         ),
                       ],
                       image: DecorationImage(
-                        image: AssetImage("lib/inevitable_shitpost.png"),
+                        image: AssetImage("assets/lib/inevitable_shitpost.png"),
                         fit: BoxFit.fitWidth,
                       ),
                     ),

@@ -118,9 +118,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
     const handleClick = (e, song) => {
         console.log("clicked " + song.name)
-        // TODO Only choose song on a double click
-        // if (e.detail === 2) {
-        // console.log('double clicked!')
         setTempAnthemName(song.name)
         setTempAnthemArtist1(song.artists[0].name)
         setTempAnthemImage(song.album.images[0].url)
@@ -261,7 +258,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                 navigate(
                     `/profile/${updateUserRes.payload.username}`)
 
-                // window.location.reload();
+                window.location.reload();
 
 
             })

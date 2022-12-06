@@ -63,6 +63,10 @@ export function LoginForm(props) {
         })
     }
 
+    const forgotPass = () => {
+        navigate('/password_request', {replace: true})
+    }
+
 
     //when user clicks "Signup here", the form will switch
     const {switchToSignup } = useContext(AccountContext);
@@ -76,7 +80,7 @@ export function LoginForm(props) {
             <Marginer direction="vertical" margin={25}/>
             <Input type="password" id='password' name='password' value={password} placeholder="Password" onChange={onChange} required/>
             <Marginer direction="vertical" margin={10}/>
-            <MutedLink href="#">Forgot your password?</MutedLink> 
+            <MutedLink onClick={forgotPass}>Forgot your password?</MutedLink> 
             <Marginer direction="vertical" margin={25}/>
             <SubmitButton type="submit"> Login</SubmitButton>
             <Marginer direction="vertical" margin={15}/>

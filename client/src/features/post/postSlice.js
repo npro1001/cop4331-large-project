@@ -34,14 +34,22 @@ export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI)
     }
 })
 
+
+export const likePost = createAsyncThunk('post/likePost', async (postID, userID, thunkAPI) => {
+    try {
+        return await postService.likePost(postID,userID)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 const postSlice = createSlice({
     name: "post",
     initialState,
 
     reducers: {
-        // imageUpload: (state) => {
-        //     state.post = "image";
-        // }
+
     },
 
     extraReducers: (builder) => {
@@ -86,6 +94,30 @@ const postSlice = createSlice({
                 }
             })
             .addCase(getPosts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true; //?
+                state.message = action.payload;
+            })
+            
+            //liking a post
+             .addCase(likePost.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(likePost.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isLoading = false;
+                if (action.payload != null) {
+                    state.post = action.payload;
+                    return state
+                }
+                else {
+                    state.post = null;
+                    state.isError = true
+                    state.message = "Error uploading post"
+                }
+            })
+            .addCase(likePost.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true; //?
                 state.message = action.payload;

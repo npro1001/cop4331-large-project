@@ -20,9 +20,18 @@ const getPosts = async(userId) => {
     return null;
 }
 
+const likePost = async (postID,userID) => {
+    const response = await axios.put(API_URL+"like", postID,userID)
+    if(response.data) {
+        return response.data;
+    }
+     return null
+}
+
 const postService = {
     createPost,
-    getPosts
+    getPosts,
+    likePost
 } 
 
 export default postService

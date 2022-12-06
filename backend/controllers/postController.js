@@ -248,7 +248,7 @@ const commentPost = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete a comment on a post
-// @route   DELETE /api/post/deleteComment
+// @route   PUT /api/post/deleteComment
 // @access  Public
 const deleteComment = asyncHandler(async (req, res) => {
     const {commentId} = req.body;

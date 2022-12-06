@@ -22,9 +22,9 @@ const Container = styled.div`
 
 
 const FollowButton = styled.button`
-    width: 50%;
+    width: 40%;
     height: 100%;
-    font-size: 20px;
+    font-size: 15px;
     position: relative;
     color: white;
     border: none;

@@ -9,14 +9,14 @@ import {  useEffect, useState } from "react"
 const EmptyFeed = styled.h1`
     
     align-self: center;
-    font-size: 40px;
+    font-size: 20px;
     color: #391F59;
 `
 const AddOn = styled.h3`
     align-self: center;
-    font-size: 20px;
+    font-size: 15px;
     color: #391F59;
-    bottom: 50px;
+    bottom: 45px;
     position: relative;
 `
 

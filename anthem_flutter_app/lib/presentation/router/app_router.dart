@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../screens/login_page.dart';
 import '../screens/register_page.dart';
 import '../screens/feed.dart';
+import '../screens/profile_page.dart';
 
 class AppRouter {
   // final someBloc _someBloc = SomeBloc();
@@ -25,6 +26,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => HomePage());
       case '/feed':
         return MaterialPageRoute(builder: (_) => Feed());
+      case '/profile':
+        return MaterialPageRoute(builder: (_) => ProfilePage());
       default:
         return null;
     }

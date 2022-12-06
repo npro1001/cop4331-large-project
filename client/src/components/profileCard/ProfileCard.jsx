@@ -7,7 +7,7 @@ import './ProfileCard.css'
 import defaultCover from '../../img/default-cover-4.jpg'
 import defaultPFP from '../../img/default-profile.png'
 import styled from "styled-components";
-import { followUser } from "../../features/auth/authSlice";
+import { followUser, unFollowUser} from "../../features/auth/authSlice";
 
 const Container = styled.div`
     position: relative;
@@ -186,19 +186,16 @@ const ProfileCard = ({ location }) => {
     const DoFollow = async () => {
         dispatch(followUser(activeUser._id)).then((response) => {
             console.log(response);
-        });
+        }) 
+
         window.location.reload();
     }
 
     const DoUnFollow = async () => {
-        await fetch(`/api/users/${activeUser._id}/unfollow`, {
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-                "Content-Length": "100"
-            },
-            body: JSON.stringify({ "currentUserId": user._id })
-        })
+
+        dispatch(unFollowUser(activeUser._id)).then((response) => {
+            console.log(response);
+        }) 
 
         window.location.reload();
     }

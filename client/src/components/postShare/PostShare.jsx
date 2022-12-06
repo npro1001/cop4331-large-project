@@ -81,7 +81,7 @@ const PostShare = () => {
             console.log(response.payload)
         });
 
-        setIsPosted(false);
+       window.location.reload();
     };
 
 

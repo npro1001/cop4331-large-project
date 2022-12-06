@@ -5,19 +5,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../business_logic/user_auth/user_auth_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
+  // final UserAuthBloc _userAuthBloc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF2F2F7),
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: _profilePage(),
     );
   }
 
-  PreferredSizeWidget _appBar() {
+  PreferredSizeWidget _appBar(context) {
     return AppBar(
       title: Text('Profile'),
-      actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
+      actions: [
+        IconButton(
+            onPressed: () {
+              // userAuthBloc.add(LoggedOutEvent()); // add = dispatch
+              Navigator.of(context).pushNamed('/login');
+            },
+            icon: Icon(Icons.logout))
+      ],
     );
   }
 
@@ -82,6 +90,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _saveProfileChangesButton() {
+    //update name and username
     return ElevatedButton(
       onPressed: () {},
       child: Text('Save Changes'),

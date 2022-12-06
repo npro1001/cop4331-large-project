@@ -129,20 +129,25 @@ class Feed extends StatelessWidget {
                     fontSize: 32.0,
                   ),
                 ),
-                Row(children: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.queue_music_sharp),
-                      iconSize: 30.0,
-                      onPressed: () => print("AnthemTV")),
-                  SizedBox(width: 16.0),
-                  Container(
-                    width: 35.0,
-                    child: IconButton(
-                        icon: Icon(Icons.send),
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.queue_music_sharp),
                         iconSize: 30.0,
-                        onPressed: () => print("DMs")),
-                  )
-                ])
+                        onPressed: () => print("AnthemTV")),
+                    SizedBox(width: 16.0),
+                    Container(
+                      width: 35.0,
+                      child: IconButton(
+                        icon: Icon(Icons.portrait_sharp),
+                        iconSize: 30.0,
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/profile');
+                        },
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

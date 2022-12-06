@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                           player.play();
                         },
                         child: Text(
-                          "Forgot Passw0rd",
+                          "Forgot Password",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

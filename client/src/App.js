@@ -23,7 +23,7 @@ useEffect(() =>{
   if(!isConnected && localStorage.getItem('spotify_access_token') != null) {
     dispatch(connect())
   }
-}, [isConnected, user, user.anthem])
+}, [isConnected, user])
 
  return( <>
     <AppContainer>

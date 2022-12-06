@@ -12,6 +12,7 @@
 .SongCard:hover{
     border-radius: 0rem;
     background-color: #CDBEE0;
+    cursor: pointer;
 }
 
 .SongCard>h3{

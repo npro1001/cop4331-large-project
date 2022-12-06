@@ -6,6 +6,105 @@ const API_URL = '/api/spotify/'
 let IDresult = ""
 let genreResult = ""
 let target = ""
+let allGenres = [
+    "acoustic",
+    "afrobeat",
+    "alt-rock",
+    "alternative",
+    "ambient",
+    "anime",
+    "bluegrass",
+    "blues",
+    "bossanova",
+    "breakbeat",
+    "chicago-house",
+    "chill",
+    "classical",
+    "club",
+    "country",
+    "dance",
+    "dancehall",
+    "deep-house",
+    "detroit-techno",
+    "disco",
+    "drum-and-bass",
+    "dub",
+    "dubstep",
+    "edm",
+    "electro",
+    "electronic",
+    "emo",
+    "folk",
+    "funk",
+    "garage",
+    "gospel",
+    "goth",
+    "grindcore",
+    "groove",
+    "grunge",
+    "guitar",
+    "happy",
+    "hard-rock",
+    "hardcore",
+    "hardstyle",
+    "heavy-metal",
+    "hip-hop",
+    "holidays",
+    "honky-tonk",
+    "house",
+    "idm",
+    "indie",
+    "indie-pop",
+    "industrial",
+    "j-pop",
+    "jazz",
+    "k-pop",
+    "latin",
+    "latino",
+    "metal",
+    "metal-misc",
+    "metalcore",
+    "minimal-techno",
+    "mpb",
+    "new-age",
+    "new-release",
+    "party",
+    "piano",
+    "pop",
+    "pop-film",
+    "post-dubstep",
+    "power-pop",
+    "progressive-house",
+    "psych-rock",
+    "punk",
+    "punk-rock",
+    "r-n-b",
+    "rainy-day",
+    "reggae",
+    "reggaeton",
+    "rock",
+    "rock-n-roll",
+    "rockabilly",
+    "romance",
+    "sad",
+    "salsa",
+    "samba",
+    "show-tunes",
+    "singer-songwriter",
+    "ska",
+    "sleep",
+    "songwriter",
+    "soul",
+    "soundtracks",
+    "study",
+    "summer",
+    "synth-pop",
+    "tango",
+    "techno",
+    "trip-hop",
+    "work-out",
+    "world-music"
+]
 
 // Map for localStorage keys
 const LOCALSTORAGE_KEYS = {
@@ -165,7 +264,7 @@ export const getTopArtist = async () => {
     try {
         const response = await axios({
             method: 'get',
-            url: `https://api.spotify.com/v1/me/top/artists?limit=2`,
+            url: `https://api.spotify.com/v1/me/top/artists?limit=3&time_range=long_term`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem(LOCALSTORAGE_KEYS.accessToken)}`
@@ -173,10 +272,11 @@ export const getTopArtist = async () => {
         })
 
         target = response.data.items[0].id
-        IDresult = target.concat(",", response.data.items[1].id)
+        IDresult = target.concat(",", response.data.items[2].id)
 
-        target = response.data.items[0].genres.toString()
-        genreResult = target.concat(",", response.data.items[1].genres.toString())
+        target= response.data.items[0].genres[0].toString();
+        if(allGenres.includes(target)) genreResult = target
+        // genreResult = target //.concat(",", response.data.items[1].genres[1].toString())
 
         if (response) return response;
     } catch (error) {
@@ -217,10 +317,44 @@ export const getTopGenre = async () => {
 // @access  Private
 export const recommendSongs = async (token, user) => {
 
-    console.log("doing request")
+    console.log(genreResult)
+
+    //if genre result is empty, get 5 random ones from the list above
+    if (genreResult == "") {
+
+        let choices = Array.from(Array(90), (x, i) => i)
+        var num = Math.floor(Math.random() * choices.length);
+
+        var pick = choices.splice(num, 1) // remove number from array
+        let one = pick;
+        console.log(one)
+
+        num = Math.floor(Math.random() * choices.length);
+        let two = choices.splice(num, 1)
+        console.log(two)
+
+        num = Math.floor(Math.random() * choices.length);
+        let three = choices.splice(num, 1)
+        console.log(three)
+
+        num = Math.floor(Math.random() * choices.length);
+        let four = choices.splice(num, 1)
+        console.log(four)
+
+
+        num = Math.floor(Math.random() * choices.length);
+        let five = choices.splice(num, 1)
+        console.log(five)
+
+        
+
+        genreResult += allGenres[one]+","+allGenres[two]+","+allGenres[three]+","+allGenres[four]+","+allGenres[five]
+
+        console.log(genreResult)
+    }
     const response = await axios({
         method: 'get',
-        url: `https://api.spotify.com/v1/recommendations?seed_artist=${IDresult}&seed_genres=${genreResult}`,
+        url: `https://api.spotify.com/v1/recommendations?seed_genres=${genreResult}`,
         headers: {
             'Accept': "application/json",
             'Content-Type': "application/json",

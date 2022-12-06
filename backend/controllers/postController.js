@@ -88,8 +88,8 @@ const createPost = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc    Create a new post
-// @route   DELETE /api/post/delete
+// @desc    Delete a post
+// @route   PUT /api/post/delete
 // @access  Public
 const deletePost = asyncHandler(async (req, res) => {
 
@@ -248,7 +248,7 @@ const commentPost = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete a comment on a post
-// @route   DELETE /api/post/deleteComment
+// @route   PUT /api/post/deleteComment
 // @access  Public
 const deleteComment = asyncHandler(async (req, res) => {
     const {commentId} = req.body;

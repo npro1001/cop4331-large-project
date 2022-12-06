@@ -61,11 +61,11 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     const [tempName, setTempName] = useState(null)
     const [tempUsername, setTempUsername] = useState(null)
 
-    const [tempAnthemId, setTempAnthemId] = useState("")
+    const [tempAnthemId, setTempAnthemId] = useState(null)
     const [tempAnthemName, setTempAnthemName] = useState("")
-    const [tempAnthemImage, setTempAnthemImage] = useState("")
-    const [tempAnthemArtist1, setTempAnthemArtist1] = useState("")
-    const [tempAnthemUrl, setTempAnthemUrl] = useState("")
+    const [tempAnthemImage, setTempAnthemImage] = useState(null)
+    const [tempAnthemArtist1, setTempAnthemArtist1] = useState(null)
+    const [tempAnthemUrl, setTempAnthemUrl] = useState(null)
 
     const [holdName, setHoldName] = useState(null)
     const [holdUsername, setHoldUsername] = useState(null)
@@ -76,7 +76,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
     useEffect(() => {
 
         const fetchProfileUser = async () => {
-
             setUser(userCall);
             setHoldName(data.name);
             setHoldUsername(data.username);
@@ -85,7 +84,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
         fetchProfileUser()
 
-    }, [user])
+    }, [])
 
 
     const picUpload = () => {
@@ -140,7 +139,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
 
         //user didnt change anything
-        if (tempName == null && tempUsername == null && tempAnthemName == null && profileImage == null) {
+        if (tempName == null && tempUsername == null && tempAnthemName == "" && profileImage == null) {
             creds = {
                 name: data.name,
                 username: data.username,
@@ -153,7 +152,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
 
         //user changes everything
-        else if (tempName != null && tempUsername != null && tempAnthemName != null) {
+        else if (tempName != null && tempUsername != null && tempAnthemName != "") {
 
             creds = {
                 name: tempName,
@@ -168,7 +167,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
 
         //user changes their name and anthem
-        else if (tempUsername == null && tempName != null && tempAnthemName != null) {
+        else if (tempUsername == null && tempName != null && tempAnthemName != "") {
             creds = {
                 name: tempName,
                 username: data.username,
@@ -181,7 +180,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
 
         //user changes their username and anthem
-        else if (tempName == null && tempAnthemName != null && tempUsername != null) {
+        else if (tempName == null && tempAnthemName != "" && tempUsername != null) {
             creds = {
                 name: data.name,
                 username: tempUsername,
@@ -194,7 +193,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
 
         //user changes their name and username
-        else if (tempAnthemName == null && tempUsername != null && tempName != null) {
+        else if (tempAnthemName == "" && tempUsername != null && tempName != null) {
             creds = {
                 name: tempName,
                 username: tempUsername,
@@ -207,7 +206,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
 
         //user changes only their anthem
-        else if (tempName == null && tempUsername == null && tempAnthemName != null) {
+        else if (tempName == null && tempUsername == null && tempAnthemName != "") {
             creds = {
                 name: data.name,
                 username: data.username,
@@ -220,7 +219,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         }
 
         //user changes only their name
-        else if (tempUsername == null && tempAnthemName == null && tempName != null) {
+        else if (tempUsername == null && tempAnthemName == "" && tempName != null) {
             creds = {
                 name: tempName,
                 username: data.username,
@@ -234,7 +233,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
 
         //user changes only their username
-        else if (tempName == null && tempAnthemName == null && tempUsername != null) {
+        else if (tempName == null && tempAnthemName == "" && tempUsername != null) {
             creds = {
                 name: data.name,
                 username: tempUsername,
@@ -258,7 +257,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                 navigate(
                     `/profile/${updateUserRes.payload.username}`)
 
-                window.location.reload();
+                // window.location.reload();
 
 
             })
@@ -282,16 +281,17 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                         <input type="text" className="infoInput" name="Name" placeholder={user.name} onChange={(e) => setTempName(e.target.value)} />
                         <input type="text" className="infoInput" name="Username" placeholder={user.username} onChange={(e) => setTempUsername(e.target.value)} />
                     </div>
-
+                    <br />
                     {/* IF ANTHEM EXISTS/SELECTED ... SHOW ON FORM */}
                     {user.anthem ? <div className="currentAnthem">
                         <SongCard name={user.anthem.title} artist1={user.anthem.artist1}
                             image={user.anthem.image}></SongCard>
                     </div> : <></>}
-
+                    <br />
                     {/* SHOW RESULTS LIST WHEN SEARCHING */}
                     {searching ? (<div className="searchContainer">
                         <input type="text" className="infoInput" value={searchTerm} name="Anthem" placeholder="Search for a song..." onChange={handleChange} />
+
                         <ResultsContainer style={{ display: searching ? "inline" : "none" }}>
                             {songList.map((song, index) => {
                                 return (

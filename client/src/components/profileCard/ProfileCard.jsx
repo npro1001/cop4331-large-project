@@ -141,7 +141,7 @@ const ProfileCard = ({ location }) => {
     }
     useEffect(() => {
         fetchProfileUser()
-    }, [profileImage], [cover], [activeUser], [isFollowing], [isPFP], [isCover]);
+    }, [profileImage], [cover], [activeUser], [isFollowing], [isPFP], [isCover],[user]);
 
 
 

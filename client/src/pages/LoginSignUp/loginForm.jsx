@@ -67,6 +67,8 @@ export function LoginForm(props) {
     //when user clicks "Signup here", the form will switch
     const {switchToSignup } = useContext(AccountContext);
 
+    // TODO - RESET PASSWORD
+
     return ( <BoxContainer>
         <FormContainer onSubmit={onSubmit}>
             <Marginer direction="vertical" margin={75}/>
@@ -74,7 +76,7 @@ export function LoginForm(props) {
             <Marginer direction="vertical" margin={25}/>
             <Input type="password" id='password' name='password' value={password} placeholder="Password" onChange={onChange} required/>
             <Marginer direction="vertical" margin={10}/>
-            <MutedLink href="#">Forgot your password?</MutedLink>
+            <MutedLink href="#">Forgot your password?</MutedLink> 
             <Marginer direction="vertical" margin={25}/>
             <SubmitButton type="submit"> Login</SubmitButton>
             <Marginer direction="vertical" margin={15}/>

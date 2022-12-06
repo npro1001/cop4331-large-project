@@ -29,6 +29,7 @@ const postSchema = mongoose.Schema(
         song: String,
         image: String,
         url: String,
+        artist: String,
     }, {timestamps: true});
 
 module.exports = mongoose.model('Post', postSchema);

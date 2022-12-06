@@ -21,15 +21,20 @@ const Post = ({ data }) => {
     const [isPFP, setIsPFP] = useState();
 
     useEffect(() => {
-        if (data.picture.data) {
+        if (data.img.data) {
+            console.log(data.caption+" does have a photo attatched")
+            console.log(data.img)
             setIsImage(true)
-            var base64String = btoa(new Uint8Array(data.picture.data.data).reduce(
-                function (data, byte) {
-                    return data + String.fromCharCode(byte);
-                },
-                ''
-            ));
+            const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+            
             setPicture(base64String)
+        }
+
+        else
+        {
+            console.log(data.caption+" does not have a photo attatched")
+
+            setIsImage(false)
         }
 
 
@@ -84,7 +89,7 @@ const Post = ({ data }) => {
                 <img src={Share} alt="" /> */}
             </div>
 
-            <span style={{ color: "var(--gray)", fontSize: '13px' }}>{data.likes.length} likes</span>
+            <span style={{ color: "var(--gray)", fontSize: '13px' }}>{data.likes} likes</span>
         </div>
     )
 }

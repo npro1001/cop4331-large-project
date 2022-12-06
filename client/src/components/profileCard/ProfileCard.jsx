@@ -7,7 +7,6 @@ import './ProfileCard.css'
 import defaultCover from '../../img/default-cover-4.jpg'
 import defaultPFP from '../../img/default-profile.png'
 import styled from "styled-components";
-import {reset, getMe } from '../../features/auth/authSlice'
 import { followUser } from "../../features/auth/authSlice";
 
 const Container = styled.div`
@@ -57,6 +56,7 @@ const ProfileCard = ({ location }) => {
     const [followers, setFollowers] = useState()
     const [isFollowing, setIsFollowing] = useState();
     const [profileImage, setProfileImage] = useState();
+    const [numPosts, setNumPosts] = useState();
     const [isPFP, setIsPFP] = useState();
     const [isCover, setIsCover] = useState();
     const [cover, setCover] = useState();
@@ -65,15 +65,15 @@ const ProfileCard = ({ location }) => {
 
 
     const fetchProfileUser = async () => {
-       
+
         if (location === "homePage") {
 
             setIsCover(false);
 
             setFollowing(user.following.length);
             setFollowers(user.followers.length);
-            
-         
+
+
 
             if (user.profilePicture) {
 
@@ -98,7 +98,8 @@ const ProfileCard = ({ location }) => {
                 setActiveUser(user);
                 setFollowing(user.following.length);
                 setFollowers(user.followers.length);
-            
+                setNumPosts(user.posts.length)
+
                 if (user.profilePicture) {
                     const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
                     setProfileImage(base64String);
@@ -121,14 +122,15 @@ const ProfileCard = ({ location }) => {
                 setActiveUser(profileUser);
                 setFollowing(profileUser.following.length);
                 setFollowers(profileUser.followers.length);
+                if (profileUser.posts) {
+                    setNumPosts(profileUser.posts.length)
+                }
 
-                
+
                 let length = profileUser.followers.length
-                console.log(length)
 
                 //check list to see if user is following the profile they are viewing
                 for (let i = 0; i < length; i++) {
-                    console.log(length)
 
                     if (profileUser.followers[i] == user._id) {
                         setIsFollowing(true);
@@ -144,12 +146,9 @@ const ProfileCard = ({ location }) => {
 
 
     const DoFollow = async () => {
-        
-        dispatch(followUser(activeUser._id)).then((response) =>
-        {
+        dispatch(followUser(activeUser._id)).then((response) => {
             console.log(response);
         });
-    
         window.location.reload();
     }
 
@@ -208,7 +207,7 @@ const ProfileCard = ({ location }) => {
                         <>
                             <div className="vl"></div>
                             <div className="follow">
-                                <span>{posts.PostData.filter((post) => post.id === activeUser._id).length}</span>
+                                {numPosts ? <span>{numPosts}</span> : <span>0</span>}
                                 <span>Posts</span>
                             </div>
                         </>

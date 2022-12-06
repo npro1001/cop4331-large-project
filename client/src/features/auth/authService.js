@@ -34,8 +34,15 @@ const logout = () => {
 
 // Reset user password
 const reset = async (passwordToken, password) => {
-    const response = await axios.put(API_URL + "reset", passwordToken, password)
+
+    let pass = {
+        passwordToken: passwordToken,
+        password: password
+    }
+    
+    const response = await axios.put(API_URL + "reset", pass)
     if (response.data) {
+      
         return response.data
     }
     return null;
@@ -104,6 +111,16 @@ const unfollow = async (targetUserId, user) => {
     return null;
 } 
 
+const passRequest = async (email) => {
+
+    console.log(email)
+    const response = await axios.post(API_URL + "resetEmail", {email: email})
+    if (response.data) {
+        return response.data
+    }
+    return null;
+} 
+
 const authService = {
     register,
     login,
@@ -114,6 +131,8 @@ const authService = {
     uploadPFP,
     follow,
     unfollow,
+    passRequest
+
 }
 
 export default authService

@@ -14,7 +14,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _appBar() {
+  PreferredSizeWidget _appBar() {
     return AppBar(
       title: Text('Profile'),
       actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],

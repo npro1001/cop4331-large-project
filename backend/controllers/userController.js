@@ -13,6 +13,7 @@ const fs = require('fs');
 const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink);
 var path = require('path');
+const dotenv = require('dotenv').config();
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -334,7 +335,7 @@ const verifyUser = asyncHandler(async (req, res) => {
     await user.save()
 
     // return res.status(200).json({mesagge: "Account verified"})
-    return res.status(200).redirect("http://localhost:3000/")
+    return res.status(200).redirect(process.env.FRONTEND_BASE_URL)
 
   } catch (error) {
     return res.status(500).send(err)

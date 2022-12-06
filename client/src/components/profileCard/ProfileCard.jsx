@@ -77,7 +77,9 @@ const ProfileCard = ({ location }) => {
 
             if (user.profilePicture) {
 
-                const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+                const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
+                    return data + String.fromCharCode(byte);
+                }, '')); 
 
                 setProfileImage(base64String);
 
@@ -101,7 +103,9 @@ const ProfileCard = ({ location }) => {
                 setNumPosts(user.posts.length)
 
                 if (user.profilePicture) {
-                    const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+                    const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
+                        return data + String.fromCharCode(byte);
+                    }, '')); 
                     setProfileImage(base64String);
                     setIsPFP(true);
                 }

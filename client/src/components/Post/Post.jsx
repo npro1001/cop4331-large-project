@@ -25,7 +25,15 @@ const Post = ({ data }) => {
             console.log(data.caption+" does have a photo attatched")
             console.log(data.img)
             setIsImage(true)
-            const base64String = btoa(String.fromCharCode(...new Uint8Array(user.profilePicture.data.data)));
+            const base64String  = btoa(new Uint8Array(data.img.data.data).reduce(function (data, byte) {
+                return data + String.fromCharCode(byte);
+            }, '')); 
+
+            // console.log("DATA IMG DATA DATA " + data.img.data.data)
+            // console.log("DATA IMG DATA " + data.img.data)
+            // console.log("PROFILE PIC" + user.profileImage)
+            // console.log("PROFILE IMG DATA" + user.profileImage.data)
+            // console.log("PROFILE IMG DATA DATA" + user.profileImage.data.data)
             
             setPicture(base64String)
         }
@@ -40,7 +48,7 @@ const Post = ({ data }) => {
 
         if (user.profilePicture) {
 
-            var base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(
+            var base64String = btoa(new Uint8Array(user.profilePicture.data).reduce(
                 function (data, byte) {
                     return data + String.fromCharCode(byte);
                 },

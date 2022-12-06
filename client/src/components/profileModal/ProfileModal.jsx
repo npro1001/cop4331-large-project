@@ -253,7 +253,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                 }
 
                 setUser(updateUserRes.payload)
-                // setModalOpened(false);
+                setModalOpened(false);
                 navigate(
                     `/profile/${updateUserRes.payload.username}`)
 

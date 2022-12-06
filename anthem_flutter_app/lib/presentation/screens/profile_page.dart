@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
   Widget _appBar() {
     return AppBar(
       title: Text('Profile'),
-      actions: [IconButton(onPressed: onPressed, icon: Icon(Icons.logout))],
+      actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
     );
   }
 
@@ -49,7 +49,7 @@ class ProfilePage extends StatelessWidget {
 
   Widget _changeAvatarButton() {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: () {},
       child: Text('Change Avatar'),
     );
   }
@@ -70,7 +70,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _descriptionTile(){
+  Widget _descriptionTile() {
     return ListTile(
       tileColor: Colors.white,
       leading: Icon(Icons.edit),
@@ -78,13 +78,13 @@ class ProfilePage extends StatelessWidget {
         decoration: InputDecoration.collapsed(hintText: 'Enter a Description'),
         maxLines: null,
       ),
-    )
+    );
   }
 
-  Widget _saveProfileChangesButton(){
+  Widget _saveProfileChangesButton() {
     return ElevatedButton(
-      onPressed: () {}, 
+      onPressed: () {},
       child: Text('Save Changes'),
-      );
+    );
   }
 }

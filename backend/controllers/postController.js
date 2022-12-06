@@ -64,19 +64,19 @@ const createPost = asyncHandler(async (req, res) => {
         
         res.status(201).json({
             _id: postObj.id,
-            userID: postObj.author,
-            name: postObj.name,
-            username: postObj.username,
-            caption: postObj.caption,
-            picture: postObj.picture,
-            comments: postObj.comments,
-            likes: postObj.likes,
-            createdAt: postObj.createdAt,
-            song: postObj.song,
-            artist: postObj.artist,
-            url: postObj.url,
-            image: postObj.image,
-            playlist: postObj.playlist,
+            // userID: postObj.author,
+            // name: postObj.name,
+            // username: postObj.username,
+            // caption: postObj.caption ? postObj.caption : null,
+            // picture: postObj.picture ? postObj.picture : null,
+            // comments: postObj.comments ? postObj.comments : null,
+            // likes: postObj.likes ? postObj.likes : null,
+            // createdAt: postObj.createdAt,
+            // song: postObj.song,
+            // artist: postObj.artist,
+            // url: postObj.url,
+            // image: postObj.image,
+            // playlist: postObj.playlist,
         })
         await unlinkAsync(imgPath + req.file.filename);
         await unlinkAsync(imgPath + req.file.filename + '-thumb');

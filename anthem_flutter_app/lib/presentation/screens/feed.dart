@@ -65,9 +65,8 @@ class Feed extends StatelessWidget {
                       children: <Widget>[
                         ListTile(
                           leading: Container(
-                            margin: EdgeInsets.all(10),
-                            width: 60,
-                            height: 60,
+                            width: 50,
+                            height: 50,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               boxShadow: [
@@ -81,10 +80,11 @@ class Feed extends StatelessWidget {
                             child: CircleAvatar(
                               child: ClipOval(
                                   child: Image(
-                                height: 60,
-                                width: 60,
+                                height: 50,
+                                width: 50,
                                 image: AssetImage(
                                     "assets/lib/dogpfp.png"), //USER PFP
+                                fit: BoxFit.cover,
                               )),
                             ),
                           ),

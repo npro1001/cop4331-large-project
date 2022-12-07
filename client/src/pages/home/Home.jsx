@@ -52,17 +52,21 @@ const Home = () => {
     return ( <div>
         {isConnected ? (
             <div className="Home">
-                <div></div> 
                 <div className='Top'>
                     <div className="navIcons">
                         <Link to='/home'>
-                            {/* <span onClick={() => {navigate(`/home`); window.location.reload();}}> */}
-                                <img src={Logo} alt="Logo" />
-                            {/* </span> */}
+                            <UilHome className="home" ></UilHome> 
                         </Link>
+                        <div className="inactive">
+                            <UilSetting className="setting" />
+                        </div>
+                        <img src={Logo} alt="Logo" />
+                        <div className="inactive">
+                            <UilBell className="bell"></UilBell>
+                            <UilMessage className="message"></UilMessage>
+                        </div>
                     </div> 
                 </div>
-                <div></div>
                 <div className='Bottom'>
                     <ProfileSide/>
                     <PostSide/>

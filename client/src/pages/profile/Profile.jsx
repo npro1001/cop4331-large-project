@@ -26,10 +26,18 @@ const Profile = () => {
         <div className="Profile">
             <div className="Top">
                 <div className="navIcons">
-                        <Link to='../Home'>
-                        <img src={Logo} alt="Logo" />
-                        </Link>
-                    </div> 
+                    <Link to='/home'>
+                        <UilHome className="home" ></UilHome> 
+                    </Link>
+                    <div className="inactive">
+                        <UilSetting className="setting" />
+                    </div>
+                    <img src={Logo} alt="Logo" />
+                    <div className="inactive">
+                        <UilBell className="bell"></UilBell>
+                        <UilMessage className="message"></UilMessage>
+                    </div>
+                </div> 
             </div>
             <div className="Bottom">
                 <ProfileLeft/>

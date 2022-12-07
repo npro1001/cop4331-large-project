@@ -35,6 +35,7 @@
 .postOptions {
     display: flex;
     justify-content: space-around;
+    margin-right: 3.2rem;
 }
 
 .option {

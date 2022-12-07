@@ -28,7 +28,7 @@ const Posts = () => {
 
     async function fetchData() {
         if (user.following.length >= 0) {
-            await dispatch(getPosts(user._id))
+            await dispatch(getPosts(user))
                 .then(response => {
                     setDisplayPosts(response.payload)
                     setIsLoading(false)

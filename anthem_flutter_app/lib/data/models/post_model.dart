@@ -44,13 +44,13 @@ class Post {
     //   }
     // }
 
-    // print(picValid);
+    // print(json[0]['name']);
 
     return Post(
-      id: json['_id'],
+      id: json[0]['_id'],
       author: json['name'],
       caption: json['caption'],
-      picture: json['img'],
+      picture: json['caption'],
     );
   }
 

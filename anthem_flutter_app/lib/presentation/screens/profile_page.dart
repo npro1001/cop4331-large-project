@@ -40,12 +40,12 @@ class ProfilePage extends StatelessWidget {
           children: [
             SizedBox(height: 30),
             _avatar(userAuthBloc, context),
-            _changeAvatarButton(userAuthBloc, context),
+            // _changeAvatarButton(userAuthBloc, context),
             SizedBox(height: 30),
             _usernameTile(userAuthBloc, context),
             _emailTile(userAuthBloc, context),
             _descriptionTile(userAuthBloc, context),
-            _saveProfileChangesButton(userAuthBloc, context),
+            // _saveProfileChangesButton(userAuthBloc, context),
           ],
         ),
       ),
@@ -125,9 +125,16 @@ class ProfilePage extends StatelessWidget {
     return ListTile(
       tileColor: Colors.white,
       leading: Icon(Icons.library_music),
-      title: TextFormField(
-        decoration: InputDecoration.collapsed(hintText: 'Enter a Description'),
-        maxLines: null,
+      title: BlocBuilder<UserAuthBloc, UserAuthState>(
+        bloc: userAuthBloc,
+        builder: (context, state) {
+          if (state is AuthTrue) {
+            return Text(state.user.anthem);
+          } else {
+            // Navigator.of(context).pushNamed('/login'); THIS DOESNT WORK
+            return Text('My Anthem');
+          }
+        },
       ),
     );
   }

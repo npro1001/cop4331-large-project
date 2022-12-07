@@ -15,6 +15,7 @@ class User {
   List<String> following; //<dynamic>?
   Uint8List profilePicture;
   bool profilePictureValid;
+  String anthem;
   // List<dynamic> likes;
   // String password;
   // List<dynamic> comments;
@@ -33,6 +34,7 @@ class User {
     // required this.about,
     required this.profilePicture,
     required this.profilePictureValid,
+    required this.anthem,
     // required this.likes,
     // required this.password,
     // required this.comments,
@@ -65,6 +67,12 @@ class User {
         rethrow;
       }
     }
+    var anthem;
+    if (json['anthem'] != null) {
+      anthem = json['anthem']['title'];
+    } else {
+      anthem = "Party In The U.S.A";
+    }
     // Map<String, dynamic> map = jsonDecode(pictureArray);
     // List<dynamic> data = map['data'];
     // List<String> pictureList = List<String>.from(pictureArray);
@@ -89,6 +97,7 @@ class User {
       // password: json['password'],
       profilePicture: pictureData,
       profilePictureValid: picValid,
+      anthem: anthem,
       // likes: json['likes'],
       // comments: json['comments'],
     );

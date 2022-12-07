@@ -133,9 +133,10 @@ const createPostWithoutImage = asyncHandler(async (req, res) => {
 // @access  Public
 const deletePost = asyncHandler(async (req, res) => {
 
-    const {postId} = req.body;
+    const { postId } = req.body;
+    const authUser = req.user;
 
-    const post = await Post.findById(mongoose.Types.ObjectId(postId));
+    const post = await Post.findById(postId);
     if (!post)
     {
         res.status(400);
@@ -147,11 +148,16 @@ const deletePost = asyncHandler(async (req, res) => {
         res.status(400);
         throw new error("Cannot find author");
     }
+    else if (user.id != authUser.id) {
+        res.status(403);
+        throw new error("Not authorized for delete");
+    } else {
+        await user.updateOne({ $pull: { posts: postId } });
+        await Post.findByIdAndDelete(mongoose.Types.ObjectId(postId));
 
-    await user.updateOne({ $pull: { posts: postId } });
-    await Post.findByIdAndDelete(mongoose.Types.ObjectId(postId));
+        res.status(200).json({message: "successfully deleted post " + postId});
 
-    res.status(200).json({User: user._id});
+    }
 
 });
 
@@ -160,8 +166,8 @@ const deletePost = asyncHandler(async (req, res) => {
 // @access  Public
 const likePost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId} = req.body;
-
+    const userId = req.user.id;
+    const {postId} = req.body;
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));
 
@@ -186,6 +192,7 @@ const likePost = asyncHandler(async (req, res) => {
         await user.updateOne({ $push: { likes: post._id } });
         await post.updateOne({ $push: { likes: user._id } });
 
+        
         res.status(201).json({
             username: user.username,
             userlikes: user.likes,
@@ -200,7 +207,8 @@ const likePost = asyncHandler(async (req, res) => {
 // @access Public
 const unlikePost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId} = req.body;
+    const userId = req.user.id;
+    const {postId} = req.body;
 
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));

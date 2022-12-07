@@ -16,6 +16,7 @@ var path = require('path');
 const dotenv = require('dotenv').config();
 const sharp = require('sharp');
 const e = require('express')
+const { ErrorMessage } = require('formik')
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -109,7 +110,8 @@ const loginUser = asyncHandler(async (req, res) => {
         following: user.following,
         anthem: user.anthem,
         profilePicture: user.profilePicture,
-        posts: user.posts
+        posts: user.posts,
+        topArtist: user.topArtist
       })
     }
 
@@ -245,11 +247,7 @@ const followUser = async (req, res) => {
         await followUser.updateOne({ $push: { followers: currentUserId } });
         await followingUser.updateOne({ $push: { following: id } });
 
-        let newFollowingList = followingUser.following;
-
-        newFollowingList.push(followUser.id)
-
-        res.status(200).json(newFollowingList);
+        res.status(200).json(followingUser.following);
       } else {
         console.log("poooooooo already follows")
         res.status(403).json("User is Already followed by you");
@@ -279,16 +277,7 @@ const unfollowUser = async (req, res) => {
         await followUser.updateOne({ $pull: { followers: currentUserId } });
         await followingUser.updateOne({ $pull: { following: id } });
 
-        let newFollowingList = [];
-        for (let i = 0; i < followingUser.following.length; i++) {
-
-          if (followingUser.following[i] != followUser.id) {
-            newFollowingList.push(followingUser.following[i])
-          }
-
-        }
-
-        res.status(200).json(newFollowingList);
+        res.status(200).json(followingUser.following);
       } else {
         res.status(403).json("User is not followed by you");
       }
@@ -497,6 +486,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       followers: user.followers,
       following: user.following, // May need more data
       anthem: user.anthem, //! Added this
+      posts: user.posts
     });
 
   } catch (error) {
@@ -540,7 +530,8 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
           postData['username'] = friend.username;
           postData['caption'] = post.caption;
           postData['likes'] = post.likes.length;
-          postData['comments'] = '';
+          postData['id'] = post._id
+          postData['author'] = friend._id;
           postData['createdAt'] = post.createdAt;
           if (friend["profilePicture"]) { postData["profileImage"] = friend.profilePicture; }
           if (post.song) { postData['song'] = post.song; }
@@ -574,9 +565,9 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
       postData['name'] = user.name;
       postData['username'] = user.username;
       postData['caption'] = post.caption;
-      postData['id'] = post._id
       postData['likes'] = post.likes.length;
-      postData['comments'] = '';
+      postData['id'] = post._id
+      postData['author'] = user._id;
       postData['createdAt'] = post.createdAt;
       if (user["profilePicture"]) { postData["profileImage"] = user.profilePicture; }
       if (post.song) { postData['song'] = post.song; }
@@ -618,6 +609,46 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
   res.status(201).json(followingPosts)
 });
 
+// @desc    Get all posts belonging to users user is following
+// @route   PUT /api/users/putTopArtist
+// @access  Public
+const putTopArtist = asyncHandler(async (req, res) => {
+
+  // console.log("IN PUT TOP ARTIST")
+  const userId = req.user.id;
+  const { topArtist } = req.body; 
+  const user = await User.findByIdAndUpdate(userId, { $set: {topArtist: topArtist }}); 
+  if (user)
+  {
+    // console.log("hello")
+    // console.log(user)
+    res.status(201).json(user);  
+  }
+  else
+  {
+    res.status(400);
+    throw new Error("User not found");
+  }
+  
+})
+
+// @desc    Get all posts belonging to users user is following
+// @route   GET /api/users/:id/getTopArtist
+// @access  Public
+const getTopArtist = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  const user = User.findById(userId);
+  if (!user)
+  {
+    res.status(400);
+    throw new Error("User not found");
+  }
+  else
+  {
+    res.status(201).json(user.topArtist);
+  }
+})
+
 module.exports = {
   registerUser,
   loginUser,
@@ -632,5 +663,7 @@ module.exports = {
   resetUserPassword,
   searchUser,
   getUserProfile,
-  getFollowingPosts
+  getFollowingPosts,
+  putTopArtist,
+  getTopArtist
 }

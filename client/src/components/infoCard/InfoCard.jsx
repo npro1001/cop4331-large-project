@@ -35,7 +35,7 @@ const InfoCard = ({location}) => {
     const user = useSelector((state) => state.auth.user)
 
     const [modalOpened, setModalOpened] = useState(false)
-    const [topArtist, setTopArtist] = useState(null);
+    const [topArtist, setTopArtist] = useState({});
     const [topGenres, setTopGenres] = useState(null);
     const [activeUser, setActiveUser] = useState({})
     const [anthem, setAnthem] = useState();
@@ -48,8 +48,8 @@ const InfoCard = ({location}) => {
         if (profileUsername === user.username) {
             setActiveUser(user);
             setAnthem(user.anthem)
+            fetchTopArtist()
         }
-
         else {
             const res = await fetch(`/api/users/${profileUsername}`, {
                 method: 'GET',
@@ -64,6 +64,7 @@ const InfoCard = ({location}) => {
         }
     }
 
+    
     const fetchTopArtist = async () => {
         if (isConnected) {
             await dispatch(getTopArtist())
@@ -72,12 +73,16 @@ const InfoCard = ({location}) => {
                     setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
+                    topArtist = {}
+                    topArtist['name'] = response.payload.data.items[0].name;
+                    topArtist['genre'] = genres[0];
+                    topArtist['image'] = response.payload.data.items[0].images[0];
                 })
+                .then(() => {dispatch(setTopArtist(topArtist))})
         }
-    }
+    } 
 
     useEffect(() => {
-        fetchTopArtist()
         fetchProfileUser()
 
     }, [isConnected, activeUser, anthem, user],[]); //! Important 

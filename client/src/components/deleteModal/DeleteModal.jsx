@@ -1,25 +1,39 @@
 import { Modal, useMantineTheme } from '@mantine/core'
+import { useParams } from 'react-router-dom';
 import './DeleteModal.css'
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { deletePost } from '../../features/post/postSlice'
 
 function DeleteModal({modalOpened, setModalOpened, post}) {
     const theme = useMantineTheme();
+    const [activeUser, setActiveUser] = useState({})
+    const params = useParams();
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.auth);
 
-    const deletePost = async () => {
+    const fetchProfileUser = async () => {
+        setActiveUser(user);
+    }
+
+    useEffect(() => {
+        fetchProfileUser()
+    },[user]);
+
+    const deleteThisPost = async () => {
         const postId = post.id
-        console.log(post.id)
 
-        await fetch(`/api/post/delete`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({postId})
-        }).then(response => {
-            return response.json()
+        await dispatch(deletePost(postId))
+        .then((response) => {
+            console.log(response.error)
         })
-        .then(data => 
-            console.log(data) 
-        );
-        setModalOpened(false)
-        window.location.reload()
+        .then(() => {
+            setModalOpened(false)
+            // navigate(`/home`, {replace: true})
+            window.location.reload(); //! not clean
+        })
+
     }
 
     return(
@@ -35,7 +49,7 @@ function DeleteModal({modalOpened, setModalOpened, post}) {
             <div className='content'>
                 <h3>Delete this post?</h3>
                 <div className="buttons">
-                    <button onClick={deletePost}>Confirm</button>
+                    <button onClick={deleteThisPost}>Confirm</button>
                 </div>
             </div>
         </div>

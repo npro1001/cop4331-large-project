@@ -27,12 +27,8 @@ const Profile = () => {
             <div className="Top">
                 <div className="navIcons">
                         <Link to='../Home'>
-                            <UilHome className="home"></UilHome>
-                        </Link>
-                        <UilSetting className="setting" />
                         <img src={Logo} alt="Logo" />
-                        <UilBell className="bell"></UilBell>
-                        <UilMessage className="message"></UilMessage>
+                        </Link>
                     </div> 
             </div>
             <div className="Bottom">

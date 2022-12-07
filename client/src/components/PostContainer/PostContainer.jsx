@@ -40,10 +40,9 @@ const Posts = () => {
 
         fetchData();
 
-    }, [], [displayPosts]); //! Important
+    }, [displayPosts]); //! Important
 
     if (!isLoading) {
-        //if there are no posts to display
         if (displayPosts.length == 0 || displayPosts == null) {
             return (
                 <><EmptyFeed> No posts to display...</EmptyFeed><AddOn>Try posting something!</AddOn></>
@@ -64,7 +63,7 @@ const Posts = () => {
     }
 
     else
-    {
+    {    //if there are no posts to display
         return (
             <LoadingScreen></LoadingScreen>
         )

@@ -57,13 +57,9 @@ const Home = () => {
                     <div className="navIcons">
                         <Link to='/home'>
                             {/* <span onClick={() => {navigate(`/home`); window.location.reload();}}> */}
-                                <UilHome className="home"></UilHome>
+                                <img src={Logo} alt="Logo" />
                             {/* </span> */}
                         </Link>
-                        <UilSetting className="setting" />
-                        <img src={Logo} alt="Logo" />
-                        <UilBell className="bell"></UilBell>
-                        <UilMessage className="message"></UilMessage>
                     </div> 
                 </div>
                 <div></div>

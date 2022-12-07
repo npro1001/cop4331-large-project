@@ -11,11 +11,9 @@ import { Marginer } from '../../components/marginer';
 import { resetPass } from '../../features/auth/authSlice';
 
 export const SidebSide = styled.div`
-    display:inline-flex;
-    flex-direction: row;
-    gap: .5em;
-    width:500px;
 
+display:inline-flex;
+gap: 1rem;
 `;
 
 export const FormContainer = styled.form`
@@ -24,7 +22,7 @@ export const FormContainer = styled.form`
     flex-direction: column;
     align-content: center;
     justify-content: center;
-   left: 700px;
+    left: 545px;
     position: relative;
     
 `;
@@ -65,7 +63,7 @@ export const NewBackDrop = styled.div`
 
 const Input = styled.input`
     outline: none;
-    width: 100%;
+    width: 25%;
     height: 40px;
     border:none;
     border-radius: 10px;
@@ -74,7 +72,6 @@ const Input = styled.input`
     align-self: center;
     transition: all 100ms ease-in-out;
     font-size: 12px;
-
     //field will be underlined pink (color can be changed, i just chose pink at random) when selected
     &:focus{
         outline:none;
@@ -95,7 +92,7 @@ const Input = styled.input`
 
 
 const SubmitButton = styled.button`
-    width: 30%;
+    width: 15%;
     padding: 11px;
     font-size: 15px;
     font-weight: 600;

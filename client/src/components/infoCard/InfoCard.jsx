@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from "react"
 import SongCard from "../SongCard/SongCard.jsx"
 import { getTopArtist } from "../../features/spotify/spotifySlice"
+import { putFavArtist, getFavArtist } from "../../features/auth/authSlice"
 import loadingCir from '../../img/loading-gif.gif'
 import styled from "styled-components";
 
@@ -22,10 +23,9 @@ const Container = styled.div`
     padding:auto;
     display:flex;
 `
-
-
-
-const InfoCard = ({location}) => {
+let loaded = false
+let set = false
+const InfoCard = ({ location }) => {
 
     const params = useParams();
     const dispatch = useDispatch();
@@ -36,19 +36,24 @@ const InfoCard = ({location}) => {
 
     const [modalOpened, setModalOpened] = useState(false)
     const [topArtist, setTopArtist] = useState({});
-    const [topGenres, setTopGenres] = useState(null);
+    const [topGenre, setTopGenre] = useState(null);
     const [activeUser, setActiveUser] = useState({})
+    const [topImage, setTopImage] = useState()
     const [anthem, setAnthem] = useState();
     const [spotifyLoading, setSpotifyLoading] = useState(true)
+    let favArtist = {}
 
     const profileUsername = params.username;
     let profileUser;
 
     const fetchProfileUser = async () => {
+
+        fetchTopArtist()
         if (profileUsername === user.username) {
             setActiveUser(user);
             setAnthem(user.anthem)
-            fetchTopArtist()
+            getFavorite(user._id)
+
         }
         else {
             const res = await fetch(`/api/users/${profileUsername}`, {
@@ -57,35 +62,58 @@ const InfoCard = ({location}) => {
             })
             profileUser = await res.json();
             setActiveUser(profileUser);
-            if(profileUser.anthem)
-            {
+            if (profileUser.anthem) {
                 setAnthem(profileUser.anthem)
             }
+
+            getFavorite(profileUser._id)
+
         }
     }
 
-    
+
     const fetchTopArtist = async () => {
+
         if (isConnected) {
             await dispatch(getTopArtist())
                 .then(response => {
-                    let genres = [response.payload.data.items[0].genres[1]+" "]
-                    setTopGenres(genres)
-                    setTopArtist(response.payload.data.items[0]);
-                    setSpotifyLoading(false);
-                    topArtist = {}
-                    topArtist['name'] = response.payload.data.items[0].name;
-                    topArtist['genre'] = genres[0];
-                    topArtist['image'] = response.payload.data.items[0].images[0];
+
+                    favArtist['name'] = response.payload.data.items[0].name;
+                    favArtist['genre'] = response.payload.data.items[0].genres[1] + " "
+                    favArtist['image'] = response.payload.data.items[0].images[0];
                 })
-                .then(() => {dispatch(setTopArtist(topArtist))})
+
+            if (!set) {
+                await dispatch(putFavArtist(favArtist))
+                    .then(response => {
+                        console.log(response)
+                    })
+
+                set = true;
+            }
+
         }
-    } 
+    }
+
+    const getFavorite = async (id) => {
+
+        if (!loaded) {
+            await dispatch(getFavArtist(id)).then(response => {
+                console.log(response)
+                setTopArtist(response.payload.name)
+                setTopGenre(response.payload.genre)
+                setTopImage(response.payload.image.url)
+                setSpotifyLoading(false)
+            })
+        }
+        loaded = true
+
+    }
 
     useEffect(() => {
         fetchProfileUser()
 
-    }, [isConnected, activeUser, anthem, user],[]); //! Important 
+    }, [isConnected, activeUser, anthem, user, topArtist, topGenre, topImage], []); //! Important 
 
 
     const onLogout = () => {
@@ -131,12 +159,12 @@ const InfoCard = ({location}) => {
                     <br></br>
                 </span>
                 <span>
-                    {!spotifyLoading ? user.username === activeUser.username && topArtist ? (
+                    {!spotifyLoading ? topArtist ? (
                         <div className="songrec">
                             <div className="topArtist">
-                                <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg' />
+                                <img src={topImage} alt={topArtist} className='songrecImg' />
                                 <div className="songname">
-                                    <span>{topArtist.name}</span>
+                                    <span>{topArtist}</span>
                                 </div>
                             </div>
                         </div>
@@ -155,33 +183,22 @@ const InfoCard = ({location}) => {
                     <br></br>
                 </span>
                 <span>
-                    {!spotifyLoading ?
-                        user.username === activeUser.username && topGenres ? (
-                            <div>
-                                {topGenres.map((genres, index) => {
-                                    
-                                    return (
-                                        <div key={index}>
-                                            <span> - {genres}</span>
-                                            <br></br>
-                                        </div>
-                                    )
-
-                                })}
-                                
-                            </div>
-                        ) : (
-                            <div>
-                                <p> Top Genre Not Found </p>
-                            </div>
-                        ) : <img className="loadingCircle" src={loadingCir} alt="loading" />}
+                    {!spotifyLoading ? topGenre ? (
+                        <div>
+                            -{topGenre}
+                        </div>
+                    ) : (
+                        <div>
+                            <p> Top Genre Not Found </p>
+                        </div>
+                    ) : <img className="loadingCircle" src={loadingCir} alt="loading" />}
                 </span>
             </div>
             {(user.username === activeUser.username)
                 ?
-                    <button className='button logout-button' onClick={onLogout}>Logout</button>
-                 : ""}
-           
+                <button className='button logout-button' onClick={onLogout}>Logout</button>
+                : ""}
+
 
         </div >
     )

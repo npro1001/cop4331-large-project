@@ -277,8 +277,8 @@ export const getTopArtist = async () => {
         target = response.data.items[0].id
         IDresult = target.concat(",", response.data.items[2].id)
 
-        target= response.data.items[0].genres[0].toString();
-        if(allGenres.includes(target)) genreResult = target
+        target = response.data.items[0].genres[0].toString();
+        if (allGenres.includes(target)) genreResult = target
         // genreResult = target //.concat(",", response.data.items[1].genres[1].toString())
 
         if (response) return response;
@@ -337,30 +337,22 @@ export const recommendSongs = async (token, user) => {
 
         var pick = choices.splice(num, 1) // remove number from array
         let one = pick;
-        console.log(one)
 
         num = Math.floor(Math.random() * choices.length);
         let two = choices.splice(num, 1)
-        console.log(two)
 
         num = Math.floor(Math.random() * choices.length);
         let three = choices.splice(num, 1)
-        console.log(three)
 
         num = Math.floor(Math.random() * choices.length);
         let four = choices.splice(num, 1)
-        console.log(four)
 
 
         num = Math.floor(Math.random() * choices.length);
         let five = choices.splice(num, 1)
-        console.log(five)
 
-        
+        genreResult += allGenres[one] + "," + allGenres[two] + "," + allGenres[three] + "," + allGenres[four] + "," + allGenres[five]
 
-        genreResult += allGenres[one]+","+allGenres[two]+","+allGenres[three]+","+allGenres[four]+","+allGenres[five]
-
-        console.log(genreResult)
     }
     const response = await axios({
         method: 'get',

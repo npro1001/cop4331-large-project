@@ -13,14 +13,26 @@
 
 .navIcons{
     display: flex;
+    margin-left: 20rem;
+    margin-right: 1rem;
+    justify-content: space-between;
+    gap: 12rem;
+    align-items: center;
+    margin-right: 18.5rem;
+    margin-top: 0.5rem;
+}
+
+/* .inactive{
+    display: flex;
     margin-left: 1rem;
     margin-right: 1rem;
     justify-content: space-between;
     gap: 12rem;
     align-items: center;
-}
+    opacity:40%;
+} */
 
-.Top{
+/* .Top{
     display: flex;
     flex-direction: row;
     margin-right: 9rem;
@@ -29,7 +41,7 @@
     margin-bottom: 0.5rem;
     justify-content: center;
     width: 100%;
-}
+} */
 
 .Bottom{
     position: relative;
@@ -39,10 +51,10 @@
     margin-right: 9rem;
 }
 
-.Banner{
+/* .Banner{
     display: flex;
     flex-direction: row;
     margin-bottom: 2rem;
     justify-content: center;
     z-index: 1;
-}
+} */

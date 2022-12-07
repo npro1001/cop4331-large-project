@@ -274,7 +274,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                 (<form className='infoForm' onSubmit={handleSubmit}>
                     <h3>Update your info</h3>
                     <div>
-                        <input type="text" className="infoInput" name="Name" placeholder={user.name} onChange={(e) => setTempName(e.target.value)} />
+                        <input type="text" className="infoInput" name="Name" placeholder={user.name} onChange={(e) => setTempName(e.target.value)} pattern="[A-Za-z]" />
                         <input type="text" className="infoInput" name="Username" placeholder={user.username} onChange={(e) => setTempUsername(e.target.value)} />
                     </div>
                     <br />
@@ -314,8 +314,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                     <div>
                         Profile image
                         <input type="file" name='picture' onChange={onImageChange} />
-                        Cover image
-                        <input type="file" name='coverImg' onChange={onImageChange} />
                     </div>
                     <button type='submit' className='button infoButton'>Update</button>
                 </form>)
@@ -332,8 +330,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
                     <div>
                         Profile image
                         <input type="file" name='picture' />
-                        Cover image
-                        <input type="file" name='coverImg' />
                     </div>
                     <button type='submit' className='button infoButton'>Update</button>
                 </form>)}

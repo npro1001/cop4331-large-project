@@ -50,7 +50,17 @@ export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI)
 export const likePost = createAsyncThunk('post/likePost', async (postID, userID, thunkAPI) => {
     try {
         const token = user.token
-        return await postService.likePost(postID,userID, token)
+        return await postService.likePostService(postID,userID, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+export const unlikePost = createAsyncThunk('post/unlikePost', async (postID, userID, thunkAPI) => {
+    try {
+        const token = user.token
+        return await postService.unlikePostService(postID,userID, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
         return thunkAPI.rejectWithValue(message);
@@ -167,19 +177,6 @@ const postSlice = createSlice({
                 state.isError = true; //?
                 state.message = action.payload;
             })
-                    // Delete post
-            .addCase(deletePost.pending, (state) => {
-                state.isLoading = true
-            })
-            .addCase(deletePost.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
-            })
-            .addCase(deletePost.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
-                state.message = action.payload // THIS GETS SENT CORRECTLY
-            }) 
     }
 })
 

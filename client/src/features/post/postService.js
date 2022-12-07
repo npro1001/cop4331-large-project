@@ -48,10 +48,28 @@ const getPosts = async(userId, token) => {
     return null;
 }
 
-const likePost = async (postID, userID, token) => {
+const likePostService = async (postID, userID, token) => {
     const response = await axios({
         method: "put",
-        url: API_URL + userID + '/like', 
+        url: API_URL + 'like', 
+        data: {
+            postId: postID,
+            userId: userID
+        },
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    if(response.data) {
+        return response.data;
+    }
+     return null
+}
+
+const unlikePostService = async (postID, userID, token) => {
+    const response = await axios({
+        method: "put",
+        url: API_URL  + 'unlike', 
         data: {
             postId: postID,
             userId: userID
@@ -87,8 +105,10 @@ const postService = {
     createPost,
     createPostWithoutImage,
     getPosts,
-    likePost,
-    deletePostService,
+    likePostService,
+    unlikePostService,
+    deletePostService
+
 } 
 
 export default postService

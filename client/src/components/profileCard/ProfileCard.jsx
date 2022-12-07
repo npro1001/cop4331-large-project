@@ -7,7 +7,9 @@ import './ProfileCard.css'
 import defaultCover from '../../img/default-cover-4.jpg'
 import defaultPFP from '../../img/default-profile.png'
 import styled from "styled-components";
-import { followUser, unfollowUser} from "../../features/auth/authSlice";
+import { followUser, unfollowUser } from "../../features/auth/authSlice";
+import { getMe } from "../../features/auth/authSlice";
+import loadingCir from '../../img/loading-gif.gif'
 
 const Container = styled.div`
     position: relative;
@@ -59,6 +61,7 @@ const ProfileCard = ({ location }) => {
     const [isPFP, setIsPFP] = useState();
     const [isCover, setIsCover] = useState();
     const [cover, setCover] = useState();
+    const [isLoading, setIsLoading] = useState(true);
     const profileUsername = params.username;
     let profileUser;
 
@@ -69,9 +72,11 @@ const ProfileCard = ({ location }) => {
 
             setIsCover(false);
 
-            setFollowing(user.following.length);
-            setFollowers(user.followers.length);
-
+            dispatch(getMe()).then((response) => {
+                setFollowing(response.payload.following.length);
+                setFollowers(response.payload.followers.length);
+                setIsLoading(false)
+            })
 
             if (user.profilePicture) {
 
@@ -102,9 +107,15 @@ const ProfileCard = ({ location }) => {
             if (profileUsername === user.username) {
 
                 setActiveUser(user);
-                setFollowing(user.following.length);
-                setFollowers(user.followers.length);
-                setNumPosts(user.posts.length)
+
+
+
+                dispatch(getMe()).then((response) => {
+                    setFollowing(response.payload.following.length);
+                    setFollowers(response.payload.followers.length);
+                    setNumPosts(response.payload.posts.length)
+                    setIsLoading(false)
+                })
 
                 if (user.profilePicture) {
 
@@ -130,6 +141,8 @@ const ProfileCard = ({ location }) => {
 
             //logged in user is viewing someone else's page
             else {
+                setIsLoading(false)
+
                 //get the persons profile and set them as the active user
                 const res = await fetch(`/api/users/${profileUsername}`, {
                     method: 'GET',
@@ -185,7 +198,7 @@ const ProfileCard = ({ location }) => {
     const DoFollow = async () => {
         await dispatch(followUser(activeUser._id)).then((response) => {
             console.log(response);
-        }) 
+        })
 
         window.location.reload();
     }
@@ -194,7 +207,7 @@ const ProfileCard = ({ location }) => {
 
         await dispatch(unfollowUser(activeUser._id)).then((response) => {
             console.log(response);
-        }) 
+        })
 
         window.location.reload();
     }
@@ -227,25 +240,24 @@ const ProfileCard = ({ location }) => {
             <div className="followStatus">
                 <hr />
                 <div>
-                    <div className="follow">
+                    {!isLoading ? <><div className="follow">
                         <span>{followers}</span>
                         <span>Followers</span>
-                    </div>
-                    <div className="vl"></div>
-                    <div className="follow">
-                        <span>{following}</span>
-                        <span>Following</span>
-                    </div>
+                    </div><div className="vl"></div><div className="follow">
+                            <span>{following}</span>
+                            <span>Following</span>
+                        </div></> : <img className="loadingCircle" src={loadingCir} alt="loading" />}
 
-                    {location === 'profilePage' && (
-                        <>
+
+                    {location === 'profilePage'  ?
+                        (<>
                             <div className="vl"></div>
                             <div className="follow">
-                                {numPosts ? <span>{numPosts}</span> : <span>0</span>}
-                                <span>Posts</span>
+                                {!isLoading ?  numPosts ? <><span>{numPosts}</span><span>Posts</span></> : <img className="loadingCircle" src={loadingCir} alt="loading" />: <img className="loadingCircle" src={loadingCir} alt="loading" />}
+                                
                             </div>
-                        </>
-                    )}
+                        </>)
+                    : ""}
                 </div>
                 <hr />
             </div>
@@ -253,7 +265,7 @@ const ProfileCard = ({ location }) => {
                 onClick={() => {
                     navigate(
                         `/profile/${user.username}`);
-                        window.location.reload();
+                    window.location.reload();
                 }}>My Profile</span>}
         </div>
     )

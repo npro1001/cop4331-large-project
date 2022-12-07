@@ -563,6 +563,7 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
       postData['username'] = user.username;
       postData['caption'] = post.caption;
       postData['likes'] = post.likes.length;
+      postData['id'] = post._id
       postData['comments'] = '';
       postData['createdAt'] = post.createdAt;
       if (user["profilePicture"]) { postData["profileImage"] = user.profilePicture; }

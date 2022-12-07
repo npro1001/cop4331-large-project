@@ -100,7 +100,7 @@ const uploadPFP = async (picture, token) => {
 
 
 //follow user
-const follow = async (targetUserId,user, token) => {
+const follow = async (targetUserId, user, token) => {
 
     const response = await axios({
         method: "put",

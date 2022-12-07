@@ -64,6 +64,7 @@ const InfoCard = ({location}) => {
         }
     }
 
+    /*
     const fetchTopArtist = async () => {
         if (isConnected) {
             await dispatch(getTopArtist())
@@ -74,10 +75,10 @@ const InfoCard = ({location}) => {
                     setSpotifyLoading(false);
                 })
         }
-    }
+    } */
 
     useEffect(() => {
-        fetchTopArtist()
+        // fetchTopArtist()
         fetchProfileUser()
 
     }, [isConnected, activeUser, anthem, user],[]); //! Important 

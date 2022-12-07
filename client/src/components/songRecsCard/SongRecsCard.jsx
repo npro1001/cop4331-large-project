@@ -21,6 +21,7 @@ const SongRecsCard = () => {
 
     let tracks = [];
 
+    /*
     async function fetchData() {
         if (isConnected) {
             if(loaded) {
@@ -53,10 +54,10 @@ const SongRecsCard = () => {
             }
             loaded = true;
         }
-    }
+    } */
 
     useEffect(() => {
-        fetchData();
+        //fetchData();
     }, [user]); //! Important
 
     if (list && !spotifyLoading) {

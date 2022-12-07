@@ -102,6 +102,6 @@ class _LoginFormState extends State<LoginForm> {
       password: _passwordController.text,
     ));
     Navigator.of(context)
-        .pushNamed('/'); // This needs to be moved or conditionalized
+        .pushNamed('/feed'); // This needs to be moved or conditionalized
   }
 }

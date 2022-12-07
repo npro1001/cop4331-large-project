@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
         child: Center(
             child: Column(
           children: [
-            SizedBox(height: 40),
+            SizedBox(height: 200),
             Image(
               image: AssetImage("assets/lib/logo.png"),
               width: 80,
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                 } else {
                   // Navigator.of(context).pushNamed('/login'); THIS DOESNT WORK
                   return Text(
-                    "You have not signed in yet!",
+                    "Login or Register to Continue!",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   );
                 }
@@ -62,15 +62,6 @@ class HomePage extends StatelessWidget {
               },
             ),
             SizedBox(height: 80),
-            FloatingActionButton.extended(
-              //................................................DEV ACCESS TO FEED  MUST DELETE
-              heroTag: "DEV_ACCESS_TO_FEED",
-              label: Text('Dev access to feed'),
-              onPressed: () {
-                // userAuthBloc.add(LoggedOutEvent()); // add = dispatch
-                Navigator.of(context).pushNamed('/feed');
-              },
-            ),
           ],
         )),
       ),

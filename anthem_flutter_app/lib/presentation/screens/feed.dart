@@ -193,7 +193,7 @@ class Feed extends StatelessWidget {
                 container[j][5]['data'] != null
                     ? MemoryImage(Uint8List.fromList(
                         container[j][5]['data']['data'].cast<int>().toList()))
-                    : AssetImage("assets/lib/inevitable_shitpost.png"),
+                    : AssetImage("assets/lib/postpic1.jpg"),
                 container[j][6]),
         ],
       ),

@@ -60,11 +60,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 13),
                   Text(
-                    "Welcome Back",
+                    "Welcome to Anthem!",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Sign in to continue",
+                    "Login to Continue",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,

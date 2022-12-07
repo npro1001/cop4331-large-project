@@ -152,6 +152,6 @@ class _RegisterFormState extends State<RegisterForm> {
       password: _passwordController.text,
     ));
     Navigator.of(context)
-        .pushNamed('/'); // This needs to be moved or conditionalized
+        .pushNamed('/login'); // This needs to be moved or conditionalized
   }
 }

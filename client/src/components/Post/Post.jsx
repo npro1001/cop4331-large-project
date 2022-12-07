@@ -85,21 +85,21 @@ const Post = ({ data }) => {
         }
     }, [])
 
-    const deletePost = async () => {
-        const postId = data.id
+    // const deletePost = async () => {
+    //     const postId = data.id
 
-        await fetch(`/api/post/delete`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({postId})
-        }).then(response => {
-            return response.json( )
-        })
-        .then(data => 
-            console.log(data) 
-        );
-        window.location.reload()
-    }
+    //     await fetch(`/api/post/delete`, {
+    //         method: 'PUT',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({postId})
+    //     }).then(response => {
+    //         return response.json( )
+    //     })
+    //     .then(data => 
+    //         console.log(data) 
+    //     );
+    //     window.location.reload()
+    // }
 
     // const ChangeLike = async () => {
     //     const dispatch = useDispatch();

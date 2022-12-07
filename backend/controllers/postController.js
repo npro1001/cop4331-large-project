@@ -133,9 +133,10 @@ const createPostWithoutImage = asyncHandler(async (req, res) => {
 // @access  Public
 const deletePost = asyncHandler(async (req, res) => {
 
-    const {postId} = req.body;
+    const { postId } = req.body;
+    const authUser = req.user;
 
-    const post = await Post.findById(mongoose.Types.ObjectId(postId));
+    const post = await Post.findById(postId);
     if (!post)
     {
         res.status(400);
@@ -147,11 +148,16 @@ const deletePost = asyncHandler(async (req, res) => {
         res.status(400);
         throw new error("Cannot find author");
     }
+    else if (user._id != authUser._id) {
+        res.status(403);
+        throw new error("Not authorized for delete");
+    } else {
+        await user.updateOne({ $pull: { posts: postId } });
+        await Post.findByIdAndDelete(mongoose.Types.ObjectId(postId));
 
-    await user.updateOne({ $pull: { posts: postId } });
-    await Post.findByIdAndDelete(mongoose.Types.ObjectId(postId));
+        res.status(200).json({User: user._id});
 
-    res.status(200).json({User: user._id});
+    }
 
 });
 

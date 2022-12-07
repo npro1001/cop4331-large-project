@@ -66,11 +66,29 @@ const likePost = async (postID, userID, token) => {
      return null
 }
 
+// Get Following Posts
+const deletePostService = async (postId, token) => {
+    const response = await axios({
+        method: 'put',
+        url: API_URL + 'delete', 
+        data: {postId: postId},
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    if (response.data) {
+        console.log(response.data)
+        return response.data
+    }
+    return null;
+}
+
 const postService = {
     createPost,
     createPostWithoutImage,
     getPosts,
-    likePost
+    likePost,
+    deletePostService,
 } 
 
 export default postService

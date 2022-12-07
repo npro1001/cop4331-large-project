@@ -1,11 +1,11 @@
 import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import authReducer, { updateUser, followUser, unfollowUser, uploadPFP, putTopArtist } from '../features/auth/authSlice';
 import spotifyReducer from '../features/spotify/spotifySlice';
-import postReducer from '../features/post/postSlice';
+import postReducer, {deletePost} from '../features/post/postSlice';
 
 export const listenerMiddleware = createListenerMiddleware();
 listenerMiddleware.startListening({
-  matcher: isAnyOf(updateUser, followUser, unfollowUser, uploadPFP, putTopArtist),
+  matcher: isAnyOf(updateUser, followUser, unfollowUser, uploadPFP, putTopArtist, deletePost),
   effect: async (matcher, listenerApi) =>
     localStorage.setItem("user", JSON.stringify(listenerApi.getState().auth.user))
 });

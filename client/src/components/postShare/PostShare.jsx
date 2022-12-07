@@ -109,8 +109,7 @@ const PostShare = () => {
             }     
 
             dispatch(createNewPostWithoutImage(data)).then((response) => {
-                console.log("Without Image")
-                console.log(response.payload)
+                console.log(response.payload)         
             });
         }
 

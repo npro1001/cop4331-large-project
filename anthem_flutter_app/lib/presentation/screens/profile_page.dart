@@ -16,12 +16,13 @@ class ProfilePage extends StatelessWidget {
   }
 
   PreferredSizeWidget _appBar(context) {
+    final UserAuthBloc userAuthBloc = BlocProvider.of<UserAuthBloc>(context);
     return AppBar(
       title: Text('Profile'),
       actions: [
         IconButton(
             onPressed: () {
-              // userAuthBloc.add(LoggedOutEvent()); // add = dispatch
+              userAuthBloc.add(LoggedOutEvent()); // add = dispatch
               Navigator.of(context).pushNamed('/login');
             },
             icon: Icon(Icons.logout))

@@ -21,43 +21,43 @@ const SongRecsCard = () => {
 
     let tracks = [];
 
-    /*
+
     async function fetchData() {
         if (isConnected) {
-            if(loaded) {
+            if (loaded) {
                 dispatch(getRecommended())
-                .then(response => {
+                    .then(response => {
 
-                    //randomly choice 3 numbers 
-                    let choices = Array.from(Array(20),(x,i)=>i)
-                    var num = Math.floor(Math.random() * choices.length);
-                    
-                    var pick = choices.splice(num,1) // remove number from array
-                    let one = pick;
+                        //randomly choose 3 numbers 
+                        let choices = Array.from(Array(20), (x, i) => i)
+                        var num = Math.floor(Math.random() * choices.length);
 
-                    num = Math.floor(Math.random() * choices.length);
-                    let two = choices.splice(num,1)
+                        var pick = choices.splice(num, 1) // remove number from array
+                        let one = pick;
 
-                    num = Math.floor(Math.random() * choices.length);
-                    let three = choices.splice(num,1)
+                        num = Math.floor(Math.random() * choices.length);
+                        let two = choices.splice(num, 1)
+
+                        num = Math.floor(Math.random() * choices.length);
+                        let three = choices.splice(num, 1)
 
 
-                    tracks = [
-                        { name: response.payload.data.tracks[one].name, artist: response.payload.data.tracks[one].artists[0].name, img: response.payload.data.tracks[one].album.images[0].url },
-                        { name: response.payload.data.tracks[two].name, artist: response.payload.data.tracks[two].artists[0].name, img: response.payload.data.tracks[two].album.images[0].url },
-                        { name: response.payload.data.tracks[three].name, artist: response.payload.data.tracks[three].artists[0].name, img: response.payload.data.tracks[three].album.images[0].url },
-                    ]
+                        tracks = [
+                            { name: response.payload.data.tracks[one].name, artist: response.payload.data.tracks[one].artists[0].name, img: response.payload.data.tracks[one].album.images[0].url },
+                            { name: response.payload.data.tracks[two].name, artist: response.payload.data.tracks[two].artists[0].name, img: response.payload.data.tracks[two].album.images[0].url },
+                            { name: response.payload.data.tracks[three].name, artist: response.payload.data.tracks[three].artists[0].name, img: response.payload.data.tracks[three].album.images[0].url },
+                        ]
 
-                    setList(tracks);
-                    setSpotifyLoading(false)
-                })
+                        setList(tracks);
+                        setSpotifyLoading(false)
+                    })
             }
             loaded = true;
         }
-    } */
+    }
 
     useEffect(() => {
-        //fetchData();
+        fetchData();
     }, [user]); //! Important
 
     if (list && !spotifyLoading) {

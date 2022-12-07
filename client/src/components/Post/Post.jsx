@@ -6,7 +6,7 @@ import Heart from '../../img/like.png'
 import NotLike from '../../img/notlike.png'
 import { useSelector } from 'react-redux'
 import defaultPFP from '../../img/default-profile.png'
-import ImageModal from '../imageModal/ImageModal'
+import DeleteModal from '../deleteModal/DeleteModal'
 import { useEffect } from "react";
 import SongCard from "../SongCard/SongCard";
 import { UilTimes } from '@iconscout/react-unicons'
@@ -87,7 +87,6 @@ const Post = ({ data }) => {
 
     const deletePost = async () => {
         const postId = data.id
-        console.log(postId)
 
         await fetch(`/api/post/delete`, {
             method: 'PUT',
@@ -123,8 +122,12 @@ const Post = ({ data }) => {
 
                 {(user.username === data.username)
                 ? 
-                <div className="options" onClick={deletePost}>
+                <div className="options" onClick={() => setModalOpened(true)}>
                     <UilTimes/>
+                    <DeleteModal modalOpened={modalOpened}
+                        setModalOpened={setModalOpened}
+                        post={data}
+                        />
                 </div>
                 : ""}
 
@@ -137,7 +140,7 @@ const Post = ({ data }) => {
                 url={data.url}
             ></SongCard> : ""
             }
-            {isImage ? <img src={`data:image/png;base64,${picture}`} alt="user image" onClick={() => setModalOpened(true)} /> : ""}
+            {isImage ? <img src={`data:image/png;base64,${picture}`} alt="user image" /> : ""}
             <div className="postReact">
                 <img src={data.liked ? Heart : NotLike} alt="" />
                 {/* <img src={Comment} alt="" />

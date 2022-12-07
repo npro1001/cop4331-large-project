@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import loadingCir from '../../img/loading-gif.gif'
 
-
+let loaded = false
 
 const SongRecsCard = () => {
     const { isConnected } = useSelector((store) => store.spotify)
@@ -16,7 +16,7 @@ const SongRecsCard = () => {
     const dispatch = useDispatch()
     const [list, setList] = useState();
     const [spotifyLoading, setSpotifyLoading] = useState(true)
-    let loaded = false
+
 
 
     let tracks = [];
@@ -24,7 +24,7 @@ const SongRecsCard = () => {
 
     async function fetchData() {
         if (isConnected) {
-            if (loaded) {
+            if (!loaded) {
                 dispatch(getRecommended())
                     .then(response => {
 

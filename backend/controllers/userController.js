@@ -530,7 +530,8 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
           postData['username'] = friend.username;
           postData['caption'] = post.caption;
           postData['likes'] = post.likes.length;
-          postData['comments'] = '';
+          postData['id'] = post._id
+          postData['author'] = friend._id;
           postData['createdAt'] = post.createdAt;
           if (friend["profilePicture"]) { postData["profileImage"] = friend.profilePicture; }
           if (post.song) { postData['song'] = post.song; }
@@ -566,7 +567,7 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
       postData['caption'] = post.caption;
       postData['likes'] = post.likes.length;
       postData['id'] = post._id
-      postData['comments'] = '';
+      postData['author'] = user._id;
       postData['createdAt'] = post.createdAt;
       if (user["profilePicture"]) { postData["profileImage"] = user.profilePicture; }
       if (post.song) { postData['song'] = post.song; }

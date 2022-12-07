@@ -164,18 +164,21 @@ const putFavArtistService = async (topArtist, token) => {
 
 const getFavArtistService = async (userId, token) => {
 
-    console.log("string: "+ API_URL + userId + '/putTopArtist')
-    const response = await axios({
-        method: "get",
-        url: API_URL + userId + '/getTopArtist', 
-        headers:{
-            Authorization: `Bearer ${token}`
+    if(userId)
+    {
+        const response = await axios({
+            method: "get",
+            url: API_URL + userId + '/getTopArtist', 
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (response.data) {
+            return response.data
         }
-    })
-    if (response.data) {
-        return response.data
+        return null;
     }
-    return null;
+    
 } 
 const authService = {
     register,

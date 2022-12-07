@@ -129,11 +129,11 @@ export const resetPass = createAsyncThunk('auth/passRequest', async(email, thunk
 
 })
 
-export const putTopArtist = createAsyncThunk('auth/putTopArtist', async(topArtist, thunkAPI) =>
+export const putFavArtist = createAsyncThunk('auth/putFavArtistService', async(topArtist, thunkAPI) =>
 {
     try {
         const token = user.token
-        return await authService.putTopArtistService(topArtist, token);
+        return await authService.putFavArtistService(topArtist, token);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -141,11 +141,13 @@ export const putTopArtist = createAsyncThunk('auth/putTopArtist', async(topArtis
 
 })
 
-export const getTopArtist = createAsyncThunk('auth/getTopArtist', async(userId, thunkAPI) =>
+export const getFavArtist = createAsyncThunk('auth/getFavArtistService', async(userId, thunkAPI) =>
 {
+    console.log(userId)
+
     try {
         const token = user.token
-        return await authService.getTopArtistService(userId, token);
+        return await authService.getFavArtistService(userId, token);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -310,28 +312,28 @@ export const authSlice = createSlice({
         }) 
 
         // Put Top Artist
-        .addCase(putTopArtist.pending, (state) => {
+        .addCase(putFavArtist.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(putTopArtist.fulfilled, (state, action) => {
+        .addCase(putFavArtist.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
         })
-        .addCase(putTopArtist.rejected, (state, action) => {
+        .addCase(putFavArtist.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY
         }) 
         
         // Get Top Artist
-        .addCase(getTopArtist.pending, (state) => {
+        .addCase(getFavArtist.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(getTopArtist.fulfilled, (state, action) => {
+        .addCase(getFavArtist.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
         })
-        .addCase(getTopArtist.rejected, (state, action) => {
+        .addCase(getFavArtist.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY

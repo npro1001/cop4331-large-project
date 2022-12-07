@@ -146,7 +146,7 @@ const passRequest = async (email) => {
     return null;
 } 
 
-const putTopArtistService = async (topArtist, token) => {
+const putFavArtistService = async (topArtist, token) => {
 
     const response = await axios({
         method: "put",
@@ -162,11 +162,12 @@ const putTopArtistService = async (topArtist, token) => {
     return null;
 } 
 
-const getTopArtistService = async (userId, token) => {
+const getFavArtistService = async (userId, token) => {
 
+    console.log("string: "+ API_URL + userId + '/putTopArtist')
     const response = await axios({
         method: "get",
-        url: API_URL + userId + '/putTopArtist', 
+        url: API_URL + userId + '/getTopArtist', 
         headers:{
             Authorization: `Bearer ${token}`
         }
@@ -187,8 +188,8 @@ const authService = {
     follow,
     unfollow,
     passRequest,
-    putTopArtistService,
-    getTopArtistService
+    putFavArtistService,
+    getFavArtistService
 
 }
 

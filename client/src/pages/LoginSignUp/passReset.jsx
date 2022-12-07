@@ -24,7 +24,7 @@ export const FormContainer = styled.form`
     flex-direction: column;
     align-content: center;
     justify-content: center;
-   left: 700px;
+    left: 545px;
     position: relative;
     
 `;

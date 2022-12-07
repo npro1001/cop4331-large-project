@@ -25,6 +25,15 @@ export const createNewPost = createAsyncThunk('post/createPost', async (post, th
     }
 })
 
+export const createNewPostWithoutImage = createAsyncThunk('post/createPostWithoutImage', async (post, thunkAPI) => {
+    try {
+        return await postService.createPostWithoutImage(post)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI) => {
     try {
         return await postService.getPosts(user)
@@ -72,6 +81,28 @@ const postSlice = createSlice({
                 }
             })
             .addCase(createNewPost.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true; //?
+                state.message = action.payload;
+            })
+            // creating new post without image
+            .addCase(createNewPostWithoutImage.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(createNewPostWithoutImage.fulfilled, (state, action) => {
+                state.isLoading = false;
+                if (action.payload != null) {
+                    state.PostData.push(action.payload);
+                    state.post = action.payload;
+                    return state
+                }
+                else {
+                    state.post = null;
+                    state.isError = true
+                    state.message = "Error uploading post"
+                }
+            })
+            .addCase(createNewPostWithoutImage.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true; //?
                 state.message = action.payload;

@@ -6,7 +6,7 @@ import { UilScenery } from "@iconscout/react-unicons"
 import { UilMusic } from '@iconscout/react-unicons'
 import { UilListUl } from '@iconscout/react-unicons'
 import { UilTimes } from '@iconscout/react-unicons'
-import { createNewPost } from "../../features/post/postSlice";
+import { createNewPost, createNewPostWithoutImage } from "../../features/post/postSlice";
 import { searchTracks } from "../../features/spotify/spotifySlice"
 import styled from "styled-components";
 import SongCard from "../SongCard/SongCard";
@@ -68,28 +68,51 @@ const PostShare = () => {
     const handleUpload = async (e) => {
         e.preventDefault();
 
-        const data = new FormData();
-        data.append('author', user._id);
-        data.append('name', user.name)
-        data.append('username', user.username)
-        data.append('caption', desc.current.value);
+        if (image)
+        {
+            const data = new FormData();
+            data.append('author', user._id);
+            data.append('name', user.name)
+            data.append('username', user.username)
+            data.append('caption', desc.current.value);
 
 
-        if (image) {
+            if (song) {
+
+                data.append('song', selection.name);
+                data.append('artist', selection.artist);
+                data.append('image', selection.image);
+                data.append('url', selection.url);
+            }     
+
             data.append('picture', image);
+
+            dispatch(createNewPost(data)).then((response) => {
+                console.log(response.payload)
+            });
         }
+        else
+        {
+            const data = {};
+            data['author'] = user._id;
+            data['name'] = user.name;
+            data['username'] = user.username;
+            data['caption'] = desc.current.value;
 
-        if (song) {
 
-            data.append('song', selection.name);
-            data.append('artist', selection.artist);
-            data.append('image', selection.image);
-            data.append('url', selection.url);
+            if (song) {
+
+                data['song'] = selection.name;
+                data['artist'] = selection.artist;
+                data['image'] = selection.image;
+                data['url'] = selection.url;
+            }     
+
+            dispatch(createNewPostWithoutImage(data)).then((response) => {
+                console.log("Without Image")
+                console.log(response.payload)
+            });
         }
-
-        dispatch(createNewPost(data)).then((response) => {
-            console.log(response.payload)
-        });
 
        window.location.reload();
     };

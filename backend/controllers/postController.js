@@ -10,6 +10,7 @@ const unlinkAsync = promisify(fs.unlink);
 const User = require('../models/userModel');
 const Post = require('../models/postModel');
 const Comment = require('../models/commentModel');
+const { findById } = require('../models/commentModel');
   
 // @desc    Create a new post
 // @route   POST /api/post
@@ -34,13 +35,16 @@ const createPost = asyncHandler(async (req, res) => {
     }
 
     // Author is the objectID of the user who created the post
-    var { author, name, username, caption, song, image, artist, url, playlist } = req.body;    
+    var { author, caption, song, image, artist, url, playlist } = req.body;    
     if (!author || !caption)
     {
         res.status(400);
         throw new Error('Please add all required elements of a post');
     }
 
+    var user = await User.findById(mongoose.Types.ObjectId(author))
+    var name = user.name;
+    var username = user.username;
     post["author"] = author;
     post["caption"] = caption;
     post["name"] = name;
@@ -60,26 +64,62 @@ const createPost = asyncHandler(async (req, res) => {
 
     if (postObj) {
         await User.findByIdAndUpdate(author, { $push: { posts: postObj._id } });
-        console.log("STARTING TO WRITE")
         
         res.status(201).json({
             _id: postObj.id,
-            // userID: postObj.author,
-            // name: postObj.name,
-            // username: postObj.username,
-            // caption: postObj.caption ? postObj.caption : null,
-            // picture: postObj.picture ? postObj.picture : null,
-            // comments: postObj.comments ? postObj.comments : null,
-            // likes: postObj.likes ? postObj.likes : null,
-            // createdAt: postObj.createdAt,
-            // song: postObj.song,
-            // artist: postObj.artist,
-            // url: postObj.url,
-            // image: postObj.image,
-            // playlist: postObj.playlist,
         })
         await unlinkAsync(imgPath + req.file.filename);
         await unlinkAsync(imgPath + req.file.filename + '-thumb');
+        
+        
+    } else {
+        res.status(400);
+        throw new Error('Invalid post data');
+    }
+});
+
+// @desc    Create a new post without image
+// @route   POST /api/post/withoutImage
+// @access  Public
+const createPostWithoutImage = asyncHandler(async (req, res) => {
+
+    var post = {};
+
+    // Author is the objectID of the user who created the post
+    var { author, caption, song, image, artist, url, playlist } = req.body;    
+    console.log(author)
+    console.log(caption)
+    if (!author || !caption)
+    {
+        res.status(400);
+        throw new Error('Please add all required elements of a post');
+    }
+
+    var user = await User.findById(mongoose.Types.ObjectId(author))
+    var name = user.name;
+    var username = user.username;
+    post["author"] = author;
+    post["caption"] = caption;
+    post["name"] = name;
+    post["username"] = username;
+
+    if (song) {
+        post["song"] = song;
+        post["image"] = image;
+        post["url"] = url;
+        post["artist"] = artist;
+
+    }
+    if (playlist) {post["playlist"] = playlist;}
+
+    console.log(post)
+    const postObj = await Post.create(post)
+
+    if (postObj) {
+        await User.findByIdAndUpdate(author, { $push: { posts: postObj._id } });        
+        res.status(201).json({
+            _id: postObj.id,
+        })
         
         
     } else {
@@ -292,6 +332,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 
 module.exports = {
     createPost,
+    createPostWithoutImage,
     deletePost,
     likePost,
     unlikePost,

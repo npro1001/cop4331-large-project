@@ -87,33 +87,16 @@ const Post = ({ data }) => {
         }
     }, [])
 
-    // const deletePost = async () => {
-    //     const postId = data.id
-
-    //     await fetch(`/api/post/delete`, {
-    //         method: 'PUT',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({postId})
-    //     }).then(response => {
-    //         return response.json( )
-    //     })
-    //     .then(data => 
-    //         console.log(data) 
-    //     );
-    //     window.location.reload()
-    // }
-
     const ChangeLike = async () => {
     
         if (!data.liked)
         {
             const postId = data.id
             const userId = user._id
-            console.log(postId)
-            console.log(typeof userId)
             await dispatch(likePost(postId))
                 .then( (response) =>{
                     console.log(response.payload)
+                    window.location.reload()
                 })
         }
         else
@@ -121,6 +104,7 @@ const Post = ({ data }) => {
             await dispatch(unlikePost(data.id, user._id))
                 .then( (response) =>{
                     console.log(response)
+                    window.location.reload()
                 })
         }
     }

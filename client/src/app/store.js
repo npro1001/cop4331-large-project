@@ -1,11 +1,11 @@
 import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import authReducer, { updateUser, followUser, unfollowUser, uploadPFP, putTopArtist } from '../features/auth/authSlice';
 import spotifyReducer from '../features/spotify/spotifySlice';
-import postReducer, {deletePost} from '../features/post/postSlice';
+import postReducer, {likePost, unlikePost} from '../features/post/postSlice';
 
-export const userListenerMiddleware = createListenerMiddleware();
-userListenerMiddleware.startListening({
-  matcher: isAnyOf(updateUser, followUser, unfollowUser, uploadPFP, putTopArtist, deletePost),
+export const listenerMiddleware = createListenerMiddleware();
+listenerMiddleware.startListening({
+  matcher: isAnyOf(updateUser, followUser, unfollowUser, uploadPFP, putTopArtist, likePost, unlikePost),
   effect: async (matcher, listenerApi) =>
     localStorage.setItem("user", JSON.stringify(listenerApi.getState().auth.user))
 });
@@ -18,6 +18,6 @@ export const store = configureStore({
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false,}),
   middleware: (getDefaultMiddleware) => [
-    userListenerMiddleware.middleware,
+    listenerMiddleware.middleware,
     ...getDefaultMiddleware({serializableCheck: false})] //?
   });

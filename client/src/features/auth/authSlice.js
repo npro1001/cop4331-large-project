@@ -260,6 +260,7 @@ export const authSlice = createSlice({
             state.isError = true
             state.message = action.payload
         })
+
         .addCase(followUser.pending, (state) => {
             state.isLoading = true
         })
@@ -275,6 +276,7 @@ export const authSlice = createSlice({
             state.isError = true
             // state.message = action.payload // THIS GETS SENT CORRECTLY
         })
+
         // Unfollow
         .addCase(unfollowUser.pending, (state) => {
             state.isLoading = true
@@ -292,6 +294,7 @@ export const authSlice = createSlice({
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY
         })
+
         // reset password request
         .addCase(resetPass.pending, (state) => {
             state.isLoading = true
@@ -305,15 +308,30 @@ export const authSlice = createSlice({
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY
         }) 
+
         // Put Top Artist
-        .addCase(resetPass.pending, (state) => {
+        .addCase(putTopArtist.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(resetPass.fulfilled, (state, action) => {
+        .addCase(putTopArtist.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
         })
-        .addCase(resetPass.rejected, (state, action) => {
+        .addCase(putTopArtist.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload // THIS GETS SENT CORRECTLY
+        }) 
+        
+        // Get Top Artist
+        .addCase(getTopArtist.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(getTopArtist.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+        })
+        .addCase(getTopArtist.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY

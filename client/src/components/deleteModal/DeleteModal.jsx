@@ -30,19 +30,9 @@ function DeleteModal({modalOpened, setModalOpened, post}) {
         })
         .then(() => {
             setModalOpened(false)
-            // window.location.reload()
+            // navigate(`/home`, {replace: true})
+            window.location.reload(); //! not clean
         })
-
-        // await fetch(`/api/post/delete`, {
-        //     method: 'PUT',
-        //     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}` },
-        //     body: JSON.stringify({postId})
-        // }).then(response => {
-        //     return response.json()
-        // })
-        // .then(data => 
-        //     console.log(data) 
-        // );
 
     }
 

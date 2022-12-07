@@ -45,9 +45,9 @@ export const logout = createAsyncThunk('auth/logout', async() => {
 
 // async thunk function - deals with async data
 // Reset user password
-export const userResetPassword = createAsyncThunk('auth/reset', async(passwordToken, password, thunkAPI) => {
+export const userResetPassword = createAsyncThunk('auth/reset', async(passwordObj, thunkAPI) => {
     try {
-        return await authService.reset(passwordToken, password)
+        return await authService.reset(passwordObj.token, passwordObj.password1)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -115,6 +115,17 @@ export const uploadPFP = createAsyncThunk('auth/uploadPFP', async(picture, thunk
 
 })
 
+export const resetPass = createAsyncThunk('auth/passRequest', async(email, thunkAPI) =>
+{
+    try {
+        return await authService.passRequest(email);
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
+        return thunkAPI.rejectWithValue(message)
+    }
+
+})
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -164,7 +175,7 @@ export const authSlice = createSlice({
         .addCase(logout.fulfilled, (state) => {
             state.user = null
         })
-        // Reset state cases
+        // Reset user passowrd state cases
         .addCase(userResetPassword.pending, (state) => {
             state.isLoading = true
         })
@@ -186,7 +197,7 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.user = action.payload;
             console.log(action.payload)
-            return state
+            return state // return action.payload maybe?
         })
         .addCase(updateUser.rejected, (state, action) => {
             state.isLoading = false
@@ -227,7 +238,7 @@ export const authSlice = createSlice({
         .addCase(followUser.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            // state.user = action.payload
+            state.user.following = action.payload
             console.log(action.payload)
             // return state;
         })
@@ -235,7 +246,6 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.isError = true
             // state.message = action.payload // THIS GETS SENT CORRECTLY
-            console.log("fuck")
         })
         // Unfollow
         .addCase(unfollowUser.pending, (state) => {
@@ -246,9 +256,23 @@ export const authSlice = createSlice({
             state.isSuccess = true
             // state.user = action.payload
             console.log(action.payload)
-            // return state;
+            state.user.following = action.payload
+            return state;
         })
         .addCase(unfollowUser.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload // THIS GETS SENT CORRECTLY
+        })
+        // reset password request
+        .addCase(resetPass.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(resetPass.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+        })
+        .addCase(resetPass.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload // THIS GETS SENT CORRECTLY

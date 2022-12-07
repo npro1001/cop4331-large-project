@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getPosts } from "../../features/post/postSlice"
 import { useEffect, useState } from "react"
-const asyncHandler = require('express-async-handler')
+import LoadingScreen from "../loadingScreen/loading";
 
 const EmptyFeed = styled.h1`
     
@@ -25,17 +25,15 @@ const Posts = () => {
     const dispatch = useDispatch()
     var [displayPosts, setDisplayPosts] = useState()
     const [isLoading, setIsLoading] = useState(true)
-    var posts = []
 
     async function fetchData() {
-        if (user.following.length != 0) {
+        if (user.following.length >= 0) {
             await dispatch(getPosts(user._id))
                 .then(response => {
                     setDisplayPosts(response.payload)
                     setIsLoading(false)
                 })
         }
-
     }
 
     useEffect(() => {
@@ -45,10 +43,8 @@ const Posts = () => {
     }, [], [displayPosts]); //! Important
 
     if (!isLoading) {
-
-
         //if there are no posts to display
-        if (displayPosts.length == 0) {
+        if (displayPosts.length == 0 || displayPosts == null) {
             return (
                 <><EmptyFeed> No posts to display...</EmptyFeed><AddOn>Try posting something!</AddOn></>
             )
@@ -65,6 +61,13 @@ const Posts = () => {
                 </div>
             )
         }
+    }
+
+    else
+    {
+        return (
+            <LoadingScreen></LoadingScreen>
+        )
     }
 }
 

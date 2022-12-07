@@ -15,6 +15,7 @@ const unlinkAsync = promisify(fs.unlink);
 var path = require('path');
 const dotenv = require('dotenv').config();
 const sharp = require('sharp');
+const e = require('express')
 
 // @desc    Register new user
 // @route   POST /api/users
@@ -26,10 +27,10 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error('Please add all fields')
   }
-  
+
   // Check if user exists
-  const emailExists = await User.findOne({ email: {$regex: new RegExp("^" + email + "$", "i") }})
-  const usernameExists = await User.findOne({ username: {$regex: new RegExp("^" + username + "$", "i") }})
+  const emailExists = await User.findOne({ email: { $regex: new RegExp("^" + email + "$", "i") } })
+  const usernameExists = await User.findOne({ username: { $regex: new RegExp("^" + username + "$", "i") } })
 
   if (emailExists && usernameExists) {
     res.status(400)
@@ -64,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
       username: user.username,
       isConfirmed: user.isConfirmed,
       about: user.about,
-      followers: user.followers, 
+      followers: user.followers,
       following: user.following,
       token: generateToken(user._id),
       anthem: {}
@@ -84,7 +85,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!(username && password)) {
     throw new Error("All input required");
   }
-  
+
   // Check for username
   const user = await User.findOne({ username })
 
@@ -92,8 +93,8 @@ const loginUser = asyncHandler(async (req, res) => {
   if (user && (await bcrypt.compare(password, user.password))) {
 
     // Ensure the account has been verified
-    if(!user.isConfirmed) {
-      res.status(403).json({message: "Verify your account"})
+    if (!user.isConfirmed) {
+      res.status(403).json({ message: "Verify your account" })
     }
     else {
       res.status(200).json({
@@ -103,8 +104,8 @@ const loginUser = asyncHandler(async (req, res) => {
         username: user.username,
         token: generateToken(user._id),
         isConfirmed: user.isConfirmed,
-        about: user.about, 
-        followers: user.followers, 
+        about: user.about,
+        followers: user.followers,
         following: user.following,
         anthem: user.anthem,
         profilePicture: user.profilePicture,
@@ -123,8 +124,8 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id)
-  
-  
+
+
   res.status(200).json(user)
 })
 
@@ -137,7 +138,7 @@ const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id)
 
   // All possible updateable user fields from frontend currently
-  const {name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl} = req.body;
+  const { name, username, anthemId, anthemTitle, anthemArtist1, anthemImage, anthemUrl } = req.body;
 
   if (!user) {
     res.status(400)
@@ -154,24 +155,24 @@ const updateUser = asyncHandler(async (req, res) => {
       image: anthemImage,
       url: anthemUrl
     })
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, {name: name, username: username, anthem: newAnthem}, {
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, { name: name, username: username, anthem: newAnthem }, {
       new: true,
     })
   } else {
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, {name: name, username: username}, {
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, { name: name, username: username }, {
       new: true,
     })
   }
 
 
- //! Remove password update for now
+  //! Remove password update for now
   // if(user.password != req.body.password){
   //   const salt = await bcrypt.genSalt(10);
   //   req.body.password = await bcrypt.hash(req.body.password, salt)
   // }
 
 
-  const updatedUser = await User.findByIdAndUpdate(req.user.id, {name: name, username: username, anthem: newAnthem}, {
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, { name: name, username: username, anthem: newAnthem }, {
     new: true,
   })
 
@@ -183,46 +184,44 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/uploadProfilePic
 // @access  Public
 const uploadProfilePic = asyncHandler(async (req, res) => {
-  if (!req.file)
-  {
-      res.status(400);
-      throw new Error('Please upload a file');
+  if (!req.file) {
+    res.status(400);
+    throw new Error('Please upload a file');
   }
 
-  const {id} = req.body
+  const { id } = req.body
   var user = await User.findById(id)
   var imgPath = __dirname + '/../middleware/temp/';
   await sharp(imgPath + req.file.filename).resize(150, 150)
-            .rotate()
-            .png({ quality: 100 }).toFile(imgPath + req.file.filename + '-thumb');
-        
+    .rotate()
+    .png({ quality: 100 }).toFile(imgPath + req.file.filename + '-thumb');
+
   var img = fs.readFileSync(path.join(imgPath + req.file.filename + '-thumb'));
 
-  if (!user || !img)
-  {
-      res.status(400);
-      throw new Error('Image did not successfully upload');
+  if (!user || !img) {
+    res.status(400);
+    throw new Error('Image did not successfully upload');
   }
 
   // var encode_img = img.toString('base64');
 
   var final_img = {
-      contentType:req.file.mimetype,
-      data: img
+    contentType: req.file.mimetype,
+    data: img
   };
 
-  await user.updateOne({profilePicture: final_img});
+  await user.updateOne({ profilePicture: final_img });
 
   if (user.profilePicture) {
-      res.status(201).json({
-        _id: user.id,
-        profilePicture: user.profilePicture,
-      })
-      await unlinkAsync(imgPath + req.file.filename);
-      await unlinkAsync(imgPath + req.file.filename + '-thumb');
+    res.status(201).json({
+      _id: user.id,
+      profilePicture: user.profilePicture,
+    })
+    await unlinkAsync(imgPath + req.file.filename);
+    await unlinkAsync(imgPath + req.file.filename + '-thumb');
   } else {
-      res.status(400);
-      throw new Error('Error uploading profile picture');
+    res.status(400);
+    throw new Error('Error uploading profile picture');
   }
 });
 
@@ -237,17 +236,26 @@ const followUser = async (req, res) => {
     res.status(403).json("Action forbidden");
   } else {
     try {
+      console.log("SHIT")
       const followUser = await User.findById(mongoose.Types.ObjectId(id));
       const followingUser = await User.findById(mongoose.Types.ObjectId(currentUserId));
 
+      console.log("checking if user doesn't already follow the target user")
       if (!followUser.followers.includes(currentUserId)) {
         await followUser.updateOne({ $push: { followers: currentUserId } });
         await followingUser.updateOne({ $push: { following: id } });
-        res.status(200).json("User followed!");
+
+        let newFollowingList = followingUser.following;
+
+        newFollowingList.push(followUser.id)
+
+        res.status(200).json(newFollowingList);
       } else {
+        console.log("poooooooo already follows")
         res.status(403).json("User is Already followed by you");
       }
     } catch (error) {
+      console.log("errrror")
       res.status(500).json(error);
     }
   }
@@ -270,7 +278,17 @@ const unfollowUser = async (req, res) => {
       if (followUser.followers.includes(currentUserId)) {
         await followUser.updateOne({ $pull: { followers: currentUserId } });
         await followingUser.updateOne({ $pull: { following: id } });
-        res.status(200).json("User Unfollowed!");
+
+        let newFollowingList = [];
+        for (let i = 0; i < followingUser.following.length; i++) {
+
+          if (followingUser.following[i] != followUser.id) {
+            newFollowingList.push(followingUser.following[i])
+          }
+
+        }
+
+        res.status(200).json(newFollowingList);
       } else {
         res.status(403).json("User is not followed by you");
       }
@@ -293,39 +311,39 @@ const generateToken = (id) => {
 // @route POST /api/users/confirm
 // @access PUBLIC
 const mailForEmailVerification = asyncHandler(async (req, res) => {
-	try {
-		const { email } = req.body;
-		const user = await User.findOne({ email })
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email })
 
-		if (user) {
-			// send a verification email, if this user is not a confirmed email
-			if (!user.isConfirmed) {
-				// send the mail
-				await sendMail(user._id, email, 'email verification')
-				res.status(201).json({
-					message: `Sent a verification email to ${email}`
-				});
-			} else {
-				res.status(400)
-				throw new Error('User already confirmed')
-			}
-		}
-	} catch (error) {
-		console.log(error)
-		res.status(401)
-		throw new Error('Could not send the mail. Please retry.')
-	}
+    if (user) {
+      // send a verification email, if this user is not a confirmed email
+      if (!user.isConfirmed) {
+        // send the mail
+        await sendMail(user._id, email, 'email verification')
+        res.status(201).json({
+          message: `Sent a verification email to ${email}`
+        });
+      } else {
+        res.status(400)
+        throw new Error('User already confirmed')
+      }
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(401)
+    throw new Error('Could not send the mail. Please retry.')
+  }
 });
 
 // @desc verify users account via email
 // @route GET /api/users/verify/:token
 // @access PUBLIC
 const verifyUser = asyncHandler(async (req, res) => {
-  const {token} = req.params
-  
+  const { token } = req.params
+
   // Check for token
   if (!token) {
-    return res.status(422).json({message: "Missing verification token"})
+    return res.status(422).json({ message: "Missing verification token" })
   }
 
   // Verify token from the URL
@@ -341,9 +359,9 @@ const verifyUser = asyncHandler(async (req, res) => {
 
   try {
     // Find user with matching id
-    const user = await User.findOne({_id: mongoose.Types.ObjectId(payload.id)}).exec()
-    if(!user) {
-      return res.status(404).send({message: "User does not exist"})
+    const user = await User.findOne({ _id: mongoose.Types.ObjectId(payload.id) }).exec()
+    if (!user) {
+      return res.status(404).send({ message: "User does not exist" })
     }
 
     // If user found from token, verify them
@@ -365,26 +383,26 @@ const verifyUser = asyncHandler(async (req, res) => {
 // @route POST /api/users/resetEmail
 // @access PUBLIC
 const mailForResetPassword = asyncHandler(async (req, res) => {
-	try {
+  try {
     const { email } = req.body;
-		const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-		if (user) {
-			// send the mail
-			await sendMail(user.id, email, 'forgot password');
+    if (user) {
+      // send the mail
+      await sendMail(user.id, email, 'forgot password');
 
-			res.status(201).json({
+      res.status(201).json({
         message: `Sent a password reset email to ${email}`
       });
-		} else {
+    } else {
       res.status(400);
-				throw new Error('Email does not belong to a user');
+      throw new Error('Email does not belong to a user');
     }
-	} catch (error) {
-		console.log(error);
-		res.status(401);
-		throw new Error('Could not send the mail. Please retry.');
-	}
+  } catch (error) {
+    console.log(error);
+    res.status(401);
+    throw new Error('Could not send the mail. Please retry.');
+  }
 });
 
 
@@ -392,46 +410,46 @@ const mailForResetPassword = asyncHandler(async (req, res) => {
 // @route PUT /api/users/reset
 // @access PUBLIC
 const resetUserPassword = asyncHandler(async (req, res) => {
-	try {
-		// update the user password if the jwt is verified successfully
-		const { passwordToken, password} = req.body;
+  try {
+    // update the user password if the jwt is verified successfully
+    const { passwordToken, password } = req.body;
     console.log(passwordToken)
     console.log(password)
 
-		let payload = null
-    try { 
+    let payload = null
+    try {
       payload = jwt.verify(
-			  passwordToken,
-			  process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET
-		  );
-    } catch(err){
+        passwordToken,
+        process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET
+      );
+    } catch (err) {
       return res.status(500).send(err)
     }
-		//const user = await User.findById(payload._id);
-    const user = await User.findOne({_id: mongoose.Types.ObjectId(payload.id)}).exec()
+    //const user = await User.findById(payload._id);
+    const user = await User.findOne({ _id: mongoose.Types.ObjectId(payload.id) }).exec()
 
-		if (user && password) {
-			user.password = password;
+    if (user && password) {
+      user.password = password;
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt)
-			const updatedUser = await user.save();
+      const updatedUser = await user.save();
 
-			if (updatedUser) {
-				res.status(200).json({
-					id: updatedUser._id,
-					email: updatedUser.email,
-					name: updatedUser.name,
+      if (updatedUser) {
+        res.status(200).json({
+          id: updatedUser._id,
+          email: updatedUser.email,
+          name: updatedUser.name,
           password: updatedUser.password
-				});
-			} else {
-				res.status(401);
-				throw new Error('Unable to update password');
-			}
-		}
-	} catch (error) {
-		res.status(400);
-		throw new Error('User not found.');
-	}
+        });
+      } else {
+        res.status(401);
+        throw new Error('Unable to update password');
+      }
+    }
+  } catch (error) {
+    res.status(400);
+    throw new Error('User not found.');
+  }
 });
 
 
@@ -446,13 +464,13 @@ const searchUser = asyncHandler(async (req, res) => {
     const payload = req.body.payload
     // Changed
     // let search = await User.find({username: {$regex: new RegExp(payload), $options:"i"}, $ne: req.user.id}).exec();
-    let search = await User.find({username: {$regex: new RegExp(payload), $options:"i"}}).exec();
+    let search = await User.find({ username: { $regex: new RegExp(payload), $options: "i" } }).exec();
 
     // Limit search results to 7
     search = search.slice(0, 20)
     // search = search.
 
-    res.send({payload: search})
+    res.send({ payload: search })
 
   } catch (error) {
     console.log(error);
@@ -468,17 +486,17 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   const username = req.params.username
 
-  try { 
-    const user = await User.findOne({username})
+  try {
+    const user = await User.findOne({ username })
     res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        about: user.about,
-        username: user.username,
-        profilePicture: user.profilePicture,
-        followers: user.followers,
-        following: user.following, // May need more data
-        anthem: user.anthem, //! Added this
+      _id: user._id,
+      name: user.name,
+      about: user.about,
+      username: user.username,
+      profilePicture: user.profilePicture,
+      followers: user.followers,
+      following: user.following, // May need more data
+      anthem: user.anthem, //! Added this
     });
 
   } catch (error) {
@@ -494,103 +512,109 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const user = await User.findById(mongoose.Types.ObjectId(id));
 
-    if (!user)
-    {
-        res.status(400);
-		    throw new Error('Cannot Find User');
+  if (!user) {
+    res.status(400);
+    throw new Error('Cannot Find User');
+  }
+
+  let followingPosts = [];
+  let following = user.following;
+  for (let i = 0; i < following.length; i++) {
+    let friend = await User.findById(following[i])
+    if (!friend) {
+      console.log("Following no longer exists")
+      await user.updateOne({ $pull: { following: following[i] } });
     }
+    else {
+      var posts = friend.posts;
+      for (let j = 0; j < posts.length; j++) {
+        let post = await Post.findById(mongoose.Types.ObjectId(posts[j]));
+        if (!post) {
+          console.log("Post Could not be found")
+          await friend.updateOne({ $pull: { posts: friend.posts[j] } })
+        }
+        else {
+          var postData = {}
+          postData['img'] = post.picture;
+          postData['name'] = friend.name;
+          postData['username'] = friend.username;
+          postData['caption'] = post.caption;
+          postData['likes'] = post.likes.length;
+          postData['comments'] = '';
+          postData['createdAt'] = post.createdAt;
+          if (friend["profilePicture"]) { postData["profileImage"] = friend.profilePicture; }
+          if (post.song) { postData['song'] = post.song; }
+          if (post.image) { postData['image'] = post.image; }
+          if (post.url) { postData['url'] = post.url; }
+          if (post.artist) { postData['artist'] = post.artist; }
+          if (post.playlist) { postData['palylist'] = post.playlist; }
 
-    let followingPosts = [];
-    for (let i = 0; i < user.following.length; i++)
-    {
-      let friend = await User.findById(user.following[i])
-      if (!friend)
-      {
-        console.log("Following no longer exists")
-        await user.updateOne({ $pull: { following: following[i] } });
-      }
-      else
-      {
-        for (let j = 0; j < friend.posts.length; j++)
-        { 
-          let post = await Post.findById(mongoose.Types.ObjectId(friend.posts[j]));
-          if (!post)
-          {
-            console.log("Post Could not be found")
-            await friend.updateOne({ $pull: { posts: friend.posts[j] } })
+          if (post.likes.includes(id)) {
+            postData['liked'] = true;
           }
-          else{
-            var postData = {}
-            postData['img'] = post.picture;
-            postData['name'] = friend.name;
-            postData['username'] = friend.username;
-            postData['caption'] = post.caption;
-            postData['likes'] = post.likes.length;
-            postData['comments'] = '';
-            if (friend["profilePicture"]) {postData["profileImage"] = friend.profilePicture;}
-            if (post.song) {postData['song'] = post.song;}
-            if (post.image) {postData['image'] = post.image;}
-            if (post.url) {postData['url'] = post.url;}
-            if (post.artist) {postData['artist'] = post.artist;}
-            if (post.playlist) {postData['palylist'] = post.playlist;}
-
-            if(post.likes.includes(id))
-            {
-              postData['liked'] = true;
-            }
-            else
-            {
-              postData['liked'] = false;
-            }
-
-            followingPosts.push(postData)
+          else {
+            postData['liked'] = false;
           }
+
+          followingPosts.push(postData)
         }
       }
     }
-
-    for (let i = 0; i < user.posts.length; i++)
-    {
-      let post = await Post.findById(mongoose.Types.ObjectId(user.posts[i]));
-          if (!post)
-          {
-            console.log("Post Could not be found")
-            await friend.updateOne({ $pull: { posts: user.posts[i] } })
-          }
-          else{
-            var postData = {}
-            postData['img'] = post.picture;
-            postData['name'] = user.name;
-            postData['username'] = user.username;
-            postData['caption'] = post.caption;
-            postData['likes'] = post.likes.length;
-            postData['comments'] = '';
-            if (user["profilePicture"]) {postData["profileImage"] = user.profilePicture;}
-            if (post.song) {postData['song'] = post.song;}
-            if (post.image) {postData['image'] = post.image;}
-            if (post.url) {postData['url'] = post.url;}
-            if (post.artist) {postData['artist'] = post.artist;}
-            if (post.playlist) {postData['palylist'] = post.playlist;}
-
-            if(post.likes.includes(id))
-            {
-              postData['liked'] = true;
-            }
-            else
-            {
-              postData['liked'] = false;
-            }
-            followingPosts.push(postData)
-          }
+  }
+  var posts = user.posts;
+  for (let i = 0; i < posts.length; i++) {
+    let post = await Post.findById(mongoose.Types.ObjectId(posts[i]));
+    if (!post) {
+      console.log("Post Could not be found")
+      await friend.updateOne({ $pull: { posts: user.posts[i] } })
     }
+    else {
+      var postData = {}
+      postData['img'] = post.picture;
+      postData['name'] = user.name;
+      postData['username'] = user.username;
+      postData['caption'] = post.caption;
+      postData['likes'] = post.likes.length;
+      postData['comments'] = '';
+      postData['createdAt'] = post.createdAt;
+      if (user["profilePicture"]) { postData["profileImage"] = user.profilePicture; }
+      if (post.song) { postData['song'] = post.song; }
+      if (post.image) { postData['image'] = post.image; }
+      if (post.url) { postData['url'] = post.url; }
+      if (post.artist) { postData['artist'] = post.artist; }
+      if (post.playlist) { postData['palylist'] = post.playlist; }
 
-    if (followingPosts.length == 0)
-    {
-      res.status(201).json(followingPosts)
-      // res.status(400);
-      // throw new Error('User has no following posts');
+      if (post.likes.includes(id)) {
+        postData['liked'] = true;
+      }
+      else {
+        postData['liked'] = false;
+      }
+      followingPosts.push(postData)
     }
+  }
+
+  function compareDates(a, b) {
+    if (a.createdAt > b.createdAt) {
+      return -1;
+    }
+    else if (a.createdAt < b.createdAt) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  followingPosts.sort(compareDates);
+
+  if (followingPosts.length == 0) {
+
     res.status(201).json(followingPosts)
+    // res.status(400);
+    // throw new Error('User has no following posts');
+  }
+  res.status(201).json(followingPosts)
 });
 
 module.exports = {

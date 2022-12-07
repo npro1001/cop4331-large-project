@@ -46,8 +46,6 @@ export function EmailSent(props) {
 
     const navigate = useNavigate()
 
-    const { message } = useSelector(state => state.auth)
-
     const onClick = (e) => {
         e.preventDefault()
         navigate('/', {replace: true})
@@ -58,7 +56,7 @@ export function EmailSent(props) {
                         <ALogo src={`${Logo}`} alt="Logo for Anthem which consits of 2 connected quarter notes with sound waves at the top" />
                         <NewBackDrop inital={false} variants={backdropVariants}/>
                         {/* <HeaderContainer> */}
-                            <h1>A verification link was sent to your email address.</h1>
+                            <h1>A link was sent to your email address.</h1>
                             <BackToLogin onClick={onClick}>Back to login</BackToLogin>
                         {/* </HeaderContainer> */}
                 </BoxContainer>

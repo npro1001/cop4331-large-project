@@ -27,6 +27,12 @@ export const MutedLink = styled.div`
     font-weight: 500;
     text-decoration: none;
     align-self: center;
+    cursor: pointer;
+
+    &:hover{
+        filter: brightness(1.2); 
+    text-shadow: 0 0 2px #999;
+    }
 `;
 
 //this is for "Login here" and "Signup here"

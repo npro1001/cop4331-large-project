@@ -11,6 +11,14 @@ const createPost = async (post) => {
      return null
 }
 
+const createPostWithoutImage = async (post) => {
+    const response = await axios.post(API_URL + 'withoutImage', post)
+    if(response.data) {
+        return response.data;
+    }
+     return null
+}
+
 // Get Following Posts
 const getPosts = async(userId) => {
     const response = await axios.get(USER_API_URL + userId + "/getFollowingPosts")
@@ -30,6 +38,7 @@ const likePost = async (postID,userID) => {
 
 const postService = {
     createPost,
+    createPostWithoutImage,
     getPosts,
     likePost
 } 

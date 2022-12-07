@@ -9,6 +9,8 @@ import defaultPFP from '../../img/default-profile.png'
 import ImageModal from '../imageModal/ImageModal'
 import { useEffect } from "react";
 import SongCard from "../SongCard/SongCard";
+import { UilTimes } from '@iconscout/react-unicons'
+import { useParams } from 'react-router-dom';
 
 const Post = ({ data }) => {
 
@@ -20,7 +22,21 @@ const Post = ({ data }) => {
     const [profileImage, setProfileImage] = useState();
     const [isPFP, setIsPFP] = useState();
 
+    const [activeUser, setActiveUser] = useState({})
+    const params = useParams();
+    const profileUsername = params.username;
+    let profileUser;
+
+    const fetchProfileUser = async () => {
+        setActiveUser(user);
+    }
+
     useEffect(() => {
+        fetchProfileUser()
+    },[user]);
+
+    useEffect(() => {
+        //console.log(data.id)
         if (data.img.data) {
 
             setIsImage(true)
@@ -69,6 +85,29 @@ const Post = ({ data }) => {
         }
     }, [])
 
+    const deletePost = async () => {
+        const postId = data.id
+        console.log(postId)
+
+        await fetch(`/api/post/delete`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({postId})
+        }).then(response => {
+            return response.json( )
+        })
+        .then(data => 
+            console.log(data) 
+        );
+        window.location.reload()
+    }
+
+    // const ChangeLike = async () => {
+    //     const dispatch = useDispatch();
+
+    //     dispatch(likePost)
+    // }
+
     return (
         <div className="Post">
             <div className="postInfo">
@@ -81,6 +120,14 @@ const Post = ({ data }) => {
 
                     <span> {data.caption}</span>
                 </div>
+
+                {(user.username === data.username)
+                ? 
+                <div className="options" onClick={deletePost}>
+                    <UilTimes/>
+                </div>
+                : ""}
+
             </div>
 
             {isSong ? <SongCard

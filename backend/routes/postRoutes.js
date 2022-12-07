@@ -14,12 +14,12 @@ const {
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
-router.post('/', upload.single('picture'), createPost);
-router.post('/withoutImage', createPostWithoutImage);
-router.put('/delete', deletePost);
-router.put('/like', likePost);
-router.put('/unlike', unlikePost);
-router.put('/comment', commentPost);
-router.put('/deleteComment', deleteComment);
+router.post('/', protect, upload.single('picture'), createPost);
+router.post('/withoutImage', protect, createPostWithoutImage);
+router.put('/delete', protect, deletePost);
+router.put('/like', protect, likePost);
+router.put('/unlike', protect, unlikePost);
+router.put('/comment', protect, commentPost);
+router.put('/deleteComment', protect, deleteComment);
 
 module.exports = router;

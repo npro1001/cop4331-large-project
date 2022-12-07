@@ -39,7 +39,7 @@ export const createNewPostWithoutImage = createAsyncThunk('post/createPostWithou
 export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI) => {
     try {
         const token = user.token
-        return await postService.getPosts(user, token)
+        return await postService.getPosts(user._id, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
         return thunkAPI.rejectWithValue(message);

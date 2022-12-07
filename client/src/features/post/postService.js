@@ -37,7 +37,7 @@ const createPostWithoutImage = async (post, token) => {
 const getPosts = async(userId, token) => {
     const response = await axios({
         method: "get",
-        url: API_URL + userId + '/getFollowingPosts', 
+        url: USER_API_URL + userId + '/getFollowingPosts', 
         headers:{
             Authorization: `Bearer ${token}`
         }
@@ -48,7 +48,7 @@ const getPosts = async(userId, token) => {
     return null;
 }
 
-const likePost = async (postID,userID, token) => {
+const likePost = async (postID, userID, token) => {
     const response = await axios({
         method: "put",
         url: API_URL + userID + '/like', 

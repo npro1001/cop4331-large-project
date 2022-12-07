@@ -3,16 +3,30 @@ import axios from 'axios';
 const API_URL = '/api/post/';
 const USER_API_URL ='/api/users/';
 
-const createPost = async (post) => {
-    const response = await axios.post(API_URL, post)
+const createPost = async (post, token) => {
+    const response = await axios({
+        method: "post",
+        url: API_URL, 
+        data: post,
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if(response.data) {
         return response.data;
     }
      return null
 }
 
-const createPostWithoutImage = async (post) => {
-    const response = await axios.post(API_URL + 'withoutImage', post)
+const createPostWithoutImage = async (post, token) => {
+    const response = await axios({
+        method: "post",
+        url: API_URL + 'withoutImage', 
+        data: post,
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if(response.data) {
         return response.data;
     }
@@ -20,16 +34,32 @@ const createPostWithoutImage = async (post) => {
 }
 
 // Get Following Posts
-const getPosts = async(userId) => {
-    const response = await axios.get(USER_API_URL + userId + "/getFollowingPosts")
+const getPosts = async(userId, token) => {
+    const response = await axios({
+        method: "get",
+        url: API_URL + userId + '/getFollowingPosts', 
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if (response.data) {
         return response.data
     }
     return null;
 }
 
-const likePost = async (postID,userID) => {
-    const response = await axios.put(API_URL+"like", postID,userID)
+const likePost = async (postID,userID, token) => {
+    const response = await axios({
+        method: "put",
+        url: API_URL + userId + 'like', 
+        data: {
+            postId: postID,
+            userId: userID
+        },
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if(response.data) {
         return response.data;
     }

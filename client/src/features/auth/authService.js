@@ -82,8 +82,15 @@ const getMe = async (token) => {
     return null;
 }
 
-const uploadPFP = async (picture) => {
-    const response = await axios.post(API_URL + 'uploadProfilePic', picture)
+const uploadPFP = async (picture, token) => {
+    const response = await axios({
+        method: "post",
+        url: API_URL + 'uploadProfilePic', 
+        data: picture,
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     console.log({ response });
     if (response.data) {
         return response.data
@@ -93,18 +100,36 @@ const uploadPFP = async (picture) => {
 
 
 //follow user
-const follow = async (targetUserId,user) => {
+const follow = async (targetUserId,user, token) => {
 
-    const response = await axios.put(API_URL +targetUserId+"/follow", {currentUserId: user})
+    const response = await axios({
+        method: "put",
+        url: API_URL + targetUserId + '/follow', 
+        data: {
+            currentUserId: user
+        },
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if (response.data) {
         return response.data
     }
     return null;
 }
 
-const unfollow = async (targetUserId, user) => {
+const unfollow = async (targetUserId, user, token) => {
 
-    const response = await axios.put(API_URL + targetUserId +"/unfollow", {currentUserId: user})
+    const response = await axios({
+        method: "put",
+        url: API_URL + targetUserId + '/unfollow', 
+        data: {
+            currentUserId: user
+        },
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if (response.data) {
         return response.data
     }

@@ -16,9 +16,10 @@ const initialState = {
 
 }
 
-export const createNewPost = createAsyncThunk('post/createPost', async (post, thunkAPI) => {
+export const createNewPost = createAsyncThunk('post/createPost', async (post, thunkAPI, token) => {
     try {
-        return await postService.createPost(post)
+        const token = user.token
+        return await postService.createPost(post, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -27,7 +28,8 @@ export const createNewPost = createAsyncThunk('post/createPost', async (post, th
 
 export const createNewPostWithoutImage = createAsyncThunk('post/createPostWithoutImage', async (post, thunkAPI) => {
     try {
-        return await postService.createPostWithoutImage(post)
+        const token = user.token
+        return await postService.createPostWithoutImage(post, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -36,7 +38,8 @@ export const createNewPostWithoutImage = createAsyncThunk('post/createPostWithou
 
 export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI) => {
     try {
-        return await postService.getPosts(user)
+        const token = user.token
+        return await postService.getPosts(user, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
         return thunkAPI.rejectWithValue(message);
@@ -46,7 +49,8 @@ export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI)
 
 export const likePost = createAsyncThunk('post/likePost', async (postID, userID, thunkAPI) => {
     try {
-        return await postService.likePost(postID,userID)
+        const token = user.token
+        return await postService.likePost(postID,userID, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
         return thunkAPI.rejectWithValue(message);

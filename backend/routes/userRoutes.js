@@ -25,9 +25,9 @@ router.post('/', registerUser)
 router.post('/login', loginUser)
 router.get('/me', protect, getMe) //!
 router.put('/update', protect, updateUser)
-router.put('/:id/follow', followUser) //!
-router.put('/:id/unfollow', unfollowUser) //!
-router.post('/uploadProfilePic', upload.single('picture'), uploadProfilePic); //!
+router.put('/:id/follow', protect, followUser) //!
+router.put('/:id/unfollow', protect, unfollowUser) //!
+router.post('/uploadProfilePic', protect, upload.single('picture'), uploadProfilePic); //!
 router.post('/confirm', mailForEmailVerification)
 router.get('/verify/:token', verifyUser);
 router.post('/resetEmail', mailForResetPassword);

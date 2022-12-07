@@ -83,7 +83,8 @@ export const getMe = createAsyncThunk('auth/getMe', async(thunkAPI) =>
 export const followUser = createAsyncThunk('auth/follow', async(targetUserId, thunkAPI) =>
 {
     try {
-        return await authService.follow(targetUserId,user._id);
+        const token = user.token
+        return await authService.follow(targetUserId,user._id, token);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -96,7 +97,8 @@ export const unfollowUser = createAsyncThunk('auth/unfollow', async(targetUserId
 {
     try {
 
-        return await authService.unfollow(targetUserId,user._id);
+        const token = user.token
+        return await authService.unfollow(targetUserId,user._id, token);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)
@@ -107,7 +109,8 @@ export const unfollowUser = createAsyncThunk('auth/unfollow', async(targetUserId
 export const uploadPFP = createAsyncThunk('auth/uploadPFP', async(picture, thunkAPI) =>
 {
     try {
-        return await authService.uploadPFP(picture);
+        const token = user.token
+        return await authService.uploadPFP(picture, token);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString())
         return thunkAPI.rejectWithValue(message)

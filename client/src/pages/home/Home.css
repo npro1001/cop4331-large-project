@@ -13,7 +13,7 @@
 
 .navIcons{
     display: flex;
-    margin-left: 1rem;
+    margin-left: 20rem;
     margin-right: 1rem;
     justify-content: space-between;
     gap: 12rem;

@@ -62,6 +62,7 @@ const userSchema = mongoose.Schema(
       contentType: String
     },
     topArtist: {
+      type: Object,
       name: String,
       image: String,
       genre: String,

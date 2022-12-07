@@ -69,7 +69,8 @@ const registerUser = asyncHandler(async (req, res) => {
       followers: user.followers,
       following: user.following,
       token: generateToken(user._id),
-      anthem: {}
+      anthem: {},
+      topArtist: {}
     })
   } else {
     res.status(400)
@@ -486,7 +487,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       followers: user.followers,
       following: user.following, // May need more data
       anthem: user.anthem, //! Added this
-      posts: user.posts
+      posts: user.posts,
+      topArtist: user.topArtist
     });
 
   } catch (error) {
@@ -530,7 +532,8 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
           postData['username'] = friend.username;
           postData['caption'] = post.caption;
           postData['likes'] = post.likes.length;
-          postData['comments'] = '';
+          postData['id'] = post._id
+          postData['author'] = friend._id;          
           postData['createdAt'] = post.createdAt;
           if (friend["profilePicture"]) { postData["profileImage"] = friend.profilePicture; }
           if (post.song) { postData['song'] = post.song; }
@@ -566,7 +569,7 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
       postData['caption'] = post.caption;
       postData['likes'] = post.likes.length;
       postData['id'] = post._id
-      postData['comments'] = '';
+      postData['author'] = user._id;
       postData['createdAt'] = post.createdAt;
       if (user["profilePicture"]) { postData["profileImage"] = user.profilePicture; }
       if (post.song) { postData['song'] = post.song; }
@@ -615,12 +618,12 @@ const putTopArtist = asyncHandler(async (req, res) => {
 
   // console.log("IN PUT TOP ARTIST")
   const userId = req.user.id;
-  const { topArtist } = req.body; 
-  const user = await User.findByIdAndUpdate(userId, { $set: {topArtist: topArtist }}); 
+  const artist = req.body
+  const user = await User.findByIdAndUpdate(userId, { $set: {topArtist: artist}}); 
+
   if (user)
   {
-    // console.log("hello")
-    // console.log(user)
+    console.log(user)
     res.status(201).json(user);  
   }
   else
@@ -636,6 +639,7 @@ const putTopArtist = asyncHandler(async (req, res) => {
 // @access  Public
 const getTopArtist = asyncHandler(async (req, res) => {
   const userId = req.params.id;
+  console.log("USER ID "+userId)
   const user = User.findById(userId);
   if (!user)
   {
@@ -644,6 +648,8 @@ const getTopArtist = asyncHandler(async (req, res) => {
   }
   else
   {
+    console.log("USER TOP ARTIST")
+    console.log(user.topArtist)
     res.status(201).json(user.topArtist);
   }
 })

@@ -146,6 +146,36 @@ const passRequest = async (email) => {
     return null;
 } 
 
+const putTopArtistService = async (topArtist, token) => {
+
+    const response = await axios({
+        method: "put",
+        url: API_URL + 'putTopArtist', 
+        data: topArtist,
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    if (response.data) {
+        return response.data
+    }
+    return null;
+} 
+
+const getTopArtistService = async (userId, token) => {
+
+    const response = await axios({
+        method: "get",
+        url: API_URL + userId + '/putTopArtist', 
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    if (response.data) {
+        return response.data
+    }
+    return null;
+} 
 const authService = {
     register,
     login,
@@ -156,7 +186,9 @@ const authService = {
     uploadPFP,
     follow,
     unfollow,
-    passRequest
+    passRequest,
+    putTopArtistService,
+    getTopArtistService
 
 }
 

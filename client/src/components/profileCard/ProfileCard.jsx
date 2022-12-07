@@ -183,7 +183,7 @@ const ProfileCard = ({ location }) => {
 
 
     const DoFollow = async () => {
-        dispatch(followUser(activeUser._id)).then((response) => {
+        await dispatch(followUser(activeUser._id)).then((response) => {
             console.log(response);
         }) 
 
@@ -192,7 +192,7 @@ const ProfileCard = ({ location }) => {
 
     const DoUnFollow = async () => {
 
-        dispatch(unfollowUser(activeUser._id)).then((response) => {
+        await dispatch(unfollowUser(activeUser._id)).then((response) => {
             console.log(response);
         }) 
 

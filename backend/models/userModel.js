@@ -61,6 +61,11 @@ const userSchema = mongoose.Schema(
       data: Buffer,
       contentType: String
     },
+    topArtist: {
+      name: String,
+      image: String,
+      genre: String,
+    }
   },
   {
     timestamps: true,

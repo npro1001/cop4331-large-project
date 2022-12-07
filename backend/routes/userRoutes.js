@@ -16,7 +16,9 @@ const {
   resetUserPassword,
   searchUser,
   getUserProfile,
-  getFollowingPosts
+  getFollowingPosts,
+  putTopArtist,
+  getTopArtist
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 const upload = require('../middleware/uploadMiddleware');
@@ -35,5 +37,7 @@ router.put('/reset', resetUserPassword);
 router.post('/search', searchUser);
 router.get('/:username', getUserProfile);
 router.get('/:id/getFollowingPosts', protect, getFollowingPosts);
+router.put('/putTopArtist', protect, putTopArtist);
+router.get('/:id/getTopArtist', protect, getTopArtist) ;
 
 module.exports = router

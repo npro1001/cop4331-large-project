@@ -246,8 +246,6 @@ const followUser = async (req, res) => {
         await followUser.updateOne({ $push: { followers: currentUserId } });
         await followingUser.updateOne({ $push: { following: id } });
 
-        await followUser.save();
-        await followingUser.save();
         res.status(200).json(followingUser.following);
       } else {
         console.log("poooooooo already follows")
@@ -277,9 +275,6 @@ const unfollowUser = async (req, res) => {
       if (followUser.followers.includes(currentUserId)) {
         await followUser.updateOne({ $pull: { followers: currentUserId } });
         await followingUser.updateOne({ $pull: { following: id } });
-
-        await followUser.save();
-        await followingUser.save();
 
         res.status(200).json(followingUser.following);
       } else {

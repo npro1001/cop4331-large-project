@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:http/http.dart' as http;
 import '../../business_logic/user_auth/user_auth_bloc.dart';
+import '../../data/models/post_model.dart';
 
 class Feed extends StatelessWidget {
   Widget _buildPost(int index) {
@@ -112,6 +114,7 @@ class Feed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserAuthBloc userAuthBloc = BlocProvider.of<UserAuthBloc>(context);
     return Scaffold(
       backgroundColor: Color(0xFFEDF0F0F6), //Instagram color WHAAA???
       body: ListView(
@@ -156,10 +159,34 @@ class Feed extends StatelessWidget {
             height: 100,
             color: Colors.grey,
           ),
+          BlocBuilder<UserAuthBloc, UserAuthState>(
+            bloc: userAuthBloc,
+            builder: (context, state) {
+              if (state is AuthTrue) {
+                getPosts(state.user.id, state.user.token);
+                return Text(state.user.username);
+              } else {
+                // Navigator.of(context).pushNamed('/login'); THIS DOESNT WORK
+                return Text('Something went very wrong!');
+              }
+            },
+          ),
           _buildPost(0),
           _buildPost(1),
         ],
       ),
     );
   }
+}
+
+void getPosts(String id, String token) async {
+  final response = await http.post(
+      Uri.parse('https://anthem-cop4331.herokuapp.com/api/users/' +
+          id +
+          '/getFollowingPosts'),
+      headers: <String, String>{
+        'Authorization': 'Bearer ' + token,
+      });
+  print(response.statusCode);
+  // return response;
 }

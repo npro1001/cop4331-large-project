@@ -110,7 +110,8 @@ const loginUser = asyncHandler(async (req, res) => {
         following: user.following,
         anthem: user.anthem,
         profilePicture: user.profilePicture,
-        posts: user.posts
+        posts: user.posts,
+        topArtist: user.topArtist
       })
     }
 
@@ -485,6 +486,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       followers: user.followers,
       following: user.following, // May need more data
       anthem: user.anthem, //! Added this
+      posts: user.posts
     });
 
   } catch (error) {
@@ -610,11 +612,15 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/putTopArtist
 // @access  Public
 const putTopArtist = asyncHandler(async (req, res) => {
+
+  // console.log("IN PUT TOP ARTIST")
   const userId = req.user.id;
   const { topArtist } = req.body; 
-  const user = await User.findByIdAndUpdate(userId, { topArtist: topArtist }); 
+  const user = await User.findByIdAndUpdate(userId, { $set: {topArtist: topArtist }}); 
   if (user)
   {
+    // console.log("hello")
+    // console.log(user)
     res.status(201).json(user);  
   }
   else

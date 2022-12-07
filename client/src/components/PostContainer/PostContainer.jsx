@@ -27,12 +27,18 @@ const Posts = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     async function fetchData() {
-        if (user.following.length >= 0) {
-            await dispatch(getPosts(user))
-                .then(response => {
-                    setDisplayPosts(response.payload)
-                    setIsLoading(false)
-                })
+        if (user.following == null)
+        {
+            setDisplayPosts(null);
+        }
+        else{
+            if (user.following.length >= 0) {
+                await dispatch(getPosts(user))
+                    .then(response => {
+                        setDisplayPosts(response.payload)
+                        setIsLoading(false)
+                    })
+            }
         }
     }
 

@@ -51,7 +51,7 @@ const getPosts = async(userId, token) => {
 const likePost = async (postID,userID, token) => {
     const response = await axios({
         method: "put",
-        url: API_URL + userId + 'like', 
+        url: API_URL + userID + '/like', 
         data: {
             postId: postID,
             userId: userID

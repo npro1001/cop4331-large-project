@@ -623,7 +623,6 @@ const putTopArtist = asyncHandler(async (req, res) => {
 
   if (user)
   {
-    console.log(user)
     res.status(201).json(user);  
   }
   else
@@ -639,8 +638,8 @@ const putTopArtist = asyncHandler(async (req, res) => {
 // @access  Public
 const getTopArtist = asyncHandler(async (req, res) => {
   const userId = req.params.id;
-  console.log("USER ID "+userId)
-  const user = User.findById(userId);
+  const user = await User.findById((userId));
+
   if (!user)
   {
     res.status(400);
@@ -648,8 +647,6 @@ const getTopArtist = asyncHandler(async (req, res) => {
   }
   else
   {
-    console.log("USER TOP ARTIST")
-    console.log(user.topArtist)
     res.status(201).json(user.topArtist);
   }
 })

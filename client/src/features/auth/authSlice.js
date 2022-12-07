@@ -143,8 +143,6 @@ export const putFavArtist = createAsyncThunk('auth/putFavArtistService', async(t
 
 export const getFavArtist = createAsyncThunk('auth/getFavArtistService', async(userId, thunkAPI) =>
 {
-    console.log(userId)
-
     try {
         const token = user.token
         return await authService.getFavArtistService(userId, token);

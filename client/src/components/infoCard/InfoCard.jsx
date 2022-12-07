@@ -23,9 +23,8 @@ const Container = styled.div`
     padding:auto;
     display:flex;
 `
-
-
-
+let loaded = false
+let set = false
 const InfoCard = ({ location }) => {
 
     const params = useParams();
@@ -37,9 +36,9 @@ const InfoCard = ({ location }) => {
 
     const [modalOpened, setModalOpened] = useState(false)
     const [topArtist, setTopArtist] = useState({});
-    const [topGenres, setTopGenres] = useState(null);
+    const [topGenre, setTopGenre] = useState(null);
     const [activeUser, setActiveUser] = useState({})
-    const [fav, setFav] = useState()
+    const [topImage, setTopImage] = useState()
     const [anthem, setAnthem] = useState();
     const [spotifyLoading, setSpotifyLoading] = useState(true)
     let favArtist = {}
@@ -48,10 +47,13 @@ const InfoCard = ({ location }) => {
     let profileUser;
 
     const fetchProfileUser = async () => {
+
+        fetchTopArtist()
         if (profileUsername === user.username) {
             setActiveUser(user);
             setAnthem(user.anthem)
-            fetchTopArtist()
+            getFavorite(user._id)
+
         }
         else {
             const res = await fetch(`/api/users/${profileUsername}`, {
@@ -64,56 +66,54 @@ const InfoCard = ({ location }) => {
                 setAnthem(profileUser.anthem)
             }
 
-            if (profileUser.topArtist) {
-                setTopArtist(profileUser.topArtist)
-                setTopGenres(profileUser.topArtist.genre)
-            }
+            getFavorite(profileUser._id)
 
         }
-
-        fetchTopArtist();
     }
 
 
     const fetchTopArtist = async () => {
 
-        console.log(user._id)
         if (isConnected) {
             await dispatch(getTopArtist())
                 .then(response => {
-                    let genres = [response.payload.data.items[0].genres[1] + " "]
-                    setTopGenres(genres)
-                    setTopArtist(response.payload.data.items[0]);
 
                     favArtist['name'] = response.payload.data.items[0].name;
-                    favArtist['genre'] = genres[0];
+                    favArtist['genre'] = response.payload.data.items[0].genres[1] + " "
                     favArtist['image'] = response.payload.data.items[0].images[0];
                 })
-                .then(res => {
-                    dispatch(putFavArtist(favArtist))
-                    setSpotifyLoading(false);
-                })
-                .then(ressy => {
-                    dispatch(getFavArtist(activeUser._id))
-                    console.log(ressy)
 
-                })
+            if (!set) {
+                await dispatch(putFavArtist(favArtist))
+                    .then(response => {
+                        console.log(response)
+                    })
 
+                set = true;
+            }
 
         }
     }
 
     const getFavorite = async (id) => {
-        dispatch(getFavArtist(id)).then(response => {
-            console.log(response);
-        })
+
+        if (!loaded) {
+            await dispatch(getFavArtist(id)).then(response => {
+                console.log(response)
+                setTopArtist(response.payload.name)
+                setTopGenre(response.payload.genre)
+                setTopImage(response.payload.image.url)
+                setSpotifyLoading(false)
+            })
+        }
+        loaded = true
+
     }
 
     useEffect(() => {
-        fetchTopArtist()
         fetchProfileUser()
 
-    }, [isConnected, activeUser, anthem, user], []); //! Important 
+    }, [isConnected, activeUser, anthem, user, topArtist, topGenre, topImage], []); //! Important 
 
 
     const onLogout = () => {
@@ -162,9 +162,9 @@ const InfoCard = ({ location }) => {
                     {!spotifyLoading ? topArtist ? (
                         <div className="songrec">
                             <div className="topArtist">
-                                <img src={topArtist.images[0].url} alt={topArtist.name} className='songrecImg' />
+                                <img src={topImage} alt={topArtist} className='songrecImg' />
                                 <div className="songname">
-                                    <span>{topArtist.name}</span>
+                                    <span>{topArtist}</span>
                                 </div>
                             </div>
                         </div>
@@ -183,9 +183,9 @@ const InfoCard = ({ location }) => {
                     <br></br>
                 </span>
                 <span>
-                    {!spotifyLoading ? topGenres ? (
+                    {!spotifyLoading ? topGenre ? (
                         <div>
-                            -{topGenres}
+                            -{topGenre}
                         </div>
                     ) : (
                         <div>

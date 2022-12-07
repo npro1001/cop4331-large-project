@@ -34,7 +34,7 @@ function DeleteModal({modalOpened, setModalOpened, post}) {
             console.log(data) 
         );
         setModalOpened(false)
-        //window.location.reload()
+        window.location.reload()
     }
 
     return(

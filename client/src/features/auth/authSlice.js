@@ -197,7 +197,7 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.user = action.payload;
             console.log(action.payload)
-            return state
+            return state // return action.payload maybe?
         })
         .addCase(updateUser.rejected, (state, action) => {
             state.isLoading = false
@@ -238,7 +238,7 @@ export const authSlice = createSlice({
         .addCase(followUser.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            // state.user = action.payload
+            state.user.following = action.payload
             console.log(action.payload)
             // return state;
         })
@@ -246,7 +246,6 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.isError = true
             // state.message = action.payload // THIS GETS SENT CORRECTLY
-            console.log("fuck")
         })
         // Unfollow
         .addCase(unfollowUser.pending, (state) => {
@@ -257,7 +256,8 @@ export const authSlice = createSlice({
             state.isSuccess = true
             // state.user = action.payload
             console.log(action.payload)
-            // return state;
+            state.user.following = action.payload
+            return state;
         })
         .addCase(unfollowUser.rejected, (state, action) => {
             state.isLoading = false

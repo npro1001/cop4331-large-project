@@ -166,8 +166,8 @@ const deletePost = asyncHandler(async (req, res) => {
 // @access  Public
 const likePost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId} = req.body;
-
+    const userId = req.user.id;
+    const {postId} = req.body;
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));
 
@@ -192,6 +192,7 @@ const likePost = asyncHandler(async (req, res) => {
         await user.updateOne({ $push: { likes: post._id } });
         await post.updateOne({ $push: { likes: user._id } });
 
+        
         res.status(201).json({
             username: user.username,
             userlikes: user.likes,
@@ -206,7 +207,8 @@ const likePost = asyncHandler(async (req, res) => {
 // @access Public
 const unlikePost = asyncHandler(async (req, res) => {
     // Pass user ID and post ID
-    const {postId, userId} = req.body;
+    const userId = req.user.id;
+    const {postId} = req.body;
 
     const post = await Post.findById(mongoose.Types.ObjectId(postId));
     const user = await User.findById(mongoose.Types.ObjectId(userId));

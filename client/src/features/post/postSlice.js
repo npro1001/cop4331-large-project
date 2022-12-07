@@ -47,20 +47,21 @@ export const getPosts = createAsyncThunk('auth/getPosts', async (user, thunkAPI)
 })
 
 
-export const likePost = createAsyncThunk('post/likePost', async (postID, userID, thunkAPI) => {
+export const likePost = createAsyncThunk('post/likePost', async (postID, thunkAPI) => {
     try {
         const token = user.token
-        return await postService.likePostService(postID,userID, token)
+        console.log(postID)
+        return await postService.likePostService(postID, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
         return thunkAPI.rejectWithValue(message);
     }
 })
 
-export const unlikePost = createAsyncThunk('post/unlikePost', async (postID, userID, thunkAPI) => {
+export const unlikePost = createAsyncThunk('post/unlikePost', async (postID, thunkAPI) => {
     try {
         const token = user.token
-        return await postService.unlikePostService(postID,userID, token)
+        return await postService.unlikePostService(postID, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || (error.message) || (error.toString());
         return thunkAPI.rejectWithValue(message);

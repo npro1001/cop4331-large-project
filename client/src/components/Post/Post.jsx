@@ -107,11 +107,13 @@ const Post = ({ data }) => {
     
         if (!data.liked)
         {
-            console.log(data.id)
-            console.log(user._id)
-            await dispatch(likePost(data.id, user._id))
+            const postId = data.id
+            const userId = user._id
+            console.log(postId)
+            console.log(typeof userId)
+            await dispatch(likePost(postId))
                 .then( (response) =>{
-                    console.log(response)
+                    console.log(response.payload)
                 })
         }
         else

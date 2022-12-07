@@ -64,22 +64,23 @@ const InfoCard = ({location}) => {
         }
     }
 
-    useEffect(() => {
-
+    const fetchTopArtist = async () => {
         if (isConnected) {
-            dispatch(getTopArtist())
+            await dispatch(getTopArtist())
                 .then(response => {
                     let genres = [response.payload.data.items[0].genres[1]+" "]
                     setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
-                    // console.log(user.anthem.title)
                 })
-                // .then(localStorage.setItem('user', JSON.stringify(user)))
-            }
+        }
+    }
+
+    useEffect(() => {
+        fetchTopArtist()
         fetchProfileUser()
 
-    }, [isConnected, activeUser, anthem, topGenres, topArtist, user],[]); //! Important 
+    }, [isConnected, activeUser, anthem, user],[]); //! Important 
 
 
     const onLogout = () => {
@@ -120,34 +121,9 @@ const InfoCard = ({location}) => {
             </div>
             <div className="info">
                 <span>
-                    <b>Top Genres</b>
-                </span>
-                <span>
-                    {!spotifyLoading ?
-                        user.username === activeUser.username && topGenres ? (
-                            <div>
-                                {topGenres.map((genres, index) => {
-                                    
-                                    return (
-                                        <div key={index}>
-                                            <><span>{genres}</span></>
-                                            
-                                        </div>
-                                    )
-
-                                })}
-                                
-                            </div>
-                        ) : (
-                            <div>
-                                <p> Top Genre Not Found </p>
-                            </div>
-                        ) : <img className="loadingCircle" src={loadingCir} alt="loading" />}
-                </span>
-            </div>
-            <div className="info">
-                <span>
                     <b>Top Artist</b>
+                    <br></br>
+                    <br></br>
                 </span>
                 <span>
                     {!spotifyLoading ? user.username === activeUser.username && topArtist ? (
@@ -167,7 +143,35 @@ const InfoCard = ({location}) => {
                     ) : <img className="loadingCircle" src={loadingCir} alt="loading" />}
                 </span>
             </div >
+            <div className="info">
+                <span>
+                    <b>Top Artist's Genre</b>
+                    <br></br>
+                    <br></br>
+                </span>
+                <span>
+                    {!spotifyLoading ?
+                        user.username === activeUser.username && topGenres ? (
+                            <div>
+                                {topGenres.map((genres, index) => {
+                                    
+                                    return (
+                                        <div key={index}>
+                                            <span> - {genres}</span>
+                                            <br></br>
+                                        </div>
+                                    )
 
+                                })}
+                                
+                            </div>
+                        ) : (
+                            <div>
+                                <p> Top Genre Not Found </p>
+                            </div>
+                        ) : <img className="loadingCircle" src={loadingCir} alt="loading" />}
+                </span>
+            </div>
             {(user.username === activeUser.username)
                 ?
                     <button className='button logout-button' onClick={onLogout}>Logout</button>

@@ -260,7 +260,10 @@ export const accessToken = connect()
 // @access  Private
 export const getTopArtist = async () => {
 
-    //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
+    if (hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+        refreshToken()
+    }
+
     try {
         const response = await axios({
             method: 'get',
@@ -291,7 +294,10 @@ export const getTopArtist = async () => {
 // @access  Private
 export const getTopGenre = async () => {
 
-    //! NEED TO HANDLE REFRESH TOKEN PROBLEMS
+    if (hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+        refreshToken()
+    }
+
     try {
         console.log("getTopGenre was called")
         console.log(localStorage.getItem(LOCALSTORAGE_KEYS.accessToken));
@@ -316,6 +322,10 @@ export const getTopGenre = async () => {
 // @route   GET /api/spotify/recommendSongs
 // @access  Private
 export const recommendSongs = async (token, user) => {
+
+    if (hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+        refreshToken()
+    }
 
     console.log(genreResult)
 
@@ -369,6 +379,11 @@ export const recommendSongs = async (token, user) => {
 // @access  Private
 // API documentation: https://developer.spotify.com/documentation/web-api/reference/#/operations/search
 export const searchTracks = async (param) => {
+
+    if (hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+        refreshToken()
+    }
+
     try {
 
         const token = localStorage.getItem(LOCALSTORAGE_KEYS.accessToken);

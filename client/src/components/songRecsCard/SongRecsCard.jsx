@@ -21,11 +21,9 @@ const SongRecsCard = () => {
 
     let tracks = [];
 
-    useEffect(() => {
-
+    async function fetchData() {
         if (isConnected) {
-            if(loaded)
-            {
+            if(loaded) {
                 dispatch(getRecommended())
                 .then(response => {
 
@@ -54,9 +52,12 @@ const SongRecsCard = () => {
                 })
             }
             loaded = true;
-
         }
-    }, [], [], [user]); //! Important
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [user]); //! Important
 
     if (list && !spotifyLoading) {
         return (

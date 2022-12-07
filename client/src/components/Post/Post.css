@@ -20,6 +20,13 @@
     align-self: center;
 }
 
+.options{
+    margin-right: 0;
+    margin-left: auto;
+    opacity: 50%;
+    align-content: right;
+}
+
 .postReact{
     display: flex;
     align-items: flex-start;

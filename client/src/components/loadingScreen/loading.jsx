@@ -4,8 +4,10 @@ import styled from 'styled-components'
 const LoadingContainer = styled.div`
  
     position: relative;
-    top:350px;
-    left: 525px;
+    margin-top: 20%;
+    margin-left: 32%;
+    /* top:350px;
+    left: 525px; */
 
 `
 

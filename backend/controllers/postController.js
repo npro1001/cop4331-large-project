@@ -148,14 +148,14 @@ const deletePost = asyncHandler(async (req, res) => {
         res.status(400);
         throw new error("Cannot find author");
     }
-    else if (user._id != authUser._id) {
+    else if (user.id != authUser.id) {
         res.status(403);
         throw new error("Not authorized for delete");
     } else {
         await user.updateOne({ $pull: { posts: postId } });
         await Post.findByIdAndDelete(mongoose.Types.ObjectId(postId));
 
-        res.status(200).json({User: user._id});
+        res.status(200).json({message: "successfully deleted post " + postId});
 
     }
 

@@ -3,8 +3,8 @@ import authReducer, { updateUser, followUser, unfollowUser, uploadPFP, putTopArt
 import spotifyReducer from '../features/spotify/spotifySlice';
 import postReducer, {deletePost} from '../features/post/postSlice';
 
-export const listenerMiddleware = createListenerMiddleware();
-listenerMiddleware.startListening({
+export const userListenerMiddleware = createListenerMiddleware();
+userListenerMiddleware.startListening({
   matcher: isAnyOf(updateUser, followUser, unfollowUser, uploadPFP, putTopArtist, deletePost),
   effect: async (matcher, listenerApi) =>
     localStorage.setItem("user", JSON.stringify(listenerApi.getState().auth.user))
@@ -18,6 +18,6 @@ export const store = configureStore({
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false,}),
   middleware: (getDefaultMiddleware) => [
-    listenerMiddleware.middleware,
+    userListenerMiddleware.middleware,
     ...getDefaultMiddleware({serializableCheck: false})] //?
   });

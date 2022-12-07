@@ -502,9 +502,10 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
     }
 
     let followingPosts = [];
-    for (let i = 0; i < user.following.length; i++)
+    let following = user.following;
+    for (let i = 0; i < following.length; i++)
     {
-      let friend = await User.findById(user.following[i])
+      let friend = await User.findById(following[i])
       if (!friend)
       {
         console.log("Following no longer exists")
@@ -512,9 +513,10 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
       }
       else
       {
-        for (let j = 0; j < friend.posts.length; j++)
+        var posts = friend.posts;
+        for (let j = 0; j < posts.length; j++)
         { 
-          let post = await Post.findById(mongoose.Types.ObjectId(friend.posts[j]));
+          let post = await Post.findById(mongoose.Types.ObjectId(posts[j]));
           if (!post)
           {
             console.log("Post Could not be found")
@@ -550,47 +552,43 @@ const getFollowingPosts = asyncHandler(async (req, res) => {
         }
       }
     }
-
-    for (let i = 0; i < user.posts.length; i++)
+    var posts = user.posts;
+    for (let i = 0; i < posts.length; i++)
     {
-      let post = await Post.findById(mongoose.Types.ObjectId(user.posts[i]));
-          if (!post)
-          {
-            console.log("Post Could not be found")
-            await friend.updateOne({ $pull: { posts: user.posts[i] } })
-          }
-          else{
-            var postData = {}
-            postData['img'] = post.picture;
-            postData['name'] = user.name;
-            postData['username'] = user.username;
-            postData['caption'] = post.caption;
-            postData['likes'] = post.likes.length;
-            postData['comments'] = '';
-            postData['createdAt'] = post.createdAt;
-            if (user["profilePicture"]) {postData["profileImage"] = user.profilePicture;}
-            if (post.song) {postData['song'] = post.song;}
-            if (post.image) {postData['image'] = post.image;}
-            if (post.url) {postData['url'] = post.url;}
-            if (post.artist) {postData['artist'] = post.artist;}
-            if (post.playlist) {postData['palylist'] = post.playlist;}
+      let post = await Post.findById(mongoose.Types.ObjectId(posts[i]));
+      if (!post)
+      {
+        console.log("Post Could not be found")
+        await friend.updateOne({ $pull: { posts: user.posts[i] } })
+      }
+      else{
+        var postData = {}
+        postData['img'] = post.picture;
+        postData['name'] = user.name;
+        postData['username'] = user.username;
+        postData['caption'] = post.caption;
+        postData['likes'] = post.likes.length;
+        postData['comments'] = '';
+        postData['createdAt'] = post.createdAt;
+        if (user["profilePicture"]) {postData["profileImage"] = user.profilePicture;}
+        if (post.song) {postData['song'] = post.song;}
+        if (post.image) {postData['image'] = post.image;}
+        if (post.url) {postData['url'] = post.url;}
+        if (post.artist) {postData['artist'] = post.artist;}
+        if (post.playlist) {postData['palylist'] = post.playlist;}
 
-            if(post.likes.includes(id))
-            {
-              postData['liked'] = true;
-            }
-            else
-            {
-              postData['liked'] = false;
-            }
-            followingPosts.push(postData)
-          }
+        if(post.likes.includes(id))
+        {
+          postData['liked'] = true;
+        }
+        else
+        {
+          postData['liked'] = false;
+        }
+        followingPosts.push(postData)
+      }
     }
 
-    for (var i = 0; i < followingPosts.length; i++)
-    {
-      console.log(followingPosts[i].createdAt)
-    }
     function compareDates(a, b){
       if (a.createdAt > b.createdAt)
       { 

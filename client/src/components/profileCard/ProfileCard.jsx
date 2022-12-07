@@ -253,6 +253,7 @@ const ProfileCard = ({ location }) => {
                 onClick={() => {
                     navigate(
                         `/profile/${user.username}`);
+                        window.location.reload();
                 }}>My Profile</span>}
         </div>
     )

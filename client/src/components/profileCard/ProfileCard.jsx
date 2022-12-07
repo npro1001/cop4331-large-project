@@ -196,7 +196,7 @@ const ProfileCard = ({ location }) => {
             console.log(response);
         }) 
 
-        // window.location.reload();
+        window.location.reload();
     }
 
     return (

@@ -82,6 +82,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
             searching = false;
         }
+
         fetchProfileUser()
 
     }, [])
@@ -92,6 +93,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         prof.append("picture", profileImage);
         prof.append("id", user._id)
         dispatch(uploadPFP(prof))
+        .then( (response) => {console.log("UPLOAD PROFILE IMAGE: " + response.data)})
     }
 
     const onImageChange = (event) => {
@@ -134,9 +136,6 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
-
-
 
         //user didnt change anything
         if (tempName == null && tempUsername == null && tempAnthemName == "" && profileImage == null) {
@@ -245,17 +244,16 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
             }
         }
 
-        dispatch(updateUser(
-            creds))
-            .then(async (updateUserRes) => {
+        dispatch(updateUser(creds))
+            .then( (updateUserRes) => {
                 if (profileImage) {
                     picUpload();
                 }
 
                 setUser(updateUserRes.payload)
-                setModalOpened(false);
                 navigate(
-                    `/profile/${updateUserRes.payload.username}`)
+                `/profile/${updateUserRes.username}`)
+                setModalOpened(false);
 
                 // window.location.reload();
             })

@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
               heroTag: "DEV_ACCESS_TO_FEED",
               label: Text('Dev access to feed'),
               onPressed: () {
-                userAuthBloc.add(LoggedOutEvent()); // add = dispatch
+                // userAuthBloc.add(LoggedOutEvent()); // add = dispatch
                 Navigator.of(context).pushNamed('/feed');
               },
             ),

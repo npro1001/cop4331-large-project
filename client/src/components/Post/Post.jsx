@@ -4,13 +4,14 @@ import Comment from '../../img/comment.png'
 import Share from '../../img/share.png'
 import Heart from '../../img/like.png'
 import NotLike from '../../img/notlike.png'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import defaultPFP from '../../img/default-profile.png'
 import DeleteModal from '../deleteModal/DeleteModal'
 import { useEffect } from "react";
 import SongCard from "../SongCard/SongCard";
 import { UilTimes } from '@iconscout/react-unicons'
 import { useParams } from 'react-router-dom';
+import { likePost, unlikePost } from "../../features/post/postSlice"
 
 const Post = ({ data }) => {
 
@@ -26,6 +27,7 @@ const Post = ({ data }) => {
     const params = useParams();
     const profileUsername = params.username;
     let profileUser;
+    const dispatch = useDispatch();
 
     const fetchProfileUser = async () => {
         setActiveUser(user);
@@ -85,27 +87,27 @@ const Post = ({ data }) => {
         }
     }, [])
 
-    const deletePost = async () => {
-        const postId = data.id
-
-        await fetch(`/api/post/delete`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({postId})
-        }).then(response => {
-            return response.json( )
-        })
-        .then(data => 
-            console.log(data) 
-        );
-        window.location.reload()
+    const ChangeLike = async () => {
+    
+        if (!data.liked)
+        {
+            const postId = data.id
+            const userId = user._id
+            await dispatch(likePost(postId))
+                .then( (response) =>{
+                    console.log(response.payload)
+                    window.location.reload()
+                })
+        }
+        else
+        {
+            await dispatch(unlikePost(data.id, user._id))
+                .then( (response) =>{
+                    console.log(response)
+                    window.location.reload()
+                })
+        }
     }
-
-    // const ChangeLike = async () => {
-    //     const dispatch = useDispatch();
-
-    //     dispatch(likePost)
-    // }
 
     return (
         <div className="Post">
@@ -142,7 +144,7 @@ const Post = ({ data }) => {
             }
             {isImage ? <img src={`data:image/png;base64,${picture}`} alt="user image" /> : ""}
             <div className="postReact">
-                <img src={data.liked ? Heart : NotLike} alt="" />
+                <img src={data.liked ? Heart : NotLike} alt="" onClick={ChangeLike}/>
                 {/* <img src={Comment} alt="" />
                 <img src={Share} alt="" /> */}
             </div>

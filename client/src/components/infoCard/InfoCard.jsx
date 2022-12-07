@@ -36,7 +36,7 @@ const InfoCard = ({ location }) => {
     const user = useSelector((state) => state.auth.user)
 
     const [modalOpened, setModalOpened] = useState(false)
-    const [topArtist, setTopArtist] = useState(null);
+    const [topArtist, setTopArtist] = useState({});
     const [topGenres, setTopGenres] = useState(null);
     const [activeUser, setActiveUser] = useState({})
     const [fav, setFav] = useState()
@@ -51,10 +51,8 @@ const InfoCard = ({ location }) => {
         if (profileUsername === user.username) {
             setActiveUser(user);
             setAnthem(user.anthem)
-            console.log(user)
-           
+            fetchTopArtist()
         }
-
         else {
             const res = await fetch(`/api/users/${profileUsername}`, {
                 method: 'GET',
@@ -112,6 +110,7 @@ const InfoCard = ({ location }) => {
     }
 
     useEffect(() => {
+        fetchTopArtist()
         fetchProfileUser()
 
     }, [isConnected, activeUser, anthem, user], []); //! Important 

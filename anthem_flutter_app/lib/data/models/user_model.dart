@@ -1,6 +1,8 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 class User {
   String id;
   String name;
@@ -11,7 +13,9 @@ class User {
   // String about;
   List<String> followers;
   List<String> following; //<dynamic>?
-  // String profilePicture;
+  Uint8List profilePicture;
+  bool profilePictureValid;
+  String anthem;
   // List<dynamic> likes;
   // String password;
   // List<dynamic> comments;
@@ -28,7 +32,9 @@ class User {
     required this.followers,
     required this.following,
     // required this.about,
-    // required this.profilePicture,
+    required this.profilePicture,
+    required this.profilePictureValid,
+    required this.anthem,
     // required this.likes,
     // required this.password,
     // required this.comments,
@@ -39,6 +45,43 @@ class User {
     List<String> followersList = List<String>.from(followersArray);
     var followingArray = json['following'];
     List<String> followingList = List<String>.from(followingArray);
+    var pictureArray;
+    bool picValid;
+    Uint8List pictureData;
+    if (json['profilePicture']['data'] != null) {
+      picValid = true;
+      pictureArray = json['profilePicture']['data']['data'];
+      try {
+        List<int> intList = pictureArray.cast<int>().toList();
+        pictureData = Uint8List.fromList(intList);
+      } on Exception catch (_) {
+        rethrow;
+      }
+    } else {
+      picValid = false;
+      pictureArray = [];
+      try {
+        List<int> intList = pictureArray.cast<int>().toList();
+        pictureData = Uint8List.fromList(intList);
+      } on Exception catch (_) {
+        rethrow;
+      }
+    }
+    var anthem;
+    if (json['anthem'] != null) {
+      anthem = json['anthem']['title'];
+    } else {
+      anthem = "Party In The U.S.A";
+    }
+    // Map<String, dynamic> map = jsonDecode(pictureArray);
+    // List<dynamic> data = map['data'];
+    // List<String> pictureList = List<String>.from(pictureArray);
+    // final Uint8List bytes = pictureArray.asUint8List();
+
+    print(picValid);
+    // const base64String = btoa(new Uint8Array(user.profilePicture.data.data).reduce(function (data, byte) {
+    //                         return data + String.fromCharCode(byte);
+    //                     }, ''));
 
     return User(
       id: json['_id'],
@@ -52,7 +95,9 @@ class User {
           followersList, //! Unhandled Exception: type 'Null' is not a subtype of type 'Iterable<dynamic>' or String
       following: followingList,
       // password: json['password'],
-      // profilePicture: json['profilePicture'],
+      profilePicture: pictureData,
+      profilePictureValid: picValid,
+      anthem: anthem,
       // likes: json['likes'],
       // comments: json['comments'],
     );
@@ -69,7 +114,8 @@ class User {
         'following': model.following,
         // 'about': model.about,
         // 'password': model.password,
-        // 'profilePicture': model.profilePicture,
+        'profilePicture': model.profilePicture,
+        'profilePictureValid': model.profilePictureValid,
         // 'likes': model.likes,
         // 'comments': model.comments,
       };

@@ -27,12 +27,18 @@ const Posts = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     async function fetchData() {
-        if (user.following.length >= 0) {
-            await dispatch(getPosts(user))
-                .then(response => {
-                    setDisplayPosts(response.payload)
-                    setIsLoading(false)
-                })
+        if (user.following == null)
+        {
+            setDisplayPosts(null);
+        }
+        else{
+            if (user.following.length >= 0) {
+                await dispatch(getPosts(user))
+                    .then(response => {
+                        setDisplayPosts(response.payload)
+                        setIsLoading(false)
+                    })
+            }
         }
     }
 
@@ -40,10 +46,9 @@ const Posts = () => {
 
         fetchData();
 
-    }, [], [displayPosts]); //! Important
+    }, [displayPosts]); //! Important
 
     if (!isLoading) {
-        //if there are no posts to display
         if (displayPosts.length == 0 || displayPosts == null) {
             return (
                 <><EmptyFeed> No posts to display...</EmptyFeed><AddOn>Try posting something!</AddOn></>
@@ -64,7 +69,7 @@ const Posts = () => {
     }
 
     else
-    {
+    {    //if there are no posts to display
         return (
             <LoadingScreen></LoadingScreen>
         )

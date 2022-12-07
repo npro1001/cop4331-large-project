@@ -262,7 +262,7 @@ export const Modal = () => {
                   <Greeting>Hey, {user.name}</Greeting>
                   <SpotifyMessage>You are not connected to Spotify!</SpotifyMessage>
                   <Greeting>Please connect to use the full features of Anthem</Greeting>
-                  <a className="button connect-button" href="http://localhost:5555/api/spotify/connect" target="_self" >Connect to Spotify</a>
+                  <a className="button connect-button" href="http://anthem-cop4331.herokuapp.com/api/spotify/connect" target="_self" >Connect to Spotify</a>
                   {/* <button className="button connect-button" onClick={onClick} >2. Connect to Spotify</button> */}
                   <button className="button logout-button" onClick={onLogout}>Logout</button>
                 </ModalContent>

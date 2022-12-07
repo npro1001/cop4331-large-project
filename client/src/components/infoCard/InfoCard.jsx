@@ -64,7 +64,7 @@ const InfoCard = ({location}) => {
         }
     }
 
-    /*
+    
     const fetchTopArtist = async () => {
         if (isConnected) {
             await dispatch(getTopArtist())
@@ -73,12 +73,17 @@ const InfoCard = ({location}) => {
                     setTopGenres(genres)
                     setTopArtist(response.payload.data.items[0]);
                     setSpotifyLoading(false);
+                    topArtist = {}
+                    topArtist['name'] = response.payload.data.items[0].name;
+                    topArtist['genre'] = genres[0];
+                    topArtist['image'] = response.payload.data.items[0].images[0];
                 })
+                .then(() => {dispatch(setTopArtist(topArtist))})
         }
-    } */
+    } 
 
     useEffect(() => {
-        // fetchTopArtist()
+        fetchTopArtist()
         fetchProfileUser()
 
     }, [isConnected, activeUser, anthem, user],[]); //! Important 
